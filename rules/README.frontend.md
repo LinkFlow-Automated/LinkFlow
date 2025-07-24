@@ -15,7 +15,6 @@ Welcome to the LinkFlow backend! This guide explains how frontend developers can
 
 ```typescript
 import {
-  authClient,
   signIn,
   signUp,
   useSession,
@@ -43,6 +42,12 @@ const { data: session } = useSession();
 ```
 
 ### Social Login
+
+```typescript
+
+signIn.social({provider: "ex: google"})
+
+```
 
 - Google login is enabled. Use the Google OAuth flow with the provided client ID.
 - The backend expects the following environment variables to be set:
