@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -86,7 +87,7 @@ export function SignupForm({
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>Email</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="m@example.com"
@@ -118,7 +119,7 @@ export function SignupForm({
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>Password</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="*********"

@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -98,7 +99,7 @@ export function LoginForm({
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>Password</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="*********"
