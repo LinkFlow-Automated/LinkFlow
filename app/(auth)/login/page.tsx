@@ -2,7 +2,7 @@ import Image from "next/image";
 import linkFlowLogo from "@/public/assets/linkflow-logo-trans.png";
 
 
-import { LoginForm } from "@/components/login-form"
+import { LoginForm } from "@/app/(auth)/login/_components/form/login-form"
 
 export default function LoginPage() {
   return (

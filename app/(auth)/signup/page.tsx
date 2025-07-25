@@ -2,7 +2,7 @@ import Image from "next/image";
 import linkFlowLogo from "@/public/assets/linkflow-logo-trans.png";
 
 
-import { SignupForm } from "@/components/signup-form";
+import { SignupForm } from "@/app/(auth)/signup/_components/form/signup-form";
 
 export default function SignupPage() {
   return (
