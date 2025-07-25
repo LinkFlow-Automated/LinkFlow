@@ -4,6 +4,7 @@ import { prisma } from "./prisma";
 import { admin, apiKey, haveIBeenPwned, mcp } from "better-auth/plugins";
 import { stripe } from "@better-auth/stripe";
 import { stripeClient } from "./stripe";
+import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -29,5 +30,6 @@ export const auth = betterAuth({
     admin(),
     apiKey(),
     mcp({ loginPage: "/auth/login" }),
+    nextCookies(),
   ],
 });
