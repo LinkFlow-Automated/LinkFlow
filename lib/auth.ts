@@ -23,7 +23,7 @@ export const auth = betterAuth({
     haveIBeenPwned(),
     stripe({
       stripeClient,
-      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET as string,
       createCustomerOnSignUp: true,
     }),
     admin(),
