@@ -1,0 +1,7 @@
+{
+    "github.copilot.chat.commitMessageGeneration.instructions": [
+        {
+            "text": "Use conventional commit format: type(scope): subject. Analyze git status to determine type: feat (new files), fix (bug fixes), refactor (renames/restructure), chore (deletions), docs (documentation). Include detailed body explaining: files changed, operation type (created/modified/deleted/renamed), purpose, and impact. Use imperative mood. Be specific about what, why, and how."
+        }
+    ]
+}
