@@ -20,7 +20,8 @@
 		"noRedundantRoles":"off",
 		"useFocusableInteractive":"info",
 		"useSemanticElements":"info",
-		"useAriaPropsForRole":"info"
+		"useAriaPropsForRole":"info",
+		"useValidAnchor":"info"
 	  },
 	  "style":{
 		"useImportType":"off"
