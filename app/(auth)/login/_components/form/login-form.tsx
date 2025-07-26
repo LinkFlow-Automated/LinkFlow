@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +16,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,23 +30,41 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const form = useForm<loginSchemaType>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const handleOnSubmit = async (values: loginSchemaType) => {
-    const login = await signIn.email({
-      email: values.email,
-      password: values.password,
-      callbackURL: "/",
-    });
-    console.log(login.data?.user);
+    try {
+      console.log(values);
+
+      // Uncomment and implement your actual login logic
+      const { data, error } = await signIn.email({
+        email: values.email,
+        password: values.password,
+        callbackURL: "/",
+      });
+      console.log(data);
+      console.log(error);
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Handle login error (show toast, set form error, etc.)
+    }
   };
 
-  const loginWithGoogle = async () => {
-    const data = await signIn.social({
-      provider: "google",
-      callbackURL: "/",
-    });
-    console.log(data);
+  const loginWithGoogle = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent form submission
+    try {
+      const data = await signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+      console.log(data);
+    } catch (error) {
+      console.error("Google login failed:", error);
+    }
   };
 
   return (
@@ -61,11 +80,12 @@ export function LoginForm({
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
                   <Button
+                    type="button" // Important: prevent form submission
                     onClick={loginWithGoogle}
                     variant="outline"
                     className="w-full"
                   >
-                    <FcGoogle />
+                    <FcGoogle className="mr-2" />
                     Login with Google
                   </Button>
                 </div>
@@ -81,14 +101,15 @@ export function LoginForm({
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>Email</FormLabel>
                           <FormControl>
                             <Input
+                              type="email"
                               placeholder="m@example.com"
                               {...field}
-                              required
                             />
                           </FormControl>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -102,11 +123,12 @@ export function LoginForm({
                           <FormLabel>Password</FormLabel>
                           <FormControl>
                             <Input
+                              type="password"
                               placeholder="*********"
                               {...field}
-                              required
                             />
                           </FormControl>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -126,9 +148,22 @@ export function LoginForm({
           </Form>
         </CardContent>
       </Card>
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <Link href="#">Terms of Service</Link>{" "}
-        and <Link href="#">Privacy Policy</Link>.
+      <div className="text-muted-foreground text-center text-xs text-balance">
+        By clicking continue, you agree to our{" "}
+        <Link
+          href="#"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="#"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Privacy Policy
+        </Link>
+        .
       </div>
     </div>
   );

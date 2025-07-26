@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { signupSchema, signupSchemaType } from "@/lib/schema/auth";
@@ -37,20 +38,33 @@ export function SignupForm({
   });
 
   const handleOnSubmit = async (values: signupSchemaType) => {
-    const singup = await signUp.email({
-      name: values.name,
-      email: values.email,
-      password: values.password,
-      callbackURL: "/",
-    });
-    console.log(singup.data?.user);
+    console.log(values.email);
+    try {
+      const { data, error } = await signUp.email({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        // image: "https://example.com/image.png",
+        callbackURL: "/login",
+      });
+      console.log(error);
+    } catch (error) {
+      console.error("Signup failed:", error);
+      // Handle signup error (show toast, set form error, etc.)
+    }
   };
 
-  const signupWithGoogle = async () => {
-    const data = await signIn.social({
-      provider: "google",
-    });
-    console.log(data);
+  const signupWithGoogle = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent form submission
+    try {
+      const data = await signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+      console.log(data);
+    } catch (error) {
+      console.error("Google signup failed:", error);
+    }
   };
 
   return (
@@ -71,7 +85,7 @@ export function SignupForm({
                     className="w-full"
                     type="button"
                   >
-                    <FcGoogle />
+                    <FcGoogle className="mr-2" />
                     Signup with Google
                   </Button>
                 </div>
@@ -90,11 +104,12 @@ export function SignupForm({
                           <FormLabel>Email</FormLabel>
                           <FormControl>
                             <Input
+                              type="email"
                               placeholder="m@example.com"
                               {...field}
-                              required
                             />
                           </FormControl>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -107,8 +122,13 @@ export function SignupForm({
                         <FormItem>
                           <FormLabel>Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} required />
+                            <Input
+                              type="text"
+                              placeholder="John Doe"
+                              {...field}
+                            />
                           </FormControl>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -122,11 +142,12 @@ export function SignupForm({
                           <FormLabel>Password</FormLabel>
                           <FormControl>
                             <Input
+                              type="password"
                               placeholder="*********"
                               {...field}
-                              required
                             />
                           </FormControl>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -146,10 +167,22 @@ export function SignupForm({
           </Form>
         </CardContent>
       </Card>
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
+      <div className="text-muted-foreground text-center text-xs text-balance">
         By clicking continue, you agree to our{" "}
-        <Link href="#">Terms of Service</Link> and{" "}
-        <Link href="#">Privacy Policy</Link>.
+        <Link
+          href="#"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="#"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Privacy Policy
+        </Link>
+        .
       </div>
     </div>
   );
