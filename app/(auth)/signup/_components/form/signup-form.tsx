@@ -23,11 +23,15 @@ import { useForm } from "react-hook-form";
 import { signupSchema, signupSchemaType } from "@/lib/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useState } from "react";
+import { Loader } from "@/components/ui/loader";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<signupSchemaType>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -38,7 +42,7 @@ export function SignupForm({
   });
 
   const handleOnSubmit = async (values: signupSchemaType) => {
-    console.log(values.email);
+    setIsLoading(true);
     try {
       const { data, error } = await signUp.email({
         name: values.name,
@@ -47,8 +51,9 @@ export function SignupForm({
         // image: "https://example.com/image.png",
         callbackURL: "/login",
       });
-      console.log(error);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Signup failed:", error);
       // Handle signup error (show toast, set form error, etc.)
     }
@@ -152,8 +157,8 @@ export function SignupForm({
                       )}
                     />
                   </div>
-                  <Button type="submit" className="w-full">
-                    Signup
+                  <Button disabled={isLoading} type="submit" className="w-full">
+                    {isLoading ? <Loader /> : "Sign up"}
                   </Button>
                 </div>
                 <div className="text-center text-sm">

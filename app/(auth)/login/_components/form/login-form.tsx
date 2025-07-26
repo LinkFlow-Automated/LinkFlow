@@ -23,11 +23,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, loginSchemaType } from "@/lib/schema/auth";
 import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
+import { useState } from "react";
+import { Loader } from "@/components/ui/loader";
+import { set } from "better-auth";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<loginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -37,32 +42,33 @@ export function LoginForm({
   });
 
   const handleOnSubmit = async (values: loginSchemaType) => {
+    setIsLoading(true);
     try {
-      console.log(values);
-
-      // Uncomment and implement your actual login logic
       const { data, error } = await signIn.email({
         email: values.email,
         password: values.password,
         callbackURL: "/",
       });
-      console.log(data);
-      console.log(error);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Login failed:", error);
       // Handle login error (show toast, set form error, etc.)
     }
   };
 
   const loginWithGoogle = async (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent form submission
+    setIsLoading(true);
+    e.preventDefault();
     try {
       const data = await signIn.social({
         provider: "google",
         callbackURL: "/",
       });
       console.log(data);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Google login failed:", error);
     }
   };
@@ -80,13 +86,14 @@ export function LoginForm({
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
                   <Button
-                    type="button" // Important: prevent form submission
+                    type="button"
                     onClick={loginWithGoogle}
                     variant="outline"
                     className="w-full"
+                    disabled={isLoading}
                   >
                     <FcGoogle className="mr-2" />
-                    Login with Google
+                    {isLoading ? <Loader /> : "Login with Google"}
                   </Button>
                 </div>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
@@ -133,8 +140,8 @@ export function LoginForm({
                       )}
                     />
                   </div>
-                  <Button type="submit" className="w-full">
-                    Login
+                  <Button disabled={isLoading} type="submit" className="w-full">
+                    {isLoading ? <Loader /> : "Login"}
                   </Button>
                 </div>
                 <div className="text-center text-sm">
