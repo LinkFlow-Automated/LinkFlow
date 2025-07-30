@@ -5,7 +5,7 @@ const Footer = () => (
     <footer className="w-full py-8 px-4 bg-neutral-900 text-gray-200 mt-auto">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-                <Image src="/assets/linkflow-logo-trans.png" alt="LinkFlow Logo" className="h-6 w-6" />
+                <Image src="/assets/linkflow-logo-trans.png" alt="LinkFlow Logo" className="h-6 w-6" width={1000} height={1000} />
                 <span className="font-bold text-lg">LinkFlow</span>
             </div>
             <div className="flex gap-6">
@@ -13,7 +13,7 @@ const Footer = () => (
             </div>
             <div className="flex gap-4">
                 <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
-                    <Image src="/assets/insta.png" alt="Instagram" className="h-7 w-7 grayscale hover:grayscale-0 transition" />
+                    <Image src="/assets/insta.png" alt="Instagram" className="h-7 w-7 grayscale hover:grayscale-0 transition" width={1000} height={1000} />
                 </a>
                 <img src="/assets/linkflow-logo-trans.png" alt="LinkFlow Logo" className="h-6 w-6" />
                 <span className="font-bold text-lg">LinkFlow</span>

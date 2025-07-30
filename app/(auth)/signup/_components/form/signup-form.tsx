@@ -25,6 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { Loader } from "@/components/ui/loader";
+import { toast } from "sonner";
 
 export function SignupForm({
   className,
@@ -48,27 +49,37 @@ export function SignupForm({
         name: values.name,
         email: values.email,
         password: values.password,
-        // image: "https://example.com/image.png",
         callbackURL: "/login",
       });
       setIsLoading(false);
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Signup successful! Please check your email to verify.");
+      }
     } catch (error) {
       setIsLoading(false);
       console.error("Signup failed:", error);
-      // Handle signup error (show toast, set form error, etc.)
+      toast.error("Signup failed. Please try again.");
     }
   };
 
   const signupWithGoogle = async (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     try {
-      const data = await signIn.social({
+      const { data, error } = await signIn.social({
         provider: "google",
         callbackURL: "/",
       });
       console.log(data);
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Google signup successful! Redirecting...");
+      }
     } catch (error) {
       console.error("Google signup failed:", error);
+      toast.error("Google signup failed. Please try again.");
     }
   };
 

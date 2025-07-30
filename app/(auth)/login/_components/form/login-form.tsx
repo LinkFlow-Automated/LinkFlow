@@ -25,7 +25,6 @@ import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
 import { useState } from "react";
 import { Loader } from "@/components/ui/loader";
-import { set } from "better-auth";
 
 export function LoginForm({
   className,

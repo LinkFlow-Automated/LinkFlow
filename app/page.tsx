@@ -85,17 +85,17 @@ export default function Home() {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">Why LinkFlow?</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <Card className="p-6 flex flex-col items-center text-center shadow-md">
-            <Image src="/assets/automated.png" alt="Automation" className="h-12 mb-1" />
+            <Image src="/assets/automated.png" alt="Automation" className="h-12 mb-1" width={1000} height={1000} />
             <h3 className="font-semibold text-xl mb-1">Automated Promotions</h3>
             <p className="text-muted-foreground">Set rules to auto-promote your top links based on real-time traffic and engagement.</p>
           </Card>
           <Card className="p-6 flex flex-col items-center text-center shadow-md">
-            <Image src="/assets/analytics.png" alt="Analytics" className="h-12 mb-1" />
+            <Image src="/assets/analytics.png" alt="Analytics" className="h-12 mb-1" width={1000} height={1000}/>
             <h3 className="font-semibold text-xl mb-1">Advanced Analytics</h3>
             <p className="text-muted-foreground">Track clicks, spot trends, and optimize your link strategy with smart, actionable insights.</p>
           </Card>
           <Card className="p-6 flex flex-col items-center text-center shadow-md">
-            <Image src="/assets/sync.png" alt="Content Sync" className="h-12 mb-1" />
+            <Image src="/assets/sync.png" alt="Content Sync" className="h-12 mb-1" width={1000} height={1000}/>
             <h3 className="font-semibold text-xl mb-1">Content Sync</h3>
             <p className="text-muted-foreground">Auto-pull your latest posts from Instagram, YouTube & more, keeping your bio fresh!</p>
           </Card>
