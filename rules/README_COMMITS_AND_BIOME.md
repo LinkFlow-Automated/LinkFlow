@@ -1,4 +1,9 @@
-# Frontend Developer Guide: Commit Messages & Biome Rules
+<a href="#" className="...">...</a>import Image from "next/image";
+...
+<Image src="/assets/linkflow-logo-trans.png" alt="LinkFlow Logo" width={32} height={32} className="h-8 w-8" /><svg ...>
+  <title>Open menu</title>
+  <path ... />
+</svg># Frontend Developer Guide: Commit Messages & Biome Rules
 
 ## 1. How to Write Commit Messages (Conventional Commits)
 

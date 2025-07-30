@@ -120,3 +120,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+svg {
+  border: 0 !important;
+}
