@@ -118,6 +118,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -128,10 +129,13 @@
   cursor: grab
 }
 
-.social-link:hover {
-  cursor: pointer !important;
-  transform: scale(1.1) !important;
-  transition: transform 0.2s ease-in-out;
+@media screen and (max-width: 600px) {
+  .text-start {
+    text-align: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
 }
-
-
