@@ -5,6 +5,9 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
+import { LogIn } from 'lucide-react';
+import Grid from '@/components/ui/Grid'
+
 //import Link from 'next/link'
 
 
@@ -21,6 +24,8 @@ export default function Example() {
 
   return (
     <div className="bg-white">
+
+      {/* Header Image */}
       <header className="absolute inset-x-0 top-0 z-50">
         <nav aria-label="Global" className="flex items-center justify-between rounded-md fixed-top  p-6 lg:px-8">
           <div className="flex lg:flex-1">
@@ -55,8 +60,8 @@ export default function Example() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link href="/login" className="text-sm/6 font-semibold rounded-sm bg-yellow-500 py-2 px-3 hover:bg-yellow-600 text-gray-900">
-              Log in <span aria-hidden="true">&rarr;</span>
+            <Link href="/login" className="text-sm/6 font-bold inline-flex items-center rounded-sm bg-yellow-500 py-2 px-5 hover:bg-yellow-600 text-gray-900">
+              Log in <LogIn  className='ml-2 size-4'/>
             </Link>
           </div>
         </nav>
@@ -97,9 +102,9 @@ export default function Example() {
                 <div className="py-6">
                   <Link
                     href="/login"
-                    className="-mx-3 block rounded-md px-3 py-2.5 text-base/7 bg-yellow-500 w-25 font-bold text-gray-900 hover:bg-gray-50"
+                    className="-mx-3 inline-flex items-center rounded-md px-3 py-2.5 text-base/7 bg-yellow-500 w-25 font-bold text-gray-900 hover:bg-yellow-600"
                   >
-                    Log in
+                    Log in <LogIn  className='ml-2 size-4 mt-1'/>
                   </Link>
                 </div>
               </div>
@@ -131,28 +136,42 @@ export default function Example() {
               </a>
             </div>
           </div>
+
+          {/** Header Text */}
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold uppercase tracking-tight leading-tight">
-            OPTIMIZE LINK TITLES
-            <br />
-            <span className='text-gray-700'>AND DESCRIPTIONS</span>
-            <br />
-            <span className='text-gray-500'>AUTOMATICALLY.</span>
-          </h1>
-            <Image alt="header" src="/header.webp" className='mt-[-12px] shadow-md' width={600} height={400} />
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href="#"
-                className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-blue-700"
-              >
-                Get started
-              </a>
-              <a href="#" className="text-sm/6 bg-yellow-500 rounded-md py-2 px-3 hover:bg-yellow-600 text-gray-900 font-bold ">
-                Learn more <span aria-hidden="true">→</span>
-              </a>
+            <h1 className="text-3xl md:text-6xl font-bold uppercase tracking-tight leading-tight">
+              OPTIMIZE LINK TITLES
+              <br />
+              <span className='text-gray-700'>AND DESCRIPTIONS</span>
+              <br />
+              <span className='text-gray-500'>AUTOMATICALLY.</span>
+            </h1>
+
+            {/* Header Image */}
+            <Image alt="header" src="/header.webp" className='mt-[-12px] shadow-md mx-auto block' width={600} height={400} />
+
+            {/** Header Description */}
+            <div className='bg-transparent p-6 mt-2'>
+              <div className="flex flex-col sm:flex-col items-center justify-around gap-5">
+                <p className="sm:text-lg/7 text-gray-900 text-pretty md:text-balance">
+                  Linkflow can suggest keywords or meta descriptions to enhance discoverability on search engines.
+                </p>
+                <div className="flex items-center gap-x-6">
+                  <a
+                    href="#"
+                    className="rounded-lg bg-blue-600 px-7 py-4 text-sm font-semibold text-white shadow-xs hover:bg-blue-700 whitespace-nowrap"
+                  >
+                    Get started
+                  </a>
+                  
+                </div>
+              </div>
             </div>
+            
           </div>
         </div>
+
+        {/** Header Background Image */}
         <div
           aria-hidden="true"
           className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
@@ -166,6 +185,9 @@ export default function Example() {
           />
         </div>
       </div>
+
+      {/* Grid Component */}
+      <Grid />
     </div>
   );
 }
