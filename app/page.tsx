@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Grid from '@/components/ui/Grid'
+import Grid from '@/components/shared/Grid'
 
 
 
