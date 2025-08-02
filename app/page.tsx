@@ -8,7 +8,13 @@ import Grid from '@/components/shared/Grid'
 export default function Example() {
 
   return (
+
+    
+
     <div className="bg-white">
+
+      <Navbar />
+
       <div className="relative isolate px-6 pt-[-20px] lg:px-8">
         <div
           aria-hidden="true"
