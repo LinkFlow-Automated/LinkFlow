@@ -1,4 +1,4 @@
-import { getLinkStats } from "@/lib/link-analitycs";
+import { getLinkStats } from "@/lib/services/link-analitycs";
 import { periodToDateRange } from "@/lib/utils";
 import { getLinkStatsURLQuerySchema } from "@/lib/validations/clickEvents";
 import { ZodError } from "better-auth";
