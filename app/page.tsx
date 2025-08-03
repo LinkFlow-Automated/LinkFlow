@@ -1,19 +1,11 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import Grid from '@/components/shared/Grid'
+import Image from "next/image";
+import Grid from "@/components/shared/Grid";
 
-
-
-export default function Example() {
-
+export default function page() {
   return (
-
-    
-
     <div className="bg-white">
-
-      <Navbar />
 
       <div className="relative isolate px-6 pt-[-20px] lg:px-8">
         <div
@@ -44,19 +36,26 @@ export default function Example() {
             <h1 className="text-3xl md:text-6xl font-bold uppercase tracking-tight leading-tight">
               OPTIMIZE LINK TITLES
               <br />
-              <span className='text-gray-700'>AND DESCRIPTIONS</span>
+              <span className="text-gray-700">AND DESCRIPTIONS</span>
               <br />
-              <span className='text-gray-500'>AUTOMATICALLY.</span>
+              <span className="text-gray-500">AUTOMATICALLY.</span>
             </h1>
 
             {/* Header Image */}
-            <Image alt="header" src="/header.webp" className='mt-[-12px] shadow-md mx-auto block' width={600} height={400} />
+            <Image
+              alt="header"
+              src="/header.webp"
+              className="mt-[-12px] shadow-md mx-auto block"
+              width={600}
+              height={400}
+            />
 
             {/** Header Description */}
-            <div className='bg-transparent p-6 mt-2'>
+            <div className="bg-transparent p-6 mt-2">
               <div className="flex flex-col sm:flex-col items-center justify-around gap-5">
                 <p className="sm:text-lg/7 text-gray-900 text-pretty md:text-balance">
-                  Linkflow can suggest keywords or meta descriptions to enhance discoverability on search engines.
+                  Linkflow can suggest keywords or meta descriptions to enhance
+                  discoverability on search engines.
                 </p>
                 <div className="flex items-center gap-x-6">
                   <a
@@ -65,11 +64,9 @@ export default function Example() {
                   >
                     Get started
                   </a>
-                  
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
 
