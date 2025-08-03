@@ -1,6 +1,8 @@
 import { type Visibility, type Link, type Prisma } from "../generated/prisma";
 import { prisma } from "../prisma";
 
+type CreateLinkInput = Omit<Link, "id" | "createdAt">;
+
 // Search, filter, and sort with Prisma
 export const getLinks = async ({
   userId,
@@ -12,7 +14,7 @@ export const getLinks = async ({
   page = 1,
   limit = 10,
 }: {
-  userId: string;
+  userId?: string;
   search?: string;
   category?: string;
   visibility?: Visibility;
@@ -104,7 +106,7 @@ export const getLinkById = async (id: string) => {
   }
 };
 
-export const createLink = async ({ data }: { data: Link }) => {
+export const createLink = async ({ data }: { data: CreateLinkInput }) => {
   try {
     const response = await prisma.link.create({
       data: {
@@ -113,8 +115,7 @@ export const createLink = async ({ data }: { data: Link }) => {
         url: data.url,
         order: data.order,
         category: data.category,
-        clicks: data.clicks,
-        createdAt: data.createdAt,
+        clicks: data.clicks | 0,
         autoSyncId: data.autoSyncId,
         rules: JSON.stringify(data.rules),
         visibility: data.visibility,
