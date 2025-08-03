@@ -1,6 +1,5 @@
 import { prisma } from "../prisma";
 import { getDeviceInfo } from "../utils";
-import { Reader } from "@maxmind/geoip2-node";
 import {
   startOfDay,
   endOfDay,
@@ -11,7 +10,7 @@ import {
 } from "date-fns";
 import { LinkStats } from "@/types/links";
 import { geoSchema } from "../validations/link";
-import path from "path";
+import { geoReaderPromise } from "../georeader";
 
 export async function getLinkStats(
   userId: string,
@@ -349,16 +348,6 @@ export async function exportStatsToCSV(userId: string, linkId?: string) {
   return csvData;
 }
 
-let geoReader: any;
-
-try {
-  geoReader = Reader.open("../data/GeoLite2-City.mmdb").then((reader) => {
-    return reader;
-  });
-} catch (error) {
-  console.warn("GeoIP database not available:", error);
-}
-
 export const createClickEvents = async ({
   linkId,
   referrer,
@@ -398,13 +387,14 @@ export const createClickEvents = async ({
 
     let geoData;
     try {
+      const geoReader = await geoReaderPromise;
       const geo = geoReader.city(ip);
       geoData = {
-        country: geo?.country || null,
-        region: geo?.region || null,
+        country: geo?.country?.names.en || null,
+        region: geo?.subdivisions?.[0]?.names.en || null,
         city: geo?.city || null,
-        coordonate: geo?.ll || null,
-        timezone: geo?.timezone || null,
+        coordonate: [geo.location?.latitude, geo.location?.longitude],
+        timezone: geo?.location?.timeZone || null,
       };
     } catch (error) {
       console.warn("Failed to lookup geo data for IP:", ip, error);
