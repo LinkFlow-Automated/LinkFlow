@@ -70,5 +70,27 @@ export const createLinkSchema = z.object({
   createdAt: z.coerce.date().default(() => new Date()),
 });
 
+export const updateLinkSchema = z.object({
+  id: z.string().min(1, "Id is required"),
+  userId: z.string().min(1, "User ID is required"),
+  title: z.string().min(1, "Title is required").max(200, "Title too long"),
+  description: z.string().max(500, "Description too long").nullable(),
+  url: z.string().url("Invalid URL format"),
+  category: z.string().max(50, "Category too long").nullable(),
+  order: z.number().int().min(0),
+  clicks: z.number().int().min(0).default(0),
+  featured: z.boolean().default(false),
+  autoSyncId: z.string().nullable(),
+  platform: z.string().max(50, "Platform too long").nullable(),
+  icon: z.string().url("Invalid icon URL").nullable(),
+  isArchived: z.boolean().default(false),
+  visibility: z.nativeEnum(Visibility).default(Visibility.PUBLIC),
+  scheduledAt: z.coerce.date().nullable(),
+  expiresAt: z.coerce.date().nullable(),
+  rules: rulesSchema,
+  createdAt: z.coerce.date().default(() => new Date()),
+});
+
 export type GetLinkQuery = z.infer<typeof getLinkQuerySchema>;
 export type CreateLinkInput = z.infer<typeof createLinkSchema>;
+export type UpdateLinkInput = z.infer<typeof updateLinkSchema>;

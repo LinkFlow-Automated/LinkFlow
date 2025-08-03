@@ -131,7 +131,7 @@ export const createLink = async ({ data }: { data: CreateLinkInput }) => {
   }
 };
 
-const updateLink = async (data: any) => {
+export const updateLink = async (data: any) => {
   try {
     const response = await prisma.link.update({
       where: { id: data.id },
