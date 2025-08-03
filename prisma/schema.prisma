@@ -15,11 +15,14 @@ datasource db {
 }
 
 model ClickEvent {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   linkId    String
   userAgent String
-  geo       String?
+  geo       Json?
   device    String?
+  browser   String?
+  os        String?
+
   timestamp DateTime @default(now())
 
   // Tracking info

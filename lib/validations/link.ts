@@ -1,6 +1,14 @@
 import { z } from "zod";
 import { Visibility } from "@/lib/generated/prisma";
 
+export const geoSchema = z.object({
+  country: z.string().nullable().optional(),
+  region: z.string().nullable().optional(),
+  city: z.string().nullable().optional(),
+  coordonate: z.tuple([z.number(), z.number()]).nullable().optional(),
+  timezone: z.string().nullable().optional(),
+});
+
 export const rulesSchema = z.object({
   countryAllow: z.array(z.string().length(2)).optional(), // ISO 3166-1 alpha-2
   countryBlock: z.array(z.string().length(2)).optional(),
