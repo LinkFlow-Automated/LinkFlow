@@ -16,22 +16,25 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-	  "a11y":{
-		"noRedundantRoles":"off",
-		"useFocusableInteractive":"info",
-		"useSemanticElements":"info",
-		"useAriaPropsForRole":"info",
-		"useValidAnchor":"info"
-	  },
-	  "style":{
-		"useImportType":"off"
-	  },
-	  "correctness":{
-		"useExhaustiveDependencies":"info"
-	  },
-	  "suspicious":{
-		"noDocumentCookie":"info"
-	  }
+      "a11y": {
+        "noRedundantRoles": "off",
+        "useFocusableInteractive": "info",
+        "useSemanticElements": "info",
+        "useAriaPropsForRole": "info",
+        "useValidAnchor": "info"
+      },
+      "style": {
+        "useImportType": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "info",
+        "noSwitchDeclarations": "info"
+      },
+      "suspicious": {
+        "noDocumentCookie": "info",
+        "noImplicitAnyLet": "info",
+        "noExplicitAny": "info"
+      }
     }
   },
   "javascript": {
