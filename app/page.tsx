@@ -60,7 +60,7 @@ export default function Example() {
                 <div className="flex items-center gap-x-6">
                   <a
                     href="#"
-                    className="rounded-lg bg-blue-600 px-7 py-4 text-sm font-semibold text-white shadow-xs hover:bg-blue-700 whitespace-nowrap"
+                    className="rounded-lg bg-lime-400 hover:bg-lime-500 px-7 py-4 text-sm font-semibold text-white shadow-xs whitespace-nowrap"
                   >
                     Get started
                   </a>

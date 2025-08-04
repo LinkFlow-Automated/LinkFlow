@@ -138,4 +138,10 @@
     margin-right: auto;
     width: 100%;
   }
+
+  .font-medium {
+    display: block;
+    text-align: center;
+    width: fit-content;
+  }
 }
