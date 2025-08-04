@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Provider from "./Provider";
+import Navbar from "@/components/shared/navbar";
+import { getLinks } from "@/lib/services/link-management";
+import { getLinkStats } from "@/lib/services/link-analitycs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,17 +22,21 @@ export const metadata: Metadata = {
   description: "Generate optimized link titles and descriptions",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const date = new Date()
+  const links = await getLinkStats("113jd4jd", "1084ndn", {from: date, to:date});
+  console.log(links);
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider>
+          <Navbar />
           <main>{children}</main>
           <Toaster />
         </Provider>
