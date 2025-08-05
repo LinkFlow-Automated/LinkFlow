@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import Grid from "@/components/shared/Grid";
+import LogoCloud from "@/components/shared/LogoClouds";
+import Cta from "@/components/shared/Cta";
+import Footer from "@/components/shared/Footer";
 
 export default function page() {
   return (
@@ -22,9 +25,9 @@ export default function page() {
         </div>
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+            <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
               Announcing our next round of phrasing.{" "}
-              <a href="#" className="font-semibold text-indigo-600">
+              <a href="/" className="font-semibold text-blue-600">
                 <span aria-hidden="true" className="absolute inset-0" />
                 Read more <span aria-hidden="true">&rarr;</span>
               </a>
@@ -33,7 +36,7 @@ export default function page() {
 
           {/** Header Text */}
           <div className="text-center">
-            <h1 className="text-3xl md:text-6xl font-bold uppercase tracking-tight leading-tight">
+            <h1 className="text-3xl md:text-6xl font-bold uppercase tracking-tight leading-tight select-none">
               OPTIMIZE LINK TITLES
               <br />
               <span className="text-gray-700">AND DESCRIPTIONS</span>
@@ -45,7 +48,7 @@ export default function page() {
             <Image
               alt="header"
               src="/header.webp"
-              className="mt-[-12px] shadow-md mx-auto block"
+              className="mt-[-8px] shadow-md mx-auto block"
               width={600}
               height={400}
             />
@@ -53,14 +56,14 @@ export default function page() {
             {/** Header Description */}
             <div className="bg-transparent p-6 mt-2">
               <div className="flex flex-col sm:flex-col items-center justify-around gap-5">
-                <p className="sm:text-lg/7 text-gray-900 text-pretty md:text-balance">
+                <p className="sm:text-lg/7 text-gray-900 text-pretty md:text-balance select-none">
                   Linkflow can suggest keywords or meta descriptions to enhance
                   discoverability on search engines.
                 </p>
                 <div className="flex items-center gap-x-6">
                   <a
-                    href="#"
-                    className="rounded-lg bg-lime-400 hover:bg-lime-500 px-7 py-4 text-sm font-semibold text-white shadow-xs whitespace-nowrap"
+                    href="/"
+                    className="rounded-lg bg-lime-400 hover:bg-lime-500 px-7 py-4 text-sm font-semibold text-gray-900 shadow-xs whitespace-nowrap"
                   >
                     Get started
                   </a>
@@ -87,6 +90,12 @@ export default function page() {
 
       {/* Grid Component */}
       <Grid />
+      {/* LogoCloud Component */}
+      <LogoCloud />
+      {/* CTA Component */}
+      <Cta />
+      {/* Footer Component */}
+      <Footer />
     </div>
   );
 }
