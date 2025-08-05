@@ -1,5 +1,5 @@
-import './LogoCloud.css';
-import Image from "next/image"
+import "./LogoCloud.css";
+import Image from "next/image";
 
 const LogoClouds: React.FC = () => {
   const starCount = 5;
@@ -9,19 +9,41 @@ const LogoClouds: React.FC = () => {
     <div className="logoclouds-container">
       <div className="bg-white py-24 sm:py-32 mt-[-25px]">
         {/* Profile images and stars section */}
-        <div className="flex flex-col items-center gap-8 mb-16 mt-[-35px]">  {/* Added gap and margin-bottom */}
+        <div className="flex flex-col items-center gap-8 mb-16 mt-[-35px]">
+          {" "}
+          {/* Added gap and margin-bottom */}
           <div className="profile-images">
-            <Image src="/user2.avif" alt="User 2" className="profile small" />
-            <Image src="/user1.avif" alt="User 1" className="profile large" />
-            <Image src="/user3.avif" alt="User 3" className="profile small" />
+            <Image
+              src="/user2.avif"
+              alt="User 2"
+              className="profile small"
+              width={1000}
+              height={1000}
+            />
+            <Image
+              src="/user1.avif"
+              alt="User 1"
+              className="profile large"
+              width={1000}
+              height={1000}
+            />
+            <Image
+              src="/user3.avif"
+              alt="User 3"
+              className="profile small"
+              width={1000}
+              height={1000}
+            />
           </div>
           <div className="stars">
             {Array.from({ length: starCount }).map((_, index) => (
-              <span key={starKeys[index]} className="star">⭐</span>
+              <span key={starKeys[index]} className="star">
+                ⭐
+              </span>
             ))}
           </div>
         </div>
-        
+
         {/* Company logos section */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <h2 className="text-center text-lg/8 font-semibold text-gray-900 select-none">
@@ -66,16 +88,16 @@ const LogoClouds: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="hidden sm:mb-8 sm:flex sm:justify-center mt-[-25px]">
-            <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Over 200 team use LinkFlow to better their productivity.{" "}
-              <a href="/" className="font-semibold text-blue-600">
-                <span aria-hidden="true" className="absolute inset-0" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
-          </div>
+        <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+          Over 200 team use LinkFlow to better their productivity.{" "}
+          <a href="/" className="font-semibold text-blue-600">
+            <span aria-hidden="true" className="absolute inset-0" />
+            Read more <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

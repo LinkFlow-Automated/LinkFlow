@@ -5,7 +5,18 @@ const nextConfig: NextConfig = {
   //   typedRoutes: true,
   // },
   images: {
-    domains: ["placehold.co"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "tailwindcss.com",
+        pathname: "/**",
+      },
+    ],
   },
 };
 
