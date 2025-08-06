@@ -34,6 +34,11 @@
         "noDocumentCookie": "info",
         "noImplicitAnyLet": "info",
         "noExplicitAny": "info"
+      },
+      "complexity": {
+        "noStaticOnlyClass": "off",
+        "noThisInStatic": "off"
+
       }
     }
   },

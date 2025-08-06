@@ -10,10 +10,37 @@ export const geoSchema = z.object({
 });
 
 export const rulesSchema = z.object({
+  // Geographic targeting
   countryAllow: z.array(z.string().length(2)).optional(), // ISO 3166-1 alpha-2
   countryBlock: z.array(z.string().length(2)).optional(),
+  regionAllow: z.array(z.string()).optional(), // State/province level (e.g., "US-CA", "UK-London")
+  regionBlock: z.array(z.string()).optional(),
+
+  // Advanced click rules
   maxClicks: z.number().int().positive().optional(),
+  maxClicksPerDay: z.number().int().positive().optional(),
+  maxClicksPerHour: z.number().int().positive().optional(),
+  minClicksToShow: z.number().int().min(0).optional(),
+  resetPeriod: z.enum(["daily", "weekly", "monthly"]).optional(),
+
+  // Device targeting
   allowedDevices: z.enum(["mobile", "desktop", "tablet"]).array().optional(),
+
+  // Browser/OS targeting
+  allowedBrowsers: z.array(z.string()).optional(), // Chrome, Firefox, Safari, etc.
+  blockedBrowsers: z.array(z.string()).optional(),
+  allowedOS: z.array(z.string()).optional(), // iOS, Android, Windows, macOS
+  blockedOS: z.array(z.string()).optional(),
+  minBrowserVersion: z
+    .object({
+      chrome: z.string().optional(),
+      firefox: z.string().optional(),
+      safari: z.string().optional(),
+      edge: z.string().optional(),
+    })
+    .optional(),
+
+  // Scheduling
   startDate: z.string().datetime().optional(),
   endDate: z.string().datetime().optional(),
   timeWindows: z
@@ -39,9 +66,25 @@ export const rulesSchema = z.object({
       })
     )
     .optional(),
+
+  // A/B Testing
+  abTestId: z.string().optional(),
+  abTestVariant: z.enum(["A", "B"]).optional(),
+  trafficSplit: z.number().min(0).max(100).optional(), // Percentage of traffic for this variant
+  testStartDate: z.string().datetime().optional(),
+  testEndDate: z.string().datetime().optional(),
+
+  // Authentication and platform
   requiresAuth: z.boolean().optional(),
   platformAllow: z.array(z.string()).optional(),
   userSegmentAllow: z.array(z.string()).optional(),
+
+  // Rotation groups
+  rotationGroup: z.string().optional(),
+  rotationWeight: z.number().int().min(0).optional(),
+
+  // Auto-feature rules
+  autoFeatureIfClicks: z.number().int().positive().optional(),
 });
 
 // Validation schema for GET request query parameters

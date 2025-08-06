@@ -2,7 +2,6 @@ import { EvaluationContext } from "@/types/smart-rules";
 import { NextRequest } from "next/server";
 import { DeviceDetector } from "../services/device-detection";
 
-
 export class RulesHelpers {
   /**
    * Create a context from request headers and user data
