@@ -1,4 +1,4 @@
-export interface osInfo{
+export interface osInfo {
   name: string;
   version: string;
 }
