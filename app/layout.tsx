@@ -4,7 +4,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Provider from "./Provider";
 import { getLinkStats } from "@/lib/services/link-analitycs";
-import NavbarWrapper from "@/components/shared/NavbarWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

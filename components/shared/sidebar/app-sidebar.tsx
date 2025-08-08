@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 
