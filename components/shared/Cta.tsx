@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
 
 export default function Example() {
     return (
@@ -20,19 +21,18 @@ export default function Example() {
             </svg>
             <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
               <h2 className="text-3xl font-bold tracking-tight text-balance text-gray sm:text-4xl select-none">
-                Boost your productivity. Start using Linkflow today.
+                Boost your productivity. Start using breezi today.
               </h2>
               <p className="mt-6 text-lg/8 text-pretty text-gray-600 select-none">
-              LinkFlow helps you streamline your workflow through our AI-powered automation engine; saving time, reducing effort, and boosting productivity!
+              Breezi helps you streamline your workflow through our AI-powered automation engine; saving time, reducing effort, and boosting productivity!
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-                <a
-                  href="/"
-                  className="rounded-md bg-lime-400 px-7 py-4 text-sm font-semibold text-gray-900 shadow-xs hover:bg-lime-500"
+                <Button
+                  variant="default"
+                  className="px-7 py-4 text-sm font-semibold rounded-md"
                 >
-                  {' '}
-                  Get started{' '}
-                </a>
+                  <a href="/">Get started</a>
+                </Button>
               </div>
             </div>
             <div className="relative mt-16 h-80 lg:mt-8">

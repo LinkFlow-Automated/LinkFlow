@@ -1,5 +1,6 @@
 'use client'
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
 
 export default function Example() {
   return (
@@ -111,12 +112,12 @@ export default function Example() {
       
       {/* Get started button */}
       <div className="flex items-center gap-x-6 mt-10 justify-center ">
-        <a
-          href="/"
-          className="rounded-lg bg-lime-400 hover:bg-lime-500 px-7 py-4 text-sm font-semibold text-gray-900 shadow-xs whitespace-nowrap"
+        <Button
+          variant="default"
+          className="px-7 py-4 text-sm font-semibold rounded-lg"
         >
-          Get started
-        </a>
+          <a href="/">Get started</a>
+        </Button>
       </div>
     </div>
   )

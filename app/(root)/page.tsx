@@ -5,6 +5,7 @@ import Grid from "@/components/shared/Grid";
 import LogoCloud from "@/components/shared/LogoClouds";
 import Cta from "@/components/shared/Cta";
 import Footer from "@/components/shared/Footer";
+import { Button } from "@/components/ui/button";
 
 export default function page() {
   return (
@@ -48,7 +49,7 @@ export default function page() {
             <Image
               alt="header"
               src="/header.webp"
-              className="mt-[-8px] shadow-md mx-auto block"
+              className="mt-[-5px] shadow-md mx-auto block"
               width={600}
               height={400}
             />
@@ -61,12 +62,12 @@ export default function page() {
                   discoverability on search engines.
                 </p>
                 <div className="flex items-center gap-x-6">
-                  <a
-                    href="/"
-                    className="rounded-lg bg-lime-400 hover:bg-lime-500 px-7 py-4 text-sm font-semibold text-gray-900 shadow-xs whitespace-nowrap"
+                  <Button
+                    variant="default"
+                    className="px-7 py-4 text-sm font-semibold rounded-lg"
                   >
-                    Get started
-                  </a>
+                    <a href="/">Get started</a>
+                  </Button>
                 </div>
               </div>
             </div>

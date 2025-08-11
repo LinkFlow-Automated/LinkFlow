@@ -144,7 +144,7 @@ export function LoginForm({
                   </Button>
                 </div>
                 <div className="text-center text-sm">
-                  Not using Linkflow yet?{" "}
+                  Not using Breezi yet?{" "}
                   <Link href="/signup" className="underline underline-offset-4">
                     Sign up
                   </Link>

@@ -6,6 +6,7 @@ import {
     FaYoutube,
 } from 'react-icons/fa6';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Footer: React.FC = () => {
     return (
@@ -16,7 +17,7 @@ const Footer: React.FC = () => {
                     <div className="mb-10 md:mb-0 max-w-sm">
                         <div className="mb-4">
                             {/* Your Logo Here */}
-                            <Image alt='Linkflow-logo' src="/linkflow-high-resolution-logo-transparent.png" width={100} height={100} />
+                            <Image alt='Linkflow-logo' src="/breezi-high-resolution-logo-transparent.png" width={100} height={100} />
                         </div>
                         <p className="text-gray-500 font-semibold select-none">
                             Empowering creators and brands through seamless link integrations.
@@ -26,7 +27,7 @@ const Footer: React.FC = () => {
                             <FaFacebookF className="text-gray-500 hover:text-gray-900 cursor-pointer" />
                             <FaInstagram className="text-gray-500 hover:text-gray-900 cursor-pointer" />
                             <FaXTwitter className="text-gray-500 hover:text-gray-900 cursor-pointer" />
-                            <FaGithub className="text-gray-500 hover:text-gray-900 cursor-pointer" />
+                            <Link href="https://github.com/LinkFlow-Automated" target="_blank"><FaGithub className="text-gray-500 hover:text-gray-900 cursor-pointer" /></Link>
                             <FaYoutube className="text-gray-500 hover:text-gray-900 cursor-pointer" />
                         </div>
                     </div>
@@ -77,8 +78,8 @@ const Footer: React.FC = () => {
                 {/* Bottom */}
                 <div className="mt-12 border-t pt-6 flex justify-between items-center text-sm text-gray-400 select-none">
                     <div className="flex items-center gap-2">
-                        <Image alt='linkflow-logo' src="/linkflow-logo-trans.png" width={15} height={15} />
-                        <span className='text-gray-900'>Linkflow 2025. All Rights Reserved.</span>
+                        <Image alt='linkflow-logo' src="/breezi-logo-resolution-logo-transparent.png" width={15} height={15} />
+                        <span className='text-gray-900'>Breezi. 2025. All Rights Reserved.</span>
                     </div>
                 </div>
             </div>

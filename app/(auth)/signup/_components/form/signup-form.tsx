@@ -87,7 +87,7 @@ export function SignupForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome to LinkFlow</CardTitle>
+          <CardTitle className="text-xl">Welcome to Breezi.</CardTitle>
           <CardDescription>Signup with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
