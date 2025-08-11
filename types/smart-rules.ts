@@ -3,7 +3,7 @@ export interface osInfo {
   version: string;
 }
 
-export interface EvaluationContext {
+export interface  EvaluationContext {
   userAgent: string;
   country?: string;
   device?: "mobile" | "desktop" | "tablet";
@@ -31,6 +31,10 @@ export interface EvaluationContext {
   hourlyClicks?: Record<string, number>; // linkId -> count
   abTestAssignments?: Record<string, "A" | "B">; // testId -> variant
   userSegments?: string[]; // User segmentation tags
+
+  // language
+  language?: string;
+
 }
 
 export interface RuleEvaluationResult {
@@ -69,6 +73,17 @@ export interface LinkWithRules {
 
     // Device targeting
     allowedDevices?: ("mobile" | "desktop" | "tablet")[];
+
+    // languages targeting
+    allowedLanguages?: string[];
+    blockedLanguages?: string[];
+    localizedContent?: {
+      // Show different content by language
+      [languageCode: string]: {
+        title: string;
+        description: string;
+      };
+    };
 
     // Browser/OS targeting
     allowedBrowsers?: string[];
@@ -109,5 +124,12 @@ export interface LinkWithRules {
 
     // Auto-feature rules
     autoFeatureIfClicks?: number;
+
+    // Location radius targeting
+    radiusTargeting?: {
+      lat: number;
+      lng: number;
+      radius: number; // in km
+    };
   };
 }

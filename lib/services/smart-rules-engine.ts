@@ -146,6 +146,16 @@ export class SmartRulesEngine {
       };
     }
 
+    // Language restrictions
+    if (rules.allowedLanguages && context.language) {
+      if (!rules.allowedLanguages.includes(context.language as string)) {
+        return {
+          blocked: true,
+          reason: `Language ${context.language} not allowed`,
+        };
+      }
+    }
+
     // Device restrictions
     if (rules.allowedDevices && context.device) {
       if (!rules.allowedDevices.includes(context.device)) {
@@ -292,6 +302,16 @@ export class SmartRulesEngine {
         return {
           visible: false,
           reason: `Region ${context.region} not in allow list`,
+        };
+      }
+    }
+
+    // Language restrictions
+    if (rules.allowedLanguages && context.language) {
+      if (!rules.allowedLanguages.includes(context.language as string)) {
+        return {
+          visible: false,
+          reason: `Language ${context.language} not allowed`,
         };
       }
     }
