@@ -21,7 +21,7 @@ export default function Example() {
             </svg>
             <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
               <h2 className="text-3xl font-bold tracking-tight text-balance text-gray sm:text-4xl select-none">
-                Boost your productivity. Start using breezi today.
+                Boost your productivity. Start using breezi today. 
               </h2>
               <p className="mt-6 text-lg/8 text-pretty text-gray-600 select-none">
               Breezi helps you streamline your workflow through our AI-powered automation engine; saving time, reducing effort, and boosting productivity!

@@ -5,6 +5,7 @@ import Grid from "@/components/shared/Grid";
 import LogoCloud from "@/components/shared/LogoClouds";
 import Cta from "@/components/shared/Cta";
 import Footer from "@/components/shared/Footer";
+import Faq from "@/components/shared/Faq";
 import { Button } from "@/components/ui/button";
 
 export default function page() {
@@ -58,7 +59,7 @@ export default function page() {
             <div className="bg-transparent p-6 mt-2">
               <div className="flex flex-col sm:flex-col items-center justify-around gap-5">
                 <p className="sm:text-lg/7 text-gray-900 text-pretty md:text-balance select-none">
-                  Linkflow can suggest keywords or meta descriptions to enhance
+                  Breezi can suggest keywords or meta descriptions to enhance
                   discoverability on search engines.
                 </p>
                 <div className="flex items-center gap-x-6">
@@ -95,6 +96,8 @@ export default function page() {
       <LogoCloud />
       {/* CTA Component */}
       <Cta />
+      {/* FAQ Component */}
+      <Faq />
       {/* Footer Component */}
       <Footer />
     </div>
