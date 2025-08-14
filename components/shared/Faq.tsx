@@ -37,7 +37,7 @@ const faqData: FAQItem[] = [
     {
         id: 6,
         question: "What platforms can I connect to Breezi?",
-        answer: "You can connect social media accounts, e-commerce stores, blogs, YouTube channels, podcasts, and more — all in one place."
+        answer: "You can connect social media accounts, e-commerce stores, blogs, YouTube channels, podcasts, and more. All in one place."
     }
 ];
 
@@ -58,7 +58,7 @@ export default function FAQ() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 text-start select-none">
-      <h2 className="text-4xl font-bold text-gray-900 mb-8 text-start">
+      <h2 className="text-3xl font-semibold md:text-4xl text-gray-900 mb-8 text-start">
         Frequently asked questions
       </h2>
 
@@ -118,7 +118,7 @@ export default function FAQ() {
             {openItem === item.id && (
               <div 
                 id={`faq-answer-${item.id}`}
-                className="pb-4 pl-4"
+                className="pb-4 md:text-start"
                 role="region"
                 aria-labelledby={`faq-question-${item.id}`}
               >
