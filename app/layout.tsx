@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LinkFlow",
+  title: "Breezi",
   description: "Generate optimized link titles and descriptions",
 };
 

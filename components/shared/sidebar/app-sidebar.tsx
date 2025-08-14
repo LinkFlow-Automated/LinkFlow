@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { BarChart3, LayoutDashboard, Folder, List, Users } from "lucide-react";
+import { HiUsers, HiLightBulb } from "react-icons/hi2";
+import { TbLayoutDashboardFilled } from "react-icons/tb";
 import {
   Sidebar,
   SidebarContent,
@@ -13,36 +14,41 @@ import {
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-// import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 
 const sidebarData = {
   navMain: [
     {
-      title: "Dashboard",
+      title: "My Breezies",
       url: "/admin",
-      icon: LayoutDashboard,
+      icon: TbLayoutDashboardFilled,
+      hasSubmenu: true,
+      items: [
+        {
+          title: "Breezi",
+          url: "/admin/create",
+        },
+        {
+          title: "Shop",
+          url: "/admin/breezi",
+        },
+        {
+          title: "Design",
+          url: "/admin/breezi/1",
+        },
+      ],
     },
     {
-      title: "Product",
-      url: "/admin/product",
-      icon: List,
+      title: "Audience",
+      url: "/admin/audience",
+      icon: HiUsers,
     },
     {
-      title: "Bundle",
-      url: "/admin/bundle",
-      icon: BarChart3,
-    },
-    {
-      title: "Coupon",
-      url: "/admin/coupon",
-      icon: Folder,
-    },
-    {
-      title: "Order",
-      url: "/admin/order",
-      icon: Users,
+      title: "Insight",
+      url: "/admin/insight",
+      icon: HiLightBulb,
     },
   ],
 };
@@ -64,14 +70,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href="#" className="">
-                {/* <Image
-                  src="/favicon.png"
+                <Image
+                  src="/breezi-logo-resolution-logo-transparent.png"
                   width={1000}
                   height={1000}
                   alt={""}
-                  className="!size-8"
-                /> */}
-                <span className="text-base font-semibold">{`Vitanou`}</span>
+                  className="!size-8 text-white"
+                />
+                <span className="text-base font-semibold">{`Breezi`}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
