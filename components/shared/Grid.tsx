@@ -27,8 +27,8 @@ export default function Example() {
               <div className="@container relative min-h-120 w-full grow max-lg:mx-auto max-lg:max-w-sm">
                 <div className="absolute inset-x-10 top-10 bottom-0 overflow-hidden rounded-t-[12cqw] border-x-[3cqw] border-t-[3cqw] border-gray-700 bg-gray-900 shadow-2xl">
                   <Image
-                    alt=""
-                    src="https://tailwindcss.com/plus-assets/img/component-images/bento-03-mobile-friendly.png"
+                    alt="Users-trust"
+                    src="/assets/Breezi.avif"
                     width={400}
                     height={300}
                     className="size-full object-cover object-top"

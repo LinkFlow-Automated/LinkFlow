@@ -1,6 +1,7 @@
 import {
     FaFacebookF,
     FaInstagram,
+    FaTiktok,
     FaXTwitter,
     FaGithub,
     FaYoutube,
@@ -23,9 +24,10 @@ const Footer: React.FC = () => {
                             Empowering creators and brands through seamless link integrations.
                         </p>
                         {/* Social Icons */}
-                        <div className="flex space-x-5 mt-6">
+                        <div className="flex space-x-5 mt-6 font text-xl">
                             <FaFacebookF className="text-gray-500 hover:text-gray-900 cursor-pointer" />
                             <FaInstagram className="text-gray-500 hover:text-gray-900 cursor-pointer" />
+                            <FaTiktok className="text-gray-500 hover:text-gray-900 cursor-pointer" />
                             <FaXTwitter className="text-gray-500 hover:text-gray-900 cursor-pointer" />
                             <Link href="https://github.com/LinkFlow-Automated" target="_blank"><FaGithub className="text-gray-500 hover:text-gray-900 cursor-pointer" /></Link>
                             <FaYoutube className="text-gray-500 hover:text-gray-900 cursor-pointer" />
@@ -78,8 +80,7 @@ const Footer: React.FC = () => {
                 {/* Bottom */}
                 <div className="mt-12 border-t pt-6 flex justify-between items-center text-sm text-gray-400 select-none">
                     <div className="flex items-center gap-2">
-                        <Image alt='linkflow-logo' src="/breezi-logo-resolution-logo-transparent.png" width={15} height={15} />
-                        <span className='text-gray-900'>Breezi. 2025. All Rights Reserved.</span>
+                        <span className='text-gray-900'>&copy; 2025 Breezi. All Rights Reserved.</span>
                     </div>
                 </div>
             </div>

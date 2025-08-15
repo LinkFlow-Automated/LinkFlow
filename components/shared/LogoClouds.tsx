@@ -14,21 +14,21 @@ const LogoClouds: React.FC = () => {
           {/* Added gap and margin-bottom */}
           <div className="profile-images">
             <Image
-              src="/user2.avif"
+              src="/2.jpeg"
               alt="User 2"
               className="profile small"
               width={1000}
               height={1000}
             />
             <Image
-              src="/user1.avif"
+              src="/1.jpg"
               alt="User 1"
               className="profile large"
               width={1000}
               height={1000}
             />
             <Image
-              src="/user3.avif"
+              src="/3.jpeg"
               alt="User 3"
               className="profile small"
               width={1000}
@@ -91,7 +91,7 @@ const LogoClouds: React.FC = () => {
 
       <div className="hidden sm:mb-8 sm:flex sm:justify-center mt-[-25px]">
         <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-          Over 200 team use LinkFlow to better their productivity.{" "}
+          Over 200 team use Breezi to better their productivity.{" "}
           <a href="/" className="font-semibold text-blue-600">
             <span aria-hidden="true" className="absolute inset-0" />
             Read more <span aria-hidden="true">&rarr;</span>

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 interface FAQItem {
   id: number;
@@ -9,48 +9,53 @@ interface FAQItem {
 }
 
 const faqData: FAQItem[] = [
-    {
-        id: 1,
-        question: "What is Breezi?",
-        answer: "Breezi is a smart link-in-bio platform that helps creators, brands, and businesses organize, promote, and track all their content from one personalized page."
-    },
-    {
-        id: 2,
-        question: "How is Breezi different from other link-in-bio tools?",
-        answer: "Breezi offers automated content syncing, real-time analytics, social integrations, and customizable designs that help your page stand out."
-    },
-    {
-        id: 3,
-        question: "Can I track how many people click my links?",
-        answer: "Yes! Breezi provides detailed click tracking and visitor insights so you can see which content drives the most engagement."
-    },
-    {
-        id: 4,
-        question: "Is Breezi free to use?",
-        answer: "Breezi offers both a free plan with essential features and paid plans for advanced customization, analytics, and automation."
-    },
-    {
-        id: 5,
-        question: "Can I customize my Breezi page?",
-        answer: "Absolutely. You can change colors, fonts, layouts, and even add your own branding to make your page match your identity."
-    },
-    {
-        id: 6,
-        question: "What platforms can I connect to Breezi?",
-        answer: "You can connect social media accounts, e-commerce stores, blogs, YouTube channels, podcasts, and more. All in one place."
-    }
+  {
+    id: 1,
+    question: "What is Breezi?",
+    answer:
+      "Breezi is a smart link-in-bio platform that helps creators, brands, and businesses organize, \n promote, and track all their content from one personalized page.",
+  },
+  {
+    id: 2,
+    question: "How is Breezi different from other link-in-bio tools?",
+    answer:
+      "Breezi offers automated content syncing, real-time analytics, social integrations, \n and customizable designs that help your page stand out.",
+  },
+  {
+    id: 3,
+    question: "Can I track how many people click my links?",
+    answer:
+      "Yes! Breezi provides detailed click tracking and visitor insights so you can see \n which content drives the most engagement.",
+  },
+  {
+    id: 4,
+    question: "Is Breezi free to use?",
+    answer:
+      "Breezi offers both a free plan with essential features and paid plans \n for advanced customization, analytics, and automation.",
+  },
+  {
+    id: 5,
+    question: "Can I customize my Breezi page?",
+    answer:
+      "Absolutely. You can change colors, fonts, layouts, and even add your own branding \n to make your page match your identity.",
+  },
+  {
+    id: 6,
+    question: "What platforms can I connect to Breezi?",
+    answer:
+      "You can connect social media accounts, e-commerce stores, blogs, YouTube channels, podcasts, and more. \n All in one place!",
+  },
 ];
-
 
 export default function FAQ() {
   const [openItem, setOpenItem] = useState<number | null>(null);
 
   const toggleItem = (id: number) => {
-    setOpenItem(prev => prev === id ? null : id);
+    setOpenItem((prev) => (prev === id ? null : id));
   };
 
   const handleKeyDown = (event: React.KeyboardEvent, id: number) => {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       toggleItem(id);
     }
@@ -116,14 +121,22 @@ export default function FAQ() {
             </button>
 
             {openItem === item.id && (
-              <div 
+              <section
                 id={`faq-answer-${item.id}`}
                 className="pb-4 md:text-start"
-                role="region"
                 aria-labelledby={`faq-question-${item.id}`}
               >
-                <p className="text-gray-600">{item.answer}</p>
-              </div>
+                <div className="text-gray-600">
+                  {item.answer.split("\n").map((line, index) => (
+                    <p
+                      key={`${item.id}-line-${index}`}
+                      className={index > 0 ? "mt-2" : ""}
+                    >
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </section>
             )}
 
             {index < faqData.length - 1 && <hr className="border-gray-200" />}

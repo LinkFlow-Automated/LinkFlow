@@ -50,7 +50,7 @@ export default function page() {
             <Image
               alt="header"
               src="/header.webp"
-              className="mt-[-5px] shadow-md mx-auto block"
+              className="mt-[-5px] shadow-md mx-auto block rounded"
               width={600}
               height={400}
             />

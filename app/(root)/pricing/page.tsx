@@ -8,13 +8,9 @@ export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">("monthly");
 
   const pricingData = {
-    freelancer: {
-      monthly: 19,
-      annually: 190, // 2 months free (10 months × $19)
-    },
-    startup: {
-      monthly: 29,
-      annually: 290, // 2 months free (10 months × $29)
+    pro: {
+      monthly: 10,
+      annually: 60, // 6 months free (6 months × $10)
     },
   };
 
@@ -71,14 +67,13 @@ export default function PricingPage() {
         </div>
 
         <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Freelancer */}
+          {/* Starter */}
           <div className="rounded-3xl ring-1 ring-gray-200 p-8 sm:p-10">
-            <h3 className="text-indigo-600 text-base/7 font-semibold">Freelancer</h3>
+            <h3 className="text-gray-800 text-base/7 font-semibold">Starter</h3>
             <p className="mt-4 flex items-baseline gap-x-2">
-              <span className="text-gray-900 text-5xl font-semibold tracking-tight">${getPrice("freelancer")}</span>
-              <span className="text-gray-500 text-base">{getPeriod()}</span>
+              <span className="text-gray-900 text-5xl font-semibold tracking-tight">Free</span>
             </p>
-            <p className="mt-6 text-gray-600 text-base/7">The essentials to provide your best work for clients.</p>
+            <p className="mt-6 text-gray-600 text-base/7">Perfect for getting started with your first projects.</p>
             <ul role="list" className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
               {[
                 "5 products",
@@ -87,24 +82,26 @@ export default function PricingPage() {
                 "48-hour support response time",
               ].map((feature) => (
                 <li key={feature} className="flex gap-x-3">
-                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-indigo-600" />
+                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-gray-900" />
                   {feature}
                 </li>
               ))}
             </ul>
             <a
               href="#"
-              className="mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-indigo-600 inset-ring inset-ring-indigo-200 hover:inset-ring-indigo-300 focus-visible:outline-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10"
+              className="mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-gray-800 
+              inset-ring inset-ring-gray-800 hover:inset-ring-gray-600 focus-visible:outline-gray-900 focus-visible:outline-2 
+              focus-visible:outline-offset-2 sm:mt-10"
             >
-              Buy plan
+              Get started for free
             </a>
           </div>
 
-          {/* Startup */}
+          {/* Pro */}
           <div className="rounded-3xl ring-1 ring-gray-200 p-8 sm:p-10">
-            <h3 className="text-indigo-600 text-base/7 font-semibold">Startup</h3>
+            <h3 className="text-gray-800 text-base/7 font-semibold">Pro</h3>
             <p className="mt-4 flex items-baseline gap-x-2">
-              <span className="text-gray-900 text-5xl font-semibold tracking-tight">${getPrice("startup")}</span>
+              <span className="text-gray-900 text-5xl font-semibold tracking-tight">${getPrice("pro")}</span>
               <span className="text-gray-500 text-base">{getPeriod()}</span>
             </p>
             <p className="mt-6 text-gray-600 text-base/7">A plan that scales with your rapidly growing business.</p>
@@ -114,17 +111,18 @@ export default function PricingPage() {
                 "Up to 10,000 subscribers",
                 "Advanced analytics",
                 "24-hour support response time",
-                "Marketing automation's",
+                "Marketing automations",
               ].map((feature) => (
                 <li key={feature} className="flex gap-x-3">
-                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-indigo-600" />
+                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-gray-900" />
                   {feature}
                 </li>
               ))}
             </ul>
             <a
               href="#"
-              className="mt-8 block rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10"
+              className="mt-8 block rounded-md bg-gray-900 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs 
+              hover:bg-gray-800 focus-visible:outline-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10"
             >
               Buy plan
             </a>
@@ -132,7 +130,7 @@ export default function PricingPage() {
 
           {/* Enterprise */}
           <div className="rounded-3xl bg-gray-900 p-8 ring-1 ring-gray-900/10 shadow-2xl sm:p-10">
-            <h3 className="text-indigo-400 text-base/7 font-semibold">Enterprise</h3>
+            <h3 className="text-gray-200 text-base/7 font-semibold">Enterprise</h3>
             <p className="mt-6 text-4xl font-semibold tracking-tight text-white">Custom</p>
             <p className="mt-6 text-gray-300 text-base/7">Dedicated support and infrastructure for your company.</p>
             <a
@@ -147,11 +145,11 @@ export default function PricingPage() {
                 "Unlimited subscribers",
                 "Advanced analytics",
                 "1-hour, dedicated support response time",
-                "Marketing automation's",
+                "Marketing automations",
                 "Custom reporting tools",
               ].map((feature) => (
                 <li key={feature} className="flex gap-x-3">
-                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-indigo-400" />
+                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-gray-200" />
                   {feature}
                 </li>
               ))}

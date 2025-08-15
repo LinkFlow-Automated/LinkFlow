@@ -18,6 +18,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Breezi",
   description: "Generate optimized link titles and descriptions",
+  icons: {
+    icon: [
+      { url: "/breezi-logo-resolution-logo-transparent.png", type: "image/png" },
+    ],
+    shortcut: "/breezi-logo-resolution-logo-transparent.png",
+    apple: "/breezi-logo-resolution-logo-transparent.png",
+  },
 };
 
 export default async function RootLayout({
@@ -33,6 +40,10 @@ export default async function RootLayout({
   console.log(links);
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" type="image/png" href="/breezi-logo-resolution-logo-transparent.png" />
+        <link rel="shortcut icon" type="image/png" href="/breezi-logo-resolution-logo-transparent.png" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
