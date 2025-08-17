@@ -5,7 +5,9 @@ import { CheckIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function PricingPage() {
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">("monthly");
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">(
+    "monthly"
+  );
 
   const pricingData = {
     pro: {
@@ -15,7 +17,9 @@ export default function PricingPage() {
   };
 
   const getPrice = (plan: keyof typeof pricingData) => {
-    return billingCycle === "monthly" ? pricingData[plan].monthly : pricingData[plan].annually;
+    return billingCycle === "monthly"
+      ? pricingData[plan].monthly
+      : pricingData[plan].annually;
   };
 
   const getPeriod = () => {
@@ -25,7 +29,10 @@ export default function PricingPage() {
   return (
     <>
       <section className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8 select-none">
-        <div aria-hidden="true" className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl">
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl"
+        >
           <div
             style={{
               clipPath:
@@ -36,14 +43,17 @@ export default function PricingPage() {
         </div>
 
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-base/7 font-semibold text-gray-600">Pricing</h2>
+          <h2 className="text-base/7 font-semibold text-gray-600">PRICING</h2>
           <p className="mt-2 text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-6xl">
             Start for free.
             <br />
-            <span className="text-gray-700 sm:text-6xl">Grow without limits.</span>
+            <span className="text-gray-700 sm:text-6xl">
+              Grow without limits.
+            </span>
           </p>
           <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
-            Whether you're building your brand, launching your store, or just exploring ideas, Breezi is free to start and ready to grow with you.
+            Whether you're building your brand, launching your store, or just
+            exploring ideas, Breezi is free to start and ready to grow with you.
           </p>
 
           <div className="mt-8 flex items-center justify-center">
@@ -51,14 +61,22 @@ export default function PricingPage() {
               <button
                 type="button"
                 onClick={() => setBillingCycle("monthly")}
-                className={`${billingCycle === "monthly" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"} rounded-full px-4 py-2`}
+                className={`${
+                  billingCycle === "monthly"
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-600 hover:text-gray-900"
+                } rounded-full px-4 py-2`}
               >
                 Monthly
               </button>
               <button
                 type="button"
                 onClick={() => setBillingCycle("annually")}
-                className={`${billingCycle === "annually" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"} rounded-full px-4 py-2`}
+                className={`${
+                  billingCycle === "annually"
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-600 hover:text-gray-900"
+                } rounded-full px-4 py-2`}
               >
                 Annually
               </button>
@@ -71,10 +89,14 @@ export default function PricingPage() {
           <div className="rounded-3xl ring-1 ring-gray-200 p-8 sm:p-10">
             <h3 className="text-gray-800 text-base/7 font-semibold">Starter</h3>
             <p className="mt-4 flex items-baseline gap-x-2">
-              <span className="text-gray-900 text-5xl font-semibold tracking-tight">Free</span>
+              <span className="text-gray-900 text-5xl font-semibold tracking-tight">
+                Free
+              </span>
             </p>
-            <p className="mt-6 text-gray-600 text-base/7">Perfect for getting started with your first projects.</p>
-            <ul role="list" className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
+            <p className="mt-6 text-gray-600 text-base/7">
+              Perfect for getting started with your first projects.
+            </p>
+            <ul className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
               {[
                 "5 products",
                 "Up to 1,000 subscribers",
@@ -82,13 +104,16 @@ export default function PricingPage() {
                 "48-hour support response time",
               ].map((feature) => (
                 <li key={feature} className="flex gap-x-3">
-                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-gray-900" />
+                  <CheckIcon
+                    aria-hidden="true"
+                    className="h-6 w-5 flex-none text-gray-900"
+                  />
                   {feature}
                 </li>
               ))}
             </ul>
             <a
-              href="#"
+              href="/sign-up"
               className="mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-gray-800 
               inset-ring inset-ring-gray-800 hover:inset-ring-gray-600 focus-visible:outline-gray-900 focus-visible:outline-2 
               focus-visible:outline-offset-2 sm:mt-10"
@@ -101,11 +126,15 @@ export default function PricingPage() {
           <div className="rounded-3xl ring-1 ring-gray-200 p-8 sm:p-10">
             <h3 className="text-gray-800 text-base/7 font-semibold">Pro</h3>
             <p className="mt-4 flex items-baseline gap-x-2">
-              <span className="text-gray-900 text-5xl font-semibold tracking-tight">${getPrice("pro")}</span>
+              <span className="text-gray-900 text-5xl font-semibold tracking-tight">
+                ${getPrice("pro")}
+              </span>
               <span className="text-gray-500 text-base">{getPeriod()}</span>
             </p>
-            <p className="mt-6 text-gray-600 text-base/7">A plan that scales with your rapidly growing business.</p>
-            <ul role="list" className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
+            <p className="mt-6 text-gray-600 text-base/7">
+              A plan that scales with your rapidly growing business.
+            </p>
+            <ul className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
               {[
                 "25 products",
                 "Up to 10,000 subscribers",
@@ -114,13 +143,16 @@ export default function PricingPage() {
                 "Marketing automations",
               ].map((feature) => (
                 <li key={feature} className="flex gap-x-3">
-                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-gray-900" />
+                  <CheckIcon
+                    aria-hidden="true"
+                    className="h-6 w-5 flex-none text-gray-900"
+                  />
                   {feature}
                 </li>
               ))}
             </ul>
             <a
-              href="#"
+              href="/sign-up?plan=pro"
               className="mt-8 block rounded-md bg-gray-900 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs 
               hover:bg-gray-800 focus-visible:outline-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10"
             >
@@ -130,16 +162,22 @@ export default function PricingPage() {
 
           {/* Enterprise */}
           <div className="rounded-3xl bg-gray-900 p-8 ring-1 ring-gray-900/10 shadow-2xl sm:p-10">
-            <h3 className="text-gray-200 text-base/7 font-semibold">Enterprise</h3>
-            <p className="mt-6 text-4xl font-semibold tracking-tight text-white">Custom</p>
-            <p className="mt-6 text-gray-300 text-base/7">Dedicated support and infrastructure for your company.</p>
+            <h3 className="text-gray-200 text-base/7 font-semibold">
+              Enterprise
+            </h3>
+            <p className="mt-6 text-4xl font-semibold tracking-tight text-white">
+              Custom
+            </p>
+            <p className="mt-6 text-gray-300 text-base/7">
+              Dedicated support and infrastructure for your company.
+            </p>
             <a
-              href="#"
+              href="/contact"
               className="mt-8 block rounded-md bg-white/10 px-3.5 py-2.5 text-center text-sm font-semibold text-white hover:bg-white/20 focus-visible:outline-white focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10"
             >
               Contact sales
             </a>
-            <ul role="list" className="mt-12 space-y-3 text-sm/6 text-gray-300">
+            <ul className="mt-12 space-y-3 text-sm/6 text-gray-300">
               {[
                 "Unlimited products",
                 "Unlimited subscribers",
@@ -149,7 +187,10 @@ export default function PricingPage() {
                 "Custom reporting tools",
               ].map((feature) => (
                 <li key={feature} className="flex gap-x-3">
-                  <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-gray-200" />
+                  <CheckIcon
+                    aria-hidden="true"
+                    className="h-6 w-5 flex-none text-gray-200"
+                  />
                   {feature}
                 </li>
               ))}
