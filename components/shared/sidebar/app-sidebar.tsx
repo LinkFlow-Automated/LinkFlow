@@ -21,13 +21,13 @@ import { useSession } from "@/lib/auth-client";
 const sidebarData = {
   navMain: [
     {
-      title: "My Breezies",
+      title: "My Breezi",
       url: "/admin",
       icon: TbLayoutDashboardFilled,
       hasSubmenu: true,
       items: [
         {
-          title: "Breezi",
+          title: "Breezies",
           url: "/admin/create",
         },
         {

@@ -65,8 +65,8 @@ export function NavMain({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
-      <SidebarMenu>
+      {/* <SidebarGroupLabel>Platform</SidebarGroupLabel> */}
+      <SidebarMenu className="mt-4">
         {items.map((item) => {
           // Check if the item has submenu items
           const hasSubmenu =
