@@ -8,7 +8,7 @@ export default function FooterWrapperCta({
   return (
     <div className="w-screen flex flex-col gap-4 bg-black">
       <div>{/* placeholder for footer cta */}</div>
-      <div className="p-2">{children}</div>
+      <div className="p-3">{children}</div>
     </div>
   );
 }

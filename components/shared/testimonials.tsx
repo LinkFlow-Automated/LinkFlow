@@ -6,25 +6,25 @@ export default function Testimonials() {
     {
       id: 1,
       name: "John Doe",
-      img: "/testimonials/john-doe.jpg",
+      img: "/test/1.jpg",
       description: "Intagram Influencer",
     },
     {
       id: 2,
       name: "Jane Doe",
-      img: "/testimonials/jane-doe.jpg",
+      img: "/test/2.png",
       description: "Twitter Influencer",
     },
     {
       id: 3,
       name: "Bob Smith",
-      img: "/testimonials/bob-smith.jpg",
+      img: "/test/3.png",
       description: "Facebook Influencer",
     },
     {
       id: 4,
       name: "Alice Johnson",
-      img: "/testimonials/alice-johnson.jpg",
+      img: "/test/4.png",
       description: "Instagram Influencer",
     },
   ];
@@ -36,7 +36,13 @@ export default function Testimonials() {
       </h1>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
         {testimonials.map((testimonial) => (
-          <TestimonialsCard key={testimonial.id} {...testimonial} />
+          <TestimonialsCard
+            className={`${
+              testimonial.id % 2 === 0 ? "flex-row" : "flex-row-reverse"
+            } ${testimonial.id % 2 === 0 ? "md:order-1" : "md:order-2"}`}
+            key={testimonial.id}
+            {...testimonial}
+          />
         ))}
       </div>
     </div>
