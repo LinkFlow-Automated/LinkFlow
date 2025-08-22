@@ -1,9 +1,11 @@
+import { auth } from "@/lib/auth";
+// import { headers } from "next/headers";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();
 
-const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
+// const auth = (req: Request) => ({ id: "fakeId" });
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
@@ -20,14 +22,17 @@ export const ourFileRouter = {
   })
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
+      console.log(req);
       // This code runs on your server before upload
-      const user = await auth(req);
+      const user = await auth.api.getSession({
+        headers: req.headers, // some endpoint might require headers
+      });
 
       // If you throw, the user will not be able to upload
       if (!user) throw new UploadThingError("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id };
+      return { userId: user.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
