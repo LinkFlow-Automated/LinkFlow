@@ -1,4 +1,3 @@
-import { be } from "date-fns/locale";
 import TestimonialsCard from "./testimonials-card";
 
 export default function Testimonials() {

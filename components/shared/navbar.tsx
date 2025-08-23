@@ -1,7 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -47,8 +52,8 @@ export default function Navbar() {
               key={link.name}
               variant="ghost"
               className={`text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2 md:text-base ${
-                isActive(link.href) 
-                  ? "text-gray-900 bg-gray-100 hover:bg-gray-200" 
+                isActive(link.href)
+                  ? "text-gray-900 bg-gray-100 hover:bg-gray-200"
                   : ""
               }`}
             >
@@ -76,8 +81,8 @@ export default function Navbar() {
         {/* Mobile Menu */}
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild className="md:hidden">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="icon"
               className="text-gray-600 hover:text-gray-900 transition-all duration-200 px-3 cursor-pointer"
             >
@@ -85,12 +90,19 @@ export default function Navbar() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-white">
+          <SheetContent
+            side="right"
+            className="w-[300px] sm:w-[400px] bg-white"
+          >
             <SheetTitle className="sr-only">Mobile Navigation Menu</SheetTitle>
             <div className="flex flex-col gap-6 mt-6">
               {/* Mobile Logo */}
               <div className="flex items-center gap-3 pb-4 mx-3 border-b border-gray-200">
-                <Link href="/" className="flex items-center" onClick={handleLinkClick}>
+                <Link
+                  href="/"
+                  className="flex items-center"
+                  onClick={handleLinkClick}
+                >
                   <Image
                     alt="breezi logo"
                     src={"/breezi-high-resolution-logo-transparent.png"}
@@ -108,13 +120,15 @@ export default function Navbar() {
                     key={link.name}
                     variant="ghost"
                     className={`font-medium rounded-lg justify-start px-4 mx-2 transition-all duration-200 ${
-                      isActive(link.href) 
-                        ? "text-gray-900 font-semibold" 
+                      isActive(link.href)
+                        ? "text-gray-900 font-semibold"
                         : "text-gray-600 hover:text-gray-900"
                     }`}
                     asChild
                   >
-                    <Link href={link.href} onClick={handleLinkClick}>{link.name}</Link>
+                    <Link href={link.href} onClick={handleLinkClick}>
+                      {link.name}
+                    </Link>
                   </Button>
                 ))}
               </nav>
@@ -124,20 +138,24 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   className={`justify-start px-6 mx-2 rounded-lg transition-all duration-200 ${
-                    pathname === "/login" 
-                      ? "text-gray-900 font-semibold" 
+                    pathname === "/login"
+                      ? "text-gray-900 font-semibold"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
                   asChild
                 >
-                  <Link href="/login" onClick={handleLinkClick}>LOGIN</Link>
+                  <Link href="/login" onClick={handleLinkClick}>
+                    LOGIN
+                  </Link>
                 </Button>
                 <Button
                   variant="default"
                   className="font-medium px-6 mx-2 rounded-lg transition-all duration-200"
                   asChild
                 >
-                  <Link href="/signup" onClick={handleLinkClick}>SIGNUP</Link>
+                  <Link href="/signup" onClick={handleLinkClick}>
+                    SIGNUP
+                  </Link>
                 </Button>
               </div>
             </div>
