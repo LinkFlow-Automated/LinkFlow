@@ -4,7 +4,6 @@ import Image from "next/image";
 import Grid from "@/components/shared/Grid";
 import LogoCloud from "@/components/shared/LogoClouds";
 import Cta from "@/components/shared/Cta";
-import Footer from "@/components/shared/Footer";
 import Faq from "@/components/shared/Faq";
 import { Button } from "@/components/ui/button";
 import Testimonials from "@/components/shared/testimonials";
@@ -100,8 +99,6 @@ export default function page() {
       <Cta />
       {/* FAQ Component */}
       <Faq />
-      {/* Footer Component */}
-      {/* <Footer /> */}
     </div>
   );
 }
