@@ -103,17 +103,17 @@ export const Description: React.FC<DescriptionProps> = ({
     lg: "text-lg md:text-xl lg:text-2xl",
   };
 
-  const variantClasses = {
-    primary: "text-gray-900 dark:text-white",
-    muted: "text-gray-600 dark:text-gray-300",
-    white: "text-white/90",
-  };
+//   const variantClasses = {
+//     primary: "text-gray-900 dark:text-white",
+//     muted: "text-gray-600 dark:text-gray-300",
+//     white: "text-white/90",
+//   };
 
   return (
     <p
       className={cn(
         sizeClasses[size],
-        variantClasses[variant],
+        // variantClasses[variant],
         "leading-relaxed",
         "max-w-2xl",
         className

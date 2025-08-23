@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 export default function Example() {
   return (
-    <div className="bg-gray-50 py-5 mt-[-100px] sm:py-32">
+    <div className="py-5 mt-[-100px] sm:py-32">
       <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl md:text-5xl font-bold uppercase tracking-tight text-balance leading-tight text-center select-none">
           NOT JUST 👀 A LINK-IN-BIO.
