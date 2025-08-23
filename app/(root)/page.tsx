@@ -102,8 +102,6 @@ export default function page() {
       <Cta />
       {/* FAQ Component */}
       <Faq />
-      {/* Footer Component */}
-      {/* <Footer /> */}
     </div>
   );
 }
