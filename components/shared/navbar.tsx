@@ -30,7 +30,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="w-full bg-white/95 backdrop-blur-sm px-4 sm:px-6 py-3 fixed top-0 z-50 shadow-sm border-b border-gray-100">
+    <div className="w-full backdrop-blur-sm px-4 sm:px-6 py-3 fixed top-0 z-50 shadow-sm border-b border-accent">
       <header className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
         <div className="flex items-center gap-2 sm:gap-3 w-32">

@@ -11,8 +11,8 @@ import Link from "next/link";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-white border-t border-gray-200 rounded-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="bg-primary border-t rounded-sm">
+      <div className="max-w-7xl mx-auto py-12">
         <div className="flex flex-col md:flex-row justify-between">
           {/* Left Section */}
           <div className="mb-10 md:mb-0 max-w-sm">

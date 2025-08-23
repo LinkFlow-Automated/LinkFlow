@@ -5,7 +5,7 @@ import { Description, HeroTitle, TypographyContainer } from "./typograghy";
 
 export default function FooterCta() {
   return (
-    <Container className="h-fit gap-6">
+    <Container className="h-fit gap-6 py-12">
       <div className="w-full py-12">
         <TypographyContainer align="left" className="text-start p-0 m-0 w-full">
           <HeroTitle className="text-start xl:text-[10rem] max-w-full">

@@ -95,7 +95,7 @@ export const Description: React.FC<DescriptionProps> = ({
   children,
   className,
   size = "md",
-  variant = "muted",
+//   variant = "muted",
 }) => {
   const sizeClasses = {
     sm: "text-sm md:text-base",
