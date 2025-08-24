@@ -7,13 +7,17 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useSession } from "@/lib/auth-client";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import DropdownUser from "./dropdown-user";
 
 export default function Navbar() {
+  const session = useSession();
+  console.log(session)
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
   const navLinks = [
@@ -63,20 +67,24 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop Auth Buttons */}
-        <div className="hidden md:flex items-center gap-2">
-          <Button
-            variant="ghost"
-            className="text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2"
-          >
-            <Link href="/login">LOGIN</Link>
-          </Button>
-          <Button
-            variant="default"
-            className="font-medium px-4 py-1.5 text-sm md:px-6 md:py-2 rounded-lg transition-all duration-200"
-          >
-            <Link href="/signup">SIGNUP</Link>
-          </Button>
-        </div>
+        {session.data?.user ? (
+          <DropdownUser user={session.data.user} />
+        ) : (
+          <div className="hidden md:flex items-center gap-2">
+            <Button
+              variant="ghost"
+              className="text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2"
+            >
+              <Link href="/login">LOGIN</Link>
+            </Button>
+            <Button
+              variant="default"
+              className="font-medium px-4 py-1.5 text-sm md:px-6 md:py-2 rounded-lg transition-all duration-200"
+            >
+              <Link href="/signup">SIGNUP</Link>
+            </Button>
+          </div>
+        )}
 
         {/* Mobile Menu */}
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>

@@ -1,88 +1,102 @@
-"use client";
+"use client"
 
-import { PiMonitorFill } from "react-icons/pi";
-import { HiMoon, HiSun } from "react-icons/hi2";
-import { useTheme } from "next-themes";
+import { PiMonitorFill } from "react-icons/pi"
+import { HiMoon, HiSun } from "react-icons/hi2"
+import { useTheme } from "next-themes"
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
 
 interface ModeToggleProps {
-  isNav?: boolean;
+  isNav?: boolean
 }
 
 export function ModeToggle({ isNav = false }: ModeToggleProps) {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, theme } = useTheme()
 
   if (isNav) {
     return (
-      <div className="flex items-center gap-1 rounded-md border bg-background p-1">
+      <div className="flex items-center gap-0.5 rounded-lg border border-border/50 bg-secondary/80 backdrop-blur-sm p-1 shadow-sm transition-all duration-200 hover:shadow-md">
         <Button
           variant="ghost"
           size="icon"
           className={cn(
-            "h-4 w-4 p-0",
-            theme === "light" && "bg-foreground text-background"
+            "h-7 w-7 rounded-md transition-all duration-200 hover:bg-muted/80",
+            theme === "light" && "bg-primary text-primary-foreground shadow-sm",
           )}
           onClick={() => setTheme("light")}
         >
-          <HiSun className="h-3 w-3" />
+          <HiSun className="h-3.5 w-3.5" />
           <span className="sr-only">Light mode</span>
         </Button>
         <Button
           variant="ghost"
           size="icon"
           className={cn(
-            "h-4 w-4 p-0",
-            theme === "dark" && "bg-foreground text-background"
+            "h-7 w-7 rounded-md transition-all duration-200 hover:bg-muted/80",
+            theme === "dark" && "bg-primary text-primary-foreground shadow-sm",
           )}
           onClick={() => setTheme("dark")}
         >
-          <HiMoon className="h-3 w-3" />
+          <HiMoon className="h-3.5 w-3.5" />
           <span className="sr-only">Dark mode</span>
         </Button>
         <Button
           variant="ghost"
           size="icon"
           className={cn(
-            "h-4 w-4 p-0",
-            theme === "system" && "bg-foreground text-background"
+            "h-7 w-7 rounded-md transition-all duration-200 hover:bg-muted/80",
+            theme === "system" && "bg-primary text-primary-foreground shadow-sm",
           )}
           onClick={() => setTheme("system")}
         >
-          <PiMonitorFill className="h-3 w-3" />
+          <PiMonitorFill className="h-3.5 w-3.5" />
           <span className="sr-only">System mode</span>
         </Button>
       </div>
-    );
+    )
   }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <HiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <HiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative h-9 w-9 rounded-lg border-border/50 bg-background/80 backdrop-blur-sm shadow-sm transition-all duration-200 hover:bg-muted/80 hover:shadow-md hover:border-border"
+        >
+          <HiSun className="h-4 w-4 rotate-0 scale-100 transition-all duration-300 ease-in-out dark:-rotate-90 dark:scale-0" />
+          <HiMoon className="absolute h-4 w-4 rotate-90 scale-0 transition-all duration-300 ease-in-out dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+      <DropdownMenuContent
+        align="end"
+        className="min-w-[120px] rounded-lg border-border/50 bg-background/95 backdrop-blur-sm shadow-lg"
+      >
+        <DropdownMenuItem
+          onClick={() => setTheme("light")}
+          className="rounded-md transition-colors duration-150 hover:bg-muted/80 focus:bg-muted/80"
+        >
+          <HiSun className="mr-2 h-4 w-4" />
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem
+          onClick={() => setTheme("dark")}
+          className="rounded-md transition-colors duration-150 hover:bg-muted/80 focus:bg-muted/80"
+        >
+          <HiMoon className="mr-2 h-4 w-4" />
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem
+          onClick={() => setTheme("system")}
+          className="rounded-md transition-colors duration-150 hover:bg-muted/80 focus:bg-muted/80"
+        >
+          <PiMonitorFill className="mr-2 h-4 w-4" />
           System
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
