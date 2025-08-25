@@ -4,6 +4,7 @@ import {
   LogOut,
   Bell,
   UserCircle,
+  MoreVertical,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -38,19 +39,20 @@ export default function DropdownUser({
                 {user.name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            {/* <div className="grid flex-1 text-left text-sm leading-tight">
+            <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">{user.name}</span>
               <span className="text-muted-foreground truncate text-xs">
                 {user.email}
               </span>
             </div>
-            <MoreVertical className="ml-auto size-4" /> */}
+            <MoreVertical className="ml-auto size-4" />
           </div>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent
           className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
           align="end"
+          side="bottom"
           sideOffset={4}
         >
           <DropdownMenuLabel className="p-0 font-normal">

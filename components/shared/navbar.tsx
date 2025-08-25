@@ -55,9 +55,9 @@ export default function Navbar() {
             <Button
               key={link.name}
               variant="ghost"
-              className={`text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2 md:text-base ${
+              className={`text-primary font-medium hover:text-primary/60 hover:bg-primary transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2 md:text-base ${
                 isActive(link.href)
-                  ? "text-gray-900 bg-gray-100 hover:bg-gray-200"
+                  ? "text-secondary bg-primary hover:bg-primary/60"
                   : ""
               }`}
             >
@@ -73,7 +73,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-2">
             <Button
               variant="ghost"
-              className="text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2"
+              className="text-primary font-medium hover:text-primary/60 hover:bg-primary transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2"
             >
               <Link href="/login">LOGIN</Link>
             </Button>
@@ -92,20 +92,20 @@ export default function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-gray-600 hover:text-gray-900 transition-all duration-200 px-3 cursor-pointer"
+              className="text-primary hover:text-primary/60 transition-all duration-200 px-3 cursor-pointer"
             >
               <Menu className="size-6" />
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
           <SheetContent
-            side="right"
+            side="left"
             className="w-[300px] sm:w-[400px]"
           >
             <SheetTitle className="sr-only">Mobile Navigation Menu</SheetTitle>
             <div className="flex flex-col gap-6 mt-6">
               {/* Mobile Logo */}
-              <div className="flex items-center gap-3 pb-4 mx-3 border-b border-gray-200">
+              <div className="flex items-center gap-3 pb-4 px-3 border-b w-full">
                 <Link
                   href="/"
                   className="flex items-center"
@@ -129,8 +129,8 @@ export default function Navbar() {
                     variant="ghost"
                     className={`font-medium rounded-lg justify-start px-4 mx-2 transition-all duration-200 ${
                       isActive(link.href)
-                        ? "text-gray-900 font-semibold"
-                        : "text-gray-600 hover:text-gray-900"
+                        ? "text-secondary bg-primary hover:bg-primary/60 font-semibold"
+                        : ""
                     }`}
                     asChild
                   >
@@ -143,15 +143,15 @@ export default function Navbar() {
 
               {/* Mobile Auth */}
               {session.data?.user ? (
-                <DropdownUser user={session.data.user} />
+                <div className="w-full px-2 self-end"><DropdownUser user={session.data.user} /></div>
               ) : (
-                <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
+                <div className="flex flex-col gap-3 pt-4 border-t">
                   <Button
                     variant="ghost"
-                    className={`justify-start px-6 mx-2 rounded-lg transition-all duration-200 ${
+                    className={`justify-start px-6 mx-2 rounded-lg transition-all duration-200 bg-background/70 ${
                       pathname === "/login"
-                        ? "text-gray-900 font-semibold"
-                        : "text-gray-600 hover:text-gray-900"
+                        ? "text-primary font-semibold"
+                        : "text-primary hover:hover:text-primary/60"
                     }`}
                     asChild
                   >

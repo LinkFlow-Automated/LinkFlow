@@ -14,7 +14,7 @@ export default function CardFeature({
     <Card>
       <CardHeader className="flex flex-col items-center justify-center">
         <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription className="text-center">{description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 rounded-2xl">
         <Image src={image} alt={title} width={1000} height={1000} className="w-full h-full object-cover rounded-2xl" />
