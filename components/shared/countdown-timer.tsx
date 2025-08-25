@@ -45,12 +45,12 @@ export default function CountdownTimer() {
   const formatNumber = (num: number) => num.toString().padStart(2, "0");
 
   return (
-    <div className="flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4 w-full">
       <div className="rounded-lg">
-        <div className="flex items-center justify-center gap-8">
+        <div className="flex items-center justify-center gap-4 md:gap-8">
           {/* Days */}
           <div className="text-center">
-            <div className="text-2xl font-bold mb-2">
+            <div className="text-xl md:text-2xl font-bold mb-2">
               {formatNumber(timeLeft.days)}
             </div>
             <div className="text-sm uppercase tracking-wider">
@@ -59,11 +59,11 @@ export default function CountdownTimer() {
           </div>
 
           {/* Separator */}
-          <div className="w-px h-20 bg-primary"/>
+          <div className="w-px h-20 bg-secondary"/>
 
           {/* Hours */}
           <div className="text-center">
-            <div className="text-2xl font-bold mb-2">
+            <div className="text-xl md:text-2xl font-bold mb-2">
               {formatNumber(timeLeft.hours)}
             </div>
             <div className="text-sm uppercase tracking-wider">
@@ -72,11 +72,11 @@ export default function CountdownTimer() {
           </div>
 
           {/* Separator */}
-          <div className="w-px h-20 bg-primary"/>
+          <div className="w-px h-20 bg-secondary"/>
 
           {/* Minutes */}
           <div className="text-center">
-            <div className="text-2xl font-bold mb-2">
+            <div className="text-xl md:text-2xl font-bold mb-2">
               {formatNumber(timeLeft.minutes)}
             </div>
             <div className="text-sm uppercase tracking-wider">
@@ -85,11 +85,11 @@ export default function CountdownTimer() {
           </div>
 
           {/* Separator */}
-          <div className="w-px h-20 bg-primary"/>
+          <div className="w-px h-20 bg-secondary"/>
 
           {/* Seconds */}
           <div className="text-center">
-            <div className="text-2xl font-bold mb-2">
+            <div className="text-xl md:text-2xl font-bold mb-2">
               {formatNumber(timeLeft.seconds)}
             </div>
             <div className="text-sm uppercase tracking-wider">

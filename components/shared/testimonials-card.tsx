@@ -20,7 +20,7 @@ export default function TestimonialsCard({
         <CardDescription>{description}</CardDescription>
       </Card>
       <div className="m-0 p-0 relative flex-1 h-full rounded-4xl">
-        <div className="w-full h-full m-0 p-0">
+        <div className="w-full h-full m-0 p-0 rounded-4xl">
           <Image
             src={img}
             alt={name}

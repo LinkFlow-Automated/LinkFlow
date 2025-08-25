@@ -39,7 +39,7 @@ export default function Features() {
       <Container className="h-full flex flex-col justify-around gap-4 items-center">
         <div className="flex flex-col justify-center items-center gap-4">
           <TypographyContainer spacing="loose">
-            <HeroTitle className="text-secondary">
+            <HeroTitle className="text-secondary text-3xl xl:text-8xl">
               Not Just a Link-in-Bio.
               <br />A full creator platform.
             </HeroTitle>
@@ -50,12 +50,12 @@ export default function Features() {
           </Description>
         </div>
         <div className="h-full flex flex-col justify-around gap-4">
-          <div className="h-1-2 grid grid-cols-2 gap-4">
+          <div className="h-1-2 grid grid-cols-1 md:grid-cols-2 gap-4">
             {featuresTop.map((feature) => (
               <CardFeature key={feature.title} {...feature} />
             ))}
           </div>
-          <div className="h-1-2 grid grid-cols-3 gap-4">
+          <div className="h-1-2 grid grid-cols-1 md:grid-cols-3 gap-4">
             {featuresBottom.map((feature) => (
               <CardFeature key={feature.title} {...feature} />
             ))}
@@ -64,7 +64,7 @@ export default function Features() {
         <div>
           <Button
             size="lg"
-            className="text-xl px-8 py-6 rounded-2xl bg-secondary text-primary"
+            className="md:text-xl md:px-8 md:py-6 rounded-2xl bg-secondary text-primary"
           >
             Get Started - For Free
           </Button>

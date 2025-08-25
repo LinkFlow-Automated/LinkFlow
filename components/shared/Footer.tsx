@@ -10,8 +10,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Footer: React.FC = () => {
+  const solutions = [
+    "Marketing",
+    "Analytics",
+    "Automation",
+    "Commerce",
+    "Insight",
+  ];
+  const support = ["Submit ticket", "Documentation", "Guides"];
+  const company = ["About", "Jobs", "Press"];
+  const legal = ["Terms of services", "Privacy policy", "License"];
   return (
-    <footer className="bg-primary border-t rounded-sm">
+    <footer className="border-t rounded-sm bg-background px-2 md:px-0">
       <div className="max-w-7xl mx-auto py-12">
         <div className="flex flex-col md:flex-row justify-between">
           {/* Left Section */}
@@ -19,86 +29,103 @@ const Footer: React.FC = () => {
             <div className="mb-4">
               {/* Your Logo Here */}
               <Image
+                className="hidden dark:flex"
+                alt="Linkflow-logo"
+                src="/breezi-high-resolution-logo-transparent.png"
+                width={100}
+                height={100}
+              />
+              <Image
+                className="dark:hidden"
                 alt="Linkflow-logo"
                 src="/breezi-high-resolution-logo-transparent.png"
                 width={100}
                 height={100}
               />
             </div>
-            <p className="text-gray-500 font-semibold select-none">
+            <p className="font-semibold select-none">
               Empowering creators and brands through seamless link integrations.
             </p>
             {/* Social Icons */}
             <div className="flex space-x-5 mt-6 font text-xl">
-              <FaFacebookF className="text-gray-900 hover:text-gray-500 cursor-pointer" />
-              <FaInstagram className="text-gray-900 hover:text-gray-500 cursor-pointer" />
-              <FaTiktok className="text-gray-900 hover:text-gray-500 cursor-pointer" />
-              <FaXTwitter className="text-gray-900 hover:text-gray-500 cursor-pointer" />
+              <FaFacebookF className="text-primary/90 hover:text-foreground cursor-pointer" />
+              <FaInstagram className="text-primary/90 hover:text-foreground cursor-pointer" />
+              <FaTiktok className="text-primary/90 hover:text-foreground cursor-pointer" />
+              <FaXTwitter className="text-primary/90 hover:text-foreground cursor-pointer" />
               <Link
                 href="https://github.com/LinkFlow-Automated"
                 target="_blank"
               >
-                <FaGithub className="text-gray-900 hover:text-gray-500 cursor-pointer" />
+                <FaGithub className="text-primary/90 hover:text-foreground cursor-pointer" />
               </Link>
-              <FaYoutube className="text-gray-900 hover:text-gray-500 cursor-pointer" />
+              <FaYoutube className="text-primary/90 hover:text-foreground cursor-pointer" />
             </div>
           </div>
 
           {/* Links */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 select-none">
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-4">
-                Solutions
-              </h4>
-              <ul className="space-y-2 text-sm text-gray-500 cursor-pointer">
-                <li>Marketing</li>
-                <li>Analytics</li>
-                <li>Automation</li>
-                <li>Commerce</li>
-                <li>Insights</li>
+              <h4 className="text-sm font-semibold mb-4">Solutions</h4>
+              <ul className="space-y-2 text-sm cursor-pointer">
+                {solutions.map((sol) => (
+                  <li
+                    className="text-primary/90 hover:text-foreground"
+                    key={sol}
+                  >
+                    {sol}
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-4">
-                Support
-              </h4>
-              <ul className="space-y-2 text-sm text-gray-500 cursor-pointer">
-                <li>Submit ticket</li>
-                <li>Documentation</li>
-                <li>Guides</li>
+              <h4 className="text-sm font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-sm cursor-pointer">
+                {support.map((sup) => (
+                  <li
+                    className="text-primary/90 hover:text-foreground"
+                    key={sup}
+                  >
+                    {sup}
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-4">
-                Company
-              </h4>
-              <ul className="space-y-2 text-sm text-gray-500 cursor-pointer">
-                <li>About</li>
-                <li>Blog</li>
-                <li>Jobs</li>
-                <li>Press</li>
+              <h4 className="text-sm font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-sm cursor-pointer">
+                {company.map((com) => (
+                  <li
+                    className="text-primary/90 hover:text-foreground"
+                    key={com}
+                  >
+                    {com}
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-4">
-                Legal
-              </h4>
-              <ul className="space-y-2 text-sm text-gray-500 cursor-pointer">
-                <li>Terms of service</li>
-                <li>Privacy policy</li>
-                <li>License</li>
+              <h4 className="text-sm font-semibold mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm cursor-pointer">
+                {legal.map((leg) => (
+                  <li
+                    key={leg}
+                    className="text-primary/90 hover:text-foreground"
+                  >
+                    {leg}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 border-t pt-6 flex justify-between items-center text-sm text-gray-400 select-none">
+        <div className="mt-12 border-t pt-6 flex justify-between items-center text-sm select-none">
           <div className="flex items-center gap-2">
-            <span className="text-gray-900 font-bold">
+            <span className=" font-bold">
               &copy; 2025 Breezi. All Rights Reserved.
             </span>
           </div>

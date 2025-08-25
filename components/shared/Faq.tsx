@@ -43,22 +43,22 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <h1 className="text-3xl md:text-3xl font-semibold md:text-start mb-12 text-gray-900">
+        <h1 className="text-3xl md:text-3xl font-semibold md:text-start mb-12">
           Frequently Asked Questions
         </h1>
 
-        <div className="bg-white overflow-hidden">
+        <div className="overflow-hidden">
           {faqs.map((faq, index) => (
             <div key={faq.question} className="border-b border-gray-50/30 last:border-b-0">
               <button
                 type="button"
-                className="w-full py-5 text-left flex justify-between items-center cursor-pointer duration-200 hover:bg-gray-50"
+                className="w-full py-5 text-left flex justify-between items-center cursor-pointer duration-200"
                 onClick={() => toggleFAQ(index)}
                 aria-expanded={openIndex === index}
               >
-                <span className="text-base md:text-lg font-semibold text-gray-900 pr-4">
+                <span className="text-base md:text-lg font-semibold pr-4">
                   {faq.question}
                 </span>
                 <span className={`transform transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}>
@@ -80,7 +80,7 @@ const App: React.FC = () => {
                     : 'max-h-0 opacity-0'
                   }`}
               >
-                <p className="text-gray-600 leading-relaxed text-base">
+                <p className="leading-relaxed text-base">
                   {faq.answer}
                 </p>
               </div>

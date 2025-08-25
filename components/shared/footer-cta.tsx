@@ -5,7 +5,7 @@ import { Description, HeroTitle, TypographyContainer } from "./typograghy";
 
 export default function FooterCta() {
   return (
-    <Container className="h-fit gap-6 py-12">
+    <Container className="h-fit gap-6 py-12 text-secondary">
       <div className="w-full py-12">
         <TypographyContainer align="left" className="text-start p-0 m-0 w-full">
           <HeroTitle className="text-start xl:text-[10rem] max-w-full">
@@ -13,7 +13,7 @@ export default function FooterCta() {
           </HeroTitle>
         </TypographyContainer>
       </div>
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-center">
         <div className="flex flex-col justify-between items-center gap-2">
           <div className="flex flex-row justify-between items-center gap-2">
             <div>
@@ -22,17 +22,17 @@ export default function FooterCta() {
               </Description>
             </div>
             <div>
-              <Description className="xl:text-6xl xl:font-black">
+              <Description className=" text-5xl xl:text-6xl font-black">
                 $99
               </Description>
             </div>
           </div>
-          <Button size={"lg"} className="bg-primary">
+          <Button size={"lg"} className="bg-secondary text-primary">
             Get Stated - For Free
           </Button>
         </div>
         {/* timer for launching */}
-        <div>
+        <div className="px-4 md:px-0">
           <CountdownTimer />
         </div>
       </div>

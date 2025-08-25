@@ -17,7 +17,7 @@ import DropdownUser from "./dropdown-user";
 
 export default function Navbar() {
   const session = useSession();
-  console.log(session)
+  console.log(session);
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
   const navLinks = [
@@ -68,7 +68,7 @@ export default function Navbar() {
 
         {/* Desktop Auth Buttons */}
         {session.data?.user ? (
-          <DropdownUser user={session.data.user} />
+          <DropdownUser className="hidden md:flex" user={session.data.user} />
         ) : (
           <div className="hidden md:flex items-center gap-2">
             <Button
@@ -100,7 +100,7 @@ export default function Navbar() {
           </SheetTrigger>
           <SheetContent
             side="right"
-            className="w-[300px] sm:w-[400px] bg-white"
+            className="w-[300px] sm:w-[400px]"
           >
             <SheetTitle className="sr-only">Mobile Navigation Menu</SheetTitle>
             <div className="flex flex-col gap-6 mt-6">
@@ -142,30 +142,34 @@ export default function Navbar() {
               </nav>
 
               {/* Mobile Auth */}
-              <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
-                <Button
-                  variant="ghost"
-                  className={`justify-start px-6 mx-2 rounded-lg transition-all duration-200 ${
-                    pathname === "/login"
-                      ? "text-gray-900 font-semibold"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                  asChild
-                >
-                  <Link href="/login" onClick={handleLinkClick}>
-                    LOGIN
-                  </Link>
-                </Button>
-                <Button
-                  variant="default"
-                  className="font-medium px-6 mx-2 rounded-lg transition-all duration-200"
-                  asChild
-                >
-                  <Link href="/signup" onClick={handleLinkClick}>
-                    SIGNUP
-                  </Link>
-                </Button>
-              </div>
+              {session.data?.user ? (
+                <DropdownUser user={session.data.user} />
+              ) : (
+                <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
+                  <Button
+                    variant="ghost"
+                    className={`justify-start px-6 mx-2 rounded-lg transition-all duration-200 ${
+                      pathname === "/login"
+                        ? "text-gray-900 font-semibold"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                    asChild
+                  >
+                    <Link href="/login" onClick={handleLinkClick}>
+                      LOGIN
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="default"
+                    className="font-medium px-6 mx-2 rounded-lg transition-all duration-200"
+                    asChild
+                  >
+                    <Link href="/signup" onClick={handleLinkClick}>
+                      SIGNUP
+                    </Link>
+                  </Button>
+                </div>
+              )}
             </div>
           </SheetContent>
         </Sheet>

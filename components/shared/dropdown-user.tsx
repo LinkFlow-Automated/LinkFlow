@@ -1,6 +1,6 @@
 import {
   CreditCard,
-//   MoreVertical,
+  //   MoreVertical,
   LogOut,
   Bell,
   UserCircle,
@@ -17,11 +17,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { User } from "better-auth";
 import { ModeToggle } from "../ui/toggle-theme";
+import { cn } from "@/lib/utils";
 // import ToggleTheme from "./toggle-theme";
 
-export default function DropdownUser({ user }: { user: User }) {
+export default function DropdownUser({
+  user,
+  className,
+}: {
+  user: User;
+  className?: string;
+}) {
   return (
-    <div>
+    <div className={cn(``, className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm cursor-pointer data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground rounded-lg hover:bg-sidebar-accent/50">
