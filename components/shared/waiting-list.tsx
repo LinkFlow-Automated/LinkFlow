@@ -1,13 +1,12 @@
 "use client";
 
 import type React from "react";
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {  Users, ArrowRight, Sparkles } from "lucide-react";
+import { Users, ArrowRight, Sparkles } from "lucide-react";
 import CardFeature from "./card-feature";
 import {
   AccentText,
@@ -16,6 +15,7 @@ import {
   TypographyContainer,
 } from "./typograghy";
 import Image from "next/image";
+import { joinWaitlist } from "@/lib/actions/waiting";
 
 const FEATURES = [
   {
@@ -56,20 +56,33 @@ const FEATURES = [
   },
 ];
 
+const MAX_SPOTS = 500; // Maximum number of spots available
+
 export default function WaitlistPage() {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [spotsLeft, setSpotsLeft] = useState(127);
+  const [position, setPosition] = useState(0);
+  const [spotsLeft, setSpotsLeft] = useState(MAX_SPOTS);
   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState("");
+  const [creatorsJoined, setCreatorsJoined] = useState(0);
 
-  // Simulate decreasing spots for urgency
+  // Simulate decreasing spots for urgency (optional - remove if you want to use real data)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setSpotsLeft((prev) =>
-        Math.max(50, prev - Math.floor(Math.random() * 2))
-      );
-    }, 30000);
-    return () => clearInterval(interval);
+    // Get initial count of waitlist entries
+    async function getInitialCount() {
+      try {
+        const result = await joinWaitlist(""); // Empty string will just return count
+        if (result.success && result.position) {
+          const totalJoined = result.position - 1;
+          setCreatorsJoined(totalJoined);
+          setSpotsLeft(MAX_SPOTS - totalJoined);
+        }
+      } catch (err) {
+        console.error("Failed to get initial count:", err);
+      }
+    }
+    getInitialCount();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,11 +90,25 @@ export default function WaitlistPage() {
     if (!email) return;
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitted(true);
-    setIsLoading(false);
-    setSpotsLeft((prev) => prev - 1);
+    // setError("");
+
+    try {
+      const result = await joinWaitlist(email);
+
+      if (result.success) {
+        setPosition(result.position as number);
+        // Update spots left based on position
+        setSpotsLeft(MAX_SPOTS - (result.position ?? 0));
+        setIsSubmitted(true);
+      } else {
+        // setError(result.error || "Something went wrong");
+      }
+    } catch (err) {
+        console.warn(err)
+    //   setError("Failed to join waitlist");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isSubmitted) {
@@ -96,7 +123,6 @@ export default function WaitlistPage() {
               height={1000}
               className="w-full h-full"
             />
-            {/* <h1>Breezi</h1> */}
           </div>
           <h2 className="text-2xl font-bold mb-4">Welcome to Breezi!</h2>
           <p className="text-muted-foreground mb-6">
@@ -107,7 +133,7 @@ export default function WaitlistPage() {
             variant="secondary"
             className="bg-primary/10 text-primary border-primary/20"
           >
-            Beta Position #{500 - spotsLeft + 1}
+            Beta Position #{position}
           </Badge>
         </Card>
       </div>
@@ -151,7 +177,7 @@ export default function WaitlistPage() {
             </Badge>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Users className="w-4 h-4" />
-              {500 - spotsLeft} creators already joined
+              {creatorsJoined} creators already joined
             </div>
           </div>
 
