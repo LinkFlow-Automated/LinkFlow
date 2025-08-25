@@ -34,7 +34,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="w-full backdrop-blur-sm px-4 sm:px-6 py-3 fixed top-0 z-50 shadow-sm border-b border-accent">
+    <div className="w-full px-4 sm:px-6 py-3 fixed top-0 z-50 shadow-sm border-b border-accent bg-background">
       <header className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
         <div className="flex items-center gap-2 sm:gap-3 w-32">
@@ -44,7 +44,14 @@ export default function Navbar() {
               src={"/breezi-high-resolution-logo-transparent.png"}
               width={1000}
               height={1000}
-              className="w-full h-full"
+              className="w-full h-full dark:hidden"
+            />
+            <Image
+              alt="breezi logo"
+              src={"/logo-light.png"}
+              width={1000}
+              height={1000}
+              className="w-full h-full dark:flex hidden"
             />
           </Link>
         </div>
@@ -53,9 +60,10 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <Button
+              asChild
               key={link.name}
               variant="ghost"
-              className={`text-primary font-medium hover:text-primary/60 hover:bg-primary transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2 md:text-base ${
+              className={`text-primary cursor-pointer font-medium hover:text-secondary/60 hover:bg-primary transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2 md:text-base ${
                 isActive(link.href)
                   ? "text-secondary bg-primary hover:bg-primary/60"
                   : ""
@@ -98,10 +106,7 @@ export default function Navbar() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent
-            side="left"
-            className="w-[300px] sm:w-[400px]"
-          >
+          <SheetContent side="left" className="w-[300px] sm:w-[400px]">
             <SheetTitle className="sr-only">Mobile Navigation Menu</SheetTitle>
             <div className="flex flex-col gap-6 mt-6">
               {/* Mobile Logo */}
@@ -116,7 +121,14 @@ export default function Navbar() {
                     src={"/breezi-high-resolution-logo-transparent.png"}
                     width={1000}
                     height={1000}
-                    className="w-24 h-auto"
+                    className="w-24 h-auto dark:hidden"
+                  />
+                  <Image
+                    alt="breezi logo"
+                    src={"/logo-light.png"}
+                    width={1000}
+                    height={1000}
+                    className="w-24 h-auto dark:flex hidden"
                   />
                 </Link>
               </div>
@@ -143,7 +155,9 @@ export default function Navbar() {
 
               {/* Mobile Auth */}
               {session.data?.user ? (
-                <div className="w-full px-2 self-end"><DropdownUser user={session.data.user} /></div>
+                <div className="w-full px-2 self-end">
+                  <DropdownUser user={session.data.user} />
+                </div>
               ) : (
                 <div className="flex flex-col gap-3 pt-4 border-t">
                   <Button

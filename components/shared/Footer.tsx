@@ -26,21 +26,21 @@ const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between">
           {/* Left Section */}
           <div className="mb-10 md:mb-0 max-w-sm">
-            <div className="mb-4">
+            <div className="mb-4 w-32 md:w-64">
               {/* Your Logo Here */}
               <Image
-                className="hidden dark:flex"
+                className="dark:hidden flex"
                 alt="Linkflow-logo"
                 src="/breezi-high-resolution-logo-transparent.png"
-                width={100}
-                height={100}
+                width={1000}
+                height={1000}
               />
               <Image
-                className="dark:hidden"
+                className="dark:flex hidden"
                 alt="Linkflow-logo"
-                src="/breezi-high-resolution-logo-transparent.png"
-                width={100}
-                height={100}
+                src="/logo-light.png"
+                width={1000}
+                height={1000}
               />
             </div>
             <p className="font-semibold select-none">
