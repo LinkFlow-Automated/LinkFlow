@@ -141,10 +141,10 @@ export default function WaitlistPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen" suppressHydrationWarning>
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16 lg:py-24">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="mx-auto px-4 py-16 lg:py-24">
+        <div className="md:max-w-4xl mx-auto text-center">
           {/* Exclusivity Badge */}
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-8 border border-primary/20">
             <Sparkles className="w-4 h-4" />
@@ -156,7 +156,7 @@ export default function WaitlistPage() {
             <HeroTitle className="text-4xl lg:text-6xl font-black mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent leading-tight">
               The Future of
               <br />
-              <AccentText className="text-primary">
+              <AccentText className="text-primary/70">
                 Bio Links is Here
               </AccentText>
             </HeroTitle>
@@ -165,7 +165,7 @@ export default function WaitlistPage() {
           {/* Subheading */}
           <Description className="text-xl lg:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
             Join the waitlist for{" "}
-            <strong className="text-foreground">Breezi</strong> - the first bio
+            <AccentText className="text-foreground">Breezi</AccentText> - the first bio
             link platform with AI insights, smart rules, and Telegram bot
             integration.
           </Description>
