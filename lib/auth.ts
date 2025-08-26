@@ -11,6 +11,7 @@ import {
 import { stripe } from "@better-auth/stripe";
 import { stripeClient } from "./stripe";
 import { nextCookies } from "better-auth/next-js";
+import handleSubscription from "./subcription";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -75,14 +76,7 @@ export const auth = betterAuth({
         },
         plans: [],
       },
-      onEvent: async (event) => {
-        switch (event.type) {
-          case "invoice.paid":
-            break;
-          case "payment_intent.succeeded":
-            break;
-        }
-      },
+      onEvent: handleSubscription,
     }),
     admin(),
     apiKey(),
