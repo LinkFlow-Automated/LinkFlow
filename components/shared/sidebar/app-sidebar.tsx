@@ -3,6 +3,7 @@
 import * as React from "react";
 import { HiUsers, HiLightBulb } from "react-icons/hi2";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
+import { RiSettings3Fill } from "react-icons/ri";
 import {
   Sidebar,
   SidebarContent,
@@ -17,6 +18,7 @@ import { NavUser } from "./nav-user";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
+import { HiTrendingUp } from "react-icons/hi";
 
 const sidebarData = {
   navMain: [
@@ -28,11 +30,11 @@ const sidebarData = {
       items: [
         {
           title: "Breezies",
-          url: "/admin/create",
+          url: "/admin/breezies",
         },
         {
           title: "Shop",
-          url: "/admin/breezi",
+          url: "/admin/shop",
         },
         {
           title: "Design",
@@ -49,6 +51,30 @@ const sidebarData = {
       title: "Insight",
       url: "/admin/insight",
       icon: HiLightBulb,
+    },
+    {
+      title: "Growth",
+      url: "/growth",
+      icon: HiTrendingUp,
+      hasSubmenu: true,
+      items: [
+        { title: "Monetization", url: "/monetization" },
+        { title: "AI Boost", url: "/ai" },
+        { title: "Campaigns", url: "/campaigns" },
+      ],
+    },
+    {
+      title: "Settings",
+      url: "/setting",
+      icon: RiSettings3Fill,
+      hasSubmenu: true,
+      items:[
+        {
+          title:"Integrations",
+          url:"/integrations"
+        },
+        {title:"Preferences",url:"/preferences"}
+      ]
     },
   ],
 };
