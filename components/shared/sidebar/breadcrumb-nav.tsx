@@ -27,7 +27,7 @@ export function BreadcrumbNav({activeTenat}: {activeTenat: string}) {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href={`/${activeTenat}`}>Tableau de bord</BreadcrumbLink>
+          <BreadcrumbLink href={`/${activeTenat}`}>My Breezi</BreadcrumbLink>
         </BreadcrumbItem>
 
         {segments.slice(1).map((segment, index) => {
