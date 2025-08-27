@@ -11,7 +11,6 @@ export default function AdminLayout({
   return (
     <SidebarProvider>
       <AppSidebar collapsible="icon" />
-
       <main className="flex-1 w-full">
         <div className="flex flex-col min-h-screen">
           <div className="flex items-center p-1 border-b bg-card">

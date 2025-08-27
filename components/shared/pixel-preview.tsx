@@ -1,9 +1,9 @@
 /** biome-ignore-all lint/a11y/noSvgWithoutTitle: <explanation> */
 
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 // Helper component for SVG icons to keep the main component clean
 const WifiIcon = ({ className }: { className: string }) => (
@@ -24,7 +24,7 @@ const WifiIcon = ({ className }: { className: string }) => (
     <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
     <line x1="12" y1="20" x2="12.01" y2="20" />
   </svg>
-)
+);
 
 const SignalIcon = ({ className }: { className: string }) => (
   <svg
@@ -45,7 +45,7 @@ const SignalIcon = ({ className }: { className: string }) => (
     <path d="M17 20V8" />
     <path d="M22 20V4" />
   </svg>
-)
+);
 
 const BatteryIcon = ({ className }: { className: string }) => (
   <svg
@@ -63,53 +63,51 @@ const BatteryIcon = ({ className }: { className: string }) => (
     <rect x="1" y="6" width="18" height="12" rx="2" ry="2" />
     <line x1="23" y1="13" x2="23" y2="11" />
   </svg>
-)
+);
 
 // Main Pixel Preview Component
 export const PixelPreview = () => {
   // State to hold the current time, initialized to a default value
-  const [time, setTime] = useState("11:40")
+  const [time, setTime] = useState("11:40");
 
   // Effect to update the time every minute
   useEffect(() => {
     const updateClock = () => {
-      const now = new Date()
-      const hours = String(now.getHours()).padStart(2, "0")
-      const minutes = String(now.getMinutes()).padStart(2, "0")
-      setTime(`${hours}:${minutes}`)
-    }
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      setTime(`${hours}:${minutes}`);
+    };
 
-    updateClock() // Set initial time
-    const timerId = setInterval(updateClock, 60000) // Update every minute
+    updateClock(); // Set initial time
+    const timerId = setInterval(updateClock, 60000); // Update every minute
 
     // Cleanup interval on component unmount
-    return () => clearInterval(timerId)
-  }, [])
+    return () => clearInterval(timerId);
+  }, []);
 
   return (
-    <div className="relative mx-auto">
-      {/* Outer glow effect */}
-      {/* <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-[3rem] blur-xl scale-105"></div> */}
+    <div className="relative mx-auto w-full max-w-[380px]">
 
       {/* Main phone container with metallic border */}
-      <div className="relative border-[6px] rounded-[2.5rem] h-[780px] w-[380px] shadow-2xl bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 border-transparent">
+      <div className="relative border-[0.375rem] rounded-[2.5rem] aspect-[9/19.5] w-full shadow-2xl bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 border-transparent">
         {/* Metallic border overlay */}
         <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-slate-300 via-slate-400 to-slate-600 p-[2px]">
           <div className="w-full h-full rounded-[2.3rem] bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900"></div>
         </div>
 
         {/* Inner metallic rim */}
-        <div className="absolute inset-[4px] rounded-[2rem] bg-gradient-to-br from-slate-600 via-slate-500 to-slate-700 p-[1px]">
+        <div className="absolute inset-[2.5%] rounded-[2rem] bg-gradient-to-br from-slate-600 via-slate-500 to-slate-700 p-[0.5%]">
           <div className="w-full h-full rounded-[1.9rem] bg-gradient-to-br from-slate-800 to-slate-900"></div>
         </div>
 
         {/* Side buttons with metallic finish */}
-        <div className="h-[46px] w-[4px] bg-gradient-to-r from-slate-400 to-slate-600 absolute -start-[10px] top-[124px] rounded-s-lg shadow-lg border-l border-slate-300"></div>
-        <div className="h-[46px] w-[4px] bg-gradient-to-r from-slate-400 to-slate-600 absolute -start-[10px] top-[178px] rounded-s-lg shadow-lg border-l border-slate-300"></div>
-        <div className="h-[64px] w-[4px] bg-gradient-to-r from-slate-600 to-slate-400 absolute -end-[10px] top-[142px] rounded-e-lg shadow-lg border-r border-slate-300"></div>
+        <div className="h-[6%] w-[1.5%] bg-gradient-to-r from-slate-400 to-slate-600 absolute -start-[2.5%] top-[16%] rounded-s-lg shadow-lg border-l border-slate-300"></div>
+        <div className="h-[6%] w-[1.5%] bg-gradient-to-r from-slate-400 to-slate-600 absolute -start-[2.5%] top-[23%] rounded-s-lg shadow-lg border-l border-slate-300"></div>
+        <div className="h-[8%] w-[1.5%] bg-gradient-to-r from-slate-600 to-slate-400 absolute -end-[2.5%] top-[18%] rounded-e-lg shadow-lg border-r border-slate-300"></div>
 
         {/* Main phone body with enhanced glass effect */}
-        <div className="absolute inset-[5px] rounded-[2rem] overflow-hidden bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-black shadow-inner">
+        <div className="absolute inset-[0.3125rem] rounded-[2rem] overflow-hidden bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-black shadow-inner">
           {/* Glass reflection overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none"></div>
 
@@ -136,8 +134,9 @@ export const PixelPreview = () => {
                     alt="Google Logo"
                     className="w-12 h-12 rounded-full mr-4 shadow-lg ring-2 ring-white/50 dark:ring-slate-700/50"
                     onError={(e) => {
-                      ;(e.target as HTMLImageElement).onerror = null
-                      ;(e.target as HTMLImageElement).src = "https://placehold.co/48x48/cccccc/ffffff?text=G"
+                      (e.target as HTMLImageElement).onerror = null;
+                      (e.target as HTMLImageElement).src =
+                        "https://placehold.co/48x48/cccccc/ffffff?text=G";
                     }}
                   />
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent mr-4"></div>
@@ -146,7 +145,9 @@ export const PixelPreview = () => {
                   <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 dark:from-slate-100 dark:via-slate-200 dark:to-slate-300 bg-clip-text text-transparent">
                     Welcome
                   </h1>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">Your day at a glance</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    Your day at a glance
+                  </p>
                 </div>
               </div>
 
@@ -195,5 +196,5 @@ export const PixelPreview = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
