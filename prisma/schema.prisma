@@ -81,6 +81,7 @@ model User {
   createdAt        DateTime
   updatedAt        DateTime
   stripeCustomerId String?
+  stripeAccountId  String?
   role             String?
   banned           Boolean?
   banReason        String?
