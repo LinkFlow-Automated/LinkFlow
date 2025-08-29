@@ -1,7 +1,7 @@
 import { type Visibility, type Link, type Prisma } from "../generated/prisma";
 import { prisma } from "../prisma";
 
-type CreateLinkInput = Omit<Link, "id" | "createdAt">;
+export type CreateLinkInput = Omit<Link, "id" | "createdAt">;
 
 // Search, filter, and sort with Prisma
 export const getLinks = async ({
