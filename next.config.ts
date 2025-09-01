@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // experimental: {
   //   typedRoutes: true,
   // },
+  output: "standalone",
   images: {
     remotePatterns: [
       {
@@ -23,9 +24,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  eslint:{
-    ignoreDuringBuilds: true
-  }
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
