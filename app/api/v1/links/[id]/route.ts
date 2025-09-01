@@ -7,16 +7,16 @@ import { updateLinkSchema } from "@/lib/validations/link";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-export async function GET({ params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await params;
-
     const link = await getLinkById(id);
-
     if (!link) {
       return NextResponse.json({ error: "Link not found" }, { status: 404 });
     }
-
     return NextResponse.json(link, { status: 200 });
   } catch (error) {
     console.error("Error fetching link:", error);
@@ -36,10 +36,12 @@ export async function PATCH(
 
     const body = await req.json();
 
+    // omit id from validatedData
     const validatedData = updateLinkSchema.parse(body);
+    const { id: _, ...rest } = validatedData;
 
     // Update the link
-    const updatedLink = await updateLink({ id, data: validatedData });
+    const updatedLink = await updateLink({ id, ...rest });
 
     return NextResponse.json(updatedLink, { status: 200 });
   } catch (error) {
