@@ -1,7 +1,7 @@
 import { getLinkStats } from "@/lib/services/link-analitycs";
 import { periodToDateRange } from "@/lib/utils";
 import { getLinkStatsURLQuerySchema } from "@/lib/validations/clickEvents";
-import { ZodError } from "better-auth";
+import { ZodError } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     const stats = await getLinkStats(
       validatedQuery.userId,
       validatedQuery.linkId,
-      dateRange
+      dateRange as any
     );
 
     return NextResponse.json(stats);
