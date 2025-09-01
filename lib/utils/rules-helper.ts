@@ -1,4 +1,4 @@
-import { EvaluationContext } from "@/types/smart-rules";
+import { EvaluationContext, Rule } from "@/types/smart-rules";
 import { NextRequest } from "next/server";
 import { DeviceDetector } from "../services/device-detection";
 
@@ -79,7 +79,7 @@ export class RulesHelpers {
   /**
    * Validate rules configuration
    */
-  static validateRules(rules: any): { valid: boolean; errors: string[] } {
+  static validateRules(rules: Rule): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
 
     // Check date consistency

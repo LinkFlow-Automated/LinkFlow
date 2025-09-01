@@ -3,7 +3,7 @@ export interface osInfo {
   version: string;
 }
 
-export interface  EvaluationContext {
+export interface EvaluationContext {
   userAgent: string;
   country?: string;
   device?: "mobile" | "desktop" | "tablet";
@@ -34,7 +34,6 @@ export interface  EvaluationContext {
 
   // language
   language?: string;
-
 }
 
 export interface RuleEvaluationResult {
@@ -57,79 +56,81 @@ export interface LinkWithRules {
   order?: number;
   scheduledAt?: Date;
   expiresAt?: Date;
-  rules?: {
-    // Geographic targeting
-    countryAllow?: string[];
-    countryBlock?: string[];
-    regionAllow?: string[];
-    regionBlock?: string[];
+  rules?: Rule
+}
 
-    // Advanced click rules
-    maxClicks?: number;
-    maxClicksPerDay?: number;
-    maxClicksPerHour?: number;
-    minClicksToShow?: number;
-    resetPeriod?: "daily" | "weekly" | "monthly";
+export interface Rule {
+  // Geographic targeting
+  countryAllow?: string[];
+  countryBlock?: string[];
+  regionAllow?: string[];
+  regionBlock?: string[];
 
-    // Device targeting
-    allowedDevices?: ("mobile" | "desktop" | "tablet")[];
+  // Advanced click rules
+  maxClicks?: number;
+  maxClicksPerDay?: number;
+  maxClicksPerHour?: number;
+  minClicksToShow?: number;
+  resetPeriod?: "daily" | "weekly" | "monthly";
 
-    // languages targeting
-    allowedLanguages?: string[];
-    blockedLanguages?: string[];
-    localizedContent?: {
-      // Show different content by language
-      [languageCode: string]: {
-        title: string;
-        description: string;
-      };
+  // Device targeting
+  allowedDevices?: ("mobile" | "desktop" | "tablet")[];
+
+  // languages targeting
+  allowedLanguages?: string[];
+  blockedLanguages?: string[];
+  localizedContent?: {
+    // Show different content by language
+    [languageCode: string]: {
+      title: string;
+      description: string;
     };
+  };
 
-    // Browser/OS targeting
-    allowedBrowsers?: string[];
-    blockedBrowsers?: string[];
-    allowedOS?: string[];
-    blockedOS?: string[];
-    minBrowserVersion?: {
-      chrome?: string;
-      firefox?: string;
-      safari?: string;
-      edge?: string;
-    };
+  // Browser/OS targeting
+  allowedBrowsers?: string[];
+  blockedBrowsers?: string[];
+  allowedOS?: string[];
+  blockedOS?: string[];
+  minBrowserVersion?: {
+    chrome?: string;
+    firefox?: string;
+    safari?: string;
+    edge?: string;
+  };
 
-    // Scheduling
-    startDate?: string;
-    endDate?: string;
-    timeWindows?: Array<{
-      days: string[];
-      start: string;
-      end: string;
-    }>;
+  // Scheduling
+  startDate?: string;
+  endDate?: string;
+  timeWindows?: Array<{
+    days: string[];
+    start: string;
+    end: string;
+  }>;
 
-    // A/B Testing
-    abTestId?: string;
-    abTestVariant?: "A" | "B";
-    trafficSplit?: number;
-    testStartDate?: string;
-    testEndDate?: string;
+  // A/B Testing
+  abTestId?: string;
+  abTestVariant?: "A" | "B";
+  trafficSplit?: number;
+  testStartDate?: string;
+  testEndDate?: string;
 
-    // Authentication and platform
-    requiresAuth?: boolean;
-    platformAllow?: string[];
-    userSegmentAllow?: string[];
+  // Authentication and platform
+  requiresAuth?: boolean;
+  platformAllow?: string[];
+  userSegmentAllow?: string[];
 
-    // Rotation groups
-    rotationGroup?: string;
-    rotationWeight?: number;
+  // Rotation groups
+  rotationGroup?: string;
+  rotationWeight?: number;
 
-    // Auto-feature rules
-    autoFeatureIfClicks?: number;
+  // Auto-feature rules
+  autoFeatureIfClicks?: number;
 
-    // Location radius targeting
-    radiusTargeting?: {
-      lat: number;
-      lng: number;
-      radius: number; // in km
-    };
+  // Location radius targeting
+  radiusTargeting?: {
+    lat: number;
+    lng: number;
+    radius: number; // in km
   };
 }

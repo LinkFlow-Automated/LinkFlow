@@ -123,7 +123,6 @@ export const getLinkStatsQuerySchema = z.object({
   sample: z.coerce.number().min(0).max(1).optional(),
 });
 
-
 export const getLinkStatsURLQuerySchema = z
   .object({
     userId: z.string().min(1, "User ID is required"),
@@ -240,7 +239,7 @@ export const getLinkStatsURLQuerySchema = z
   })
   .transform((data) => {
     // Convert URL params to the main schema format
-    const result: any = {
+    const result = {
       userId: data.userId,
       ...(data.linkId && { linkId: data.linkId }),
       ...(data.includeMetrics && { includeMetrics: data.includeMetrics }),
@@ -250,6 +249,12 @@ export const getLinkStatsURLQuerySchema = z
       comparison: data.comparison,
       format: data.format,
       realTime: data.realTime,
+      dateRange: {
+        from: data.fromDate ? new Date(data.fromDate) : undefined,
+        to: data.toDate ? new Date(data.toDate) : undefined,
+      },
+      period: data.period,
+      filters: {},
     };
 
     // Handle date range
@@ -263,7 +268,7 @@ export const getLinkStatsURLQuerySchema = z
     }
 
     // Handle filters
-    const filters: any = {};
+    const filters: Record<string, string[]> = {};
     if (data.devices) filters.devices = data.devices;
     if (data.browsers) filters.browsers = data.browsers;
     if (data.os) filters.os = data.os;

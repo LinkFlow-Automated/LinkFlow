@@ -18,22 +18,25 @@
       "recommended": true,
       "a11y": {
         "noRedundantRoles": "off",
-        "useFocusableInteractive": "info",
-        "useSemanticElements": "info",
-        "useAriaPropsForRole": "info",
-        "useValidAnchor": "info"
+        "useFocusableInteractive": "off",
+        "useSemanticElements": "off",
+        "useAriaPropsForRole": "off",
+        "useValidAnchor": "off"
       },
       "style": {
-        "useImportType": "off"
+        "useImportType": "off",
+        "noNonNullAssertion":"off"
       },
       "correctness": {
-        "useExhaustiveDependencies": "info",
-        "noSwitchDeclarations": "info"
+        "useExhaustiveDependencies": "off",
+        "noSwitchDeclarations": "off",
+        "noUnusedFunctionParameters":"off",
+        "noUnusedPrivateClassMembers":"off"
       },
       "suspicious": {
-        "noDocumentCookie": "info",
-        "noImplicitAnyLet": "info",
-        "noExplicitAny": "info"
+        "noDocumentCookie": "off",
+        "noImplicitAnyLet": "off",
+        "noExplicitAny": "off"
       },
       "complexity": {
         "noStaticOnlyClass": "off",

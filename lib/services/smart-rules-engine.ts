@@ -704,7 +704,7 @@ export class SmartRulesEngine {
   private static parseVersion(version: string): number[] {
     return version.split(".").map((part) => {
       const num = parseInt(part, 10);
-      return isNaN(num) ? 0 : num;
+      return Number.isNaN(num) ? 0 : num;
     });
   }
 
