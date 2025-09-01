@@ -6,7 +6,8 @@
     "useIgnoreFile": false
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "experimentalScannerIgnores": ["app/lib/generated", "lib/generated"]
   },
   "formatter": {
     "enabled": false,
@@ -31,7 +32,9 @@
         "useExhaustiveDependencies": "off",
         "noSwitchDeclarations": "off",
         "noUnusedFunctionParameters":"off",
-        "noUnusedPrivateClassMembers":"off"
+        "noUnusedPrivateClassMembers":"off",
+        "noUnusedVariables":"off",
+        "noConstructorReturn":"off"
       },
       "suspicious": {
         "noDocumentCookie": "off",
@@ -40,8 +43,8 @@
       },
       "complexity": {
         "noStaticOnlyClass": "off",
-        "noThisInStatic": "off"
-
+        "noThisInStatic": "off",
+        "useLiteralKeys":"off"
       }
     }
   },
