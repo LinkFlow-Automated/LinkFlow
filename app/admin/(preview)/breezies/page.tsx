@@ -1,3 +1,7 @@
+// import { ABTestingForm } from "@/components/shared/forms/ab-testing-form";
+// import { ClickLimitsSchedulingForm } from "@/components/shared/forms/click-limit-sheclduling";
+// import { DeviceBrowserTargetingForm } from "@/components/shared/forms/device-browser-targeting-form";
+// import { GeographicTargetingForm } from "@/components/shared/forms/geo-target-form";
 import LinkManagement from "@/components/shared/link-management";
 // import { auth } from "@/lib/auth";
 // import { headers } from "next/headers";
@@ -6,7 +10,11 @@ export default async function page() {
   // const session = await auth.api.getSession({ headers: await headers() });
   // const user = session?.user;
   return (
-    <div className="w-full h-full py-4">
+    <div className="w-full h-full py-4 scroll-auto">
+      {/* <ABTestingForm open={true}/> */}
+      {/* <DeviceBrowserTargetingForm open /> */}
+      {/* <GeographicTargetingForm open/> */}
+      {/* <ClickLimitsSchedulingForm open/> */}
       <LinkManagement />
     </div>
   );

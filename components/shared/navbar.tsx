@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import DropdownUser from "./dropdown-user";
+import { HiArrowTrendingUp } from "react-icons/hi2";
 
 export default function Navbar() {
   const session = useSession();
@@ -76,7 +76,14 @@ export default function Navbar() {
 
         {/* Desktop Auth Buttons */}
         {session.data?.user ? (
-          <DropdownUser className="hidden md:flex" user={session.data.user} />
+          <div className="hidden md:flex">
+            <Button className="" asChild onClick={() => handleLinkClick()}>
+              <Link href="/admin">
+                Go to Admin
+                <HiArrowTrendingUp className="pr-1 size-6" />
+              </Link>
+            </Button>
+          </div>
         ) : (
           <div className="hidden md:flex items-center gap-2">
             <Button
@@ -121,7 +128,7 @@ export default function Navbar() {
                     src={"/breezi-high-resolution-logo-transparent.png"}
                     width={1000}
                     height={1000}
-                    className="w-24 h-auto dark:hidden"
+                    className="w-22 h-auto dark:hidden"
                   />
                   <Image
                     alt="breezi logo"
@@ -155,8 +162,13 @@ export default function Navbar() {
 
               {/* Mobile Auth */}
               {session.data?.user ? (
-                <div className="w-full px-2 self-end">
-                  <DropdownUser user={session.data.user} />
+                <div className="px-2">
+                  <Button className="" asChild>
+                    <Link href="/admin" className="">
+                      Go to Admin
+                      {/* <HiArrowTrendingUp className="pr-1 size-6" /> */}
+                    </Link>
+                  </Button>
                 </div>
               ) : (
                 <div className="flex flex-col gap-3 pt-4 border-t">
