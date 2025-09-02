@@ -15,7 +15,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Clock, RotateCcw } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Settings2 } from "lucide-react";
+import { AiFillSchedule } from "react-icons/ai";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +29,9 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { useState } from "react";
+import { HiUser } from "react-icons/hi2";
+import DateTimePicker from "@/components/ui/date-time-picker";
 
 const clickLimitsSchedulingSchema = z.object({
   maxClicks: z.number().int().min(1).optional(),
@@ -66,26 +75,22 @@ export function ClickLimitsSchedulingForm({
   open,
   onOpenChange,
 }: ClickLimitsSchedulingFormProps) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
   const form = useForm<ClickLimitsSchedulingData>({
     resolver: zodResolver(clickLimitsSchedulingSchema),
     defaultValues: {
       maxClicks: initialData?.maxClicks,
-      maxClicksPerDay: initialData?.maxClicksPerDay,
-      maxClicksPerHour: initialData?.maxClicksPerHour,
       maxClicksPerUser: initialData?.maxClicksPerUser,
-      scheduledAt: initialData?.scheduledAt || null,
       expiresAt: initialData?.expiresAt || null,
       allowedDays: initialData?.allowedDays || [],
-      allowedHours: initialData?.allowedHours || { start: "", end: "" },
-      timezone: initialData?.timezone || "",
     },
   });
 
   const handleSubmit = async (data: ClickLimitsSchedulingData) => {
     try {
-      // TODO: Implement your form submission logic here
       console.log("Form submitted:", data);
-      // Example: await submitClickLimitsData(data);
+      onOpenChange?.(false);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -93,229 +98,169 @@ export function ClickLimitsSchedulingForm({
 
   const handleCancel = () => {
     form.reset();
-    // Additional cancel logic if needed
+    onOpenChange?.(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-7xl min-w-6xl">
+      <DialogContent className="max-w-4xl min-w-2xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <RotateCcw className="h-5 w-5" />
-            <DialogTitle>
-              {isEditing ? "Edit Click Limits & Scheduling" : "Click Limits & Scheduling"}
+            <AiFillSchedule className="h-5 w-5 text-blue-600" />
+            <DialogTitle className="text-xl">
+              {isEditing ? "Edit Link Settings" : "Click Limits & Scheduling"}
             </DialogTitle>
           </div>
           <DialogDescription>
-            Set usage limits and schedule to control link access
+            Control how your link can be accessed
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-6">
-          {/* Click Limits Section */}
-          <div>
-            <h3 className="text-lg font-medium mb-4">Click Limits</h3>
-          <Form {...form}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-6"
+          >
+            {/* Basic Settings */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <HiUser className="h-4 w-4" />
+                Usage Limits
+              </div>
+
               <FormField
                 control={form.control}
                 name="maxClicks"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Max Total Clicks</FormLabel>
+                    <FormLabel>Total clicks allowed</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="1000"
+                        placeholder="e.g., 1000"
                         {...field}
                         value={field.value || ""}
                         onChange={(e) =>
                           field.onChange(
                             e.target.value
-                              ? Number.parseInt(e.target.value)
+                              ? parseInt(e.target.value)
                               : undefined
                           )
                         }
                       />
                     </FormControl>
                     <FormDescription>
-                      Total clicks before link expires
+                      Link expires after this many clicks (leave empty for
+                      unlimited)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="maxClicksPerDay"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Max Clicks per Day</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="100"
-                        {...field}
-                        value={field.value || ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value
-                              ? Number.parseInt(e.target.value)
-                              : undefined
-                          )
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>Daily click limit</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="maxClicksPerHour"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Max Clicks per Hour</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="10"
-                        {...field}
-                        value={field.value || ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value
-                              ? Number.parseInt(e.target.value)
-                              : undefined
-                          )
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>Hourly click limit</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="maxClicksPerUser"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Max Clicks per User</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="5"
-                        {...field}
-                        value={field.value || ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value
-                              ? Number.parseInt(e.target.value)
-                              : undefined
-                          )
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>Clicks per unique user</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </Form>
-          </div>
-          
-          {/* Scheduling Section */}
-          <div>
-            <h3 className="text-lg font-medium mb-4">Scheduling</h3>
-            <div className="flex items-center gap-2 mb-2">
-              <Clock className="h-4 w-4" />
-              <span className="text-sm text-muted-foreground">Control when your link is active</span>
-            </div>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-6"
-            >
-              {/* Date Range */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-foreground">
-                  Date Range
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="scheduledAt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Start Date & Time</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="datetime-local"
-                            value={
-                              field.value
-                                ? new Date(field.value)
-                                    .toISOString()
-                                    .slice(0, 16)
-                                : ""
-                            }
-                            onChange={(e) =>
-                              field.onChange(
-                                e.target.value ? new Date(e.target.value) : null
-                              )
-                            }
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          When link becomes active
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="expiresAt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>End Date & Time</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="datetime-local"
-                            value={
-                              field.value
-                                ? new Date(field.value)
-                                    .toISOString()
-                                    .slice(0, 16)
-                                : ""
-                            }
-                            onChange={(e) =>
-                              field.onChange(
-                                e.target.value ? new Date(e.target.value) : null
-                              )
-                            }
-                          />
-                        </FormControl>
-                        <FormDescription>When link expires</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
 
-              {/* Days of Week */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-foreground">
-                  Allowed Days
-                </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="scheduledAt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Scheduled date</FormLabel>
+                      <FormControl>
+                        <DateTimePicker
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder="Select when link actives"
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Link will be active after this date
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="expiresAt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Expiration date</FormLabel>
+                      <FormControl>
+                        <DateTimePicker
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder="Select when link expires"
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Link wont be active after this date
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Advanced Settings */}
+            <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+              <CollapsibleTrigger asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full justify-between p-2"
+                >
+                  <span className="flex items-center gap-2">
+                    <Settings2 className="h-4 w-4" />
+                    Advanced Options
+                  </span>
+                  <span className="text-xs">
+                    {showAdvanced ? "Hide" : "Show"}
+                  </span>
+                </Button>
+              </CollapsibleTrigger>
+
+              <CollapsibleContent className="space-y-4 pt-4">
+                <FormField
+                  control={form.control}
+                  name="maxClicksPerUser"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Clicks per person</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="e.g., 3"
+                          {...field}
+                          value={field.value || ""}
+                          onChange={(e) =>
+                            field.onChange(
+                              e.target.value
+                                ? parseInt(e.target.value)
+                                : undefined
+                            )
+                          }
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        How many times each person can use the link
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="allowedDays"
                   render={({ field }) => (
                     <FormItem>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      <FormLabel>Active days</FormLabel>
+                      <FormDescription className="mb-3">
+                        Choose which days the link works (leave empty for all
+                        days)
+                      </FormDescription>
+                      <div className="flex flex-wrap gap-2">
                         {DAYS_OPTIONS.map((day) => (
                           <div
                             key={day.value}
@@ -339,100 +284,31 @@ export function ClickLimitsSchedulingForm({
                             />
                             <label
                               htmlFor={day.value}
-                              className="text-sm font-medium"
+                              className="text-sm font-medium cursor-pointer"
                             >
                               {day.label}
                             </label>
                           </div>
                         ))}
                       </div>
-                      <FormDescription>
-                        Leave empty to allow all days
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
+              </CollapsibleContent>
+            </Collapsible>
 
-              {/* Time Range */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-foreground">
-                  Time Range
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="allowedHours.start"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Start Time</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="time"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="allowedHours.end"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>End Time</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="time"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="timezone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Timezone</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="UTC, EST, PST"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormDescription>
-                  Leave empty to allow all hours
-                </FormDescription>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4">
-                <Button type="button" variant="outline" onClick={handleCancel}>
-                  Cancel
-                </Button>
-
-                <Button type="submit">
-                  {isEditing
-                    ? "Update Limits & Schedule"
-                    : "Save Limits & Schedule"}
-                </Button>
-              </div>
-            </form>
-          </Form>
-          </div>
-        </div>
+            {/* Actions */}
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              <Button type="button" variant="outline" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button type="submit" className="">
+                {isEditing ? "Update Test" : "Create A/B Test"}
+              </Button>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

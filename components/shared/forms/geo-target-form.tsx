@@ -13,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Globe } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +21,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { TiWorld } from "react-icons/ti";
 
 const COUNTRIES = [
   { label: "United States", value: "US" },
@@ -123,7 +123,7 @@ export function GeographicTargetingForm({
       <DialogContent className="max-w-7xl min-w-3xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <Globe className="h-5 w-5" />
+            <TiWorld className="h-5 w-5" />
             <DialogTitle>
               {isEditing ? "Edit Geographic Targeting" : "Geographic Targeting"}
             </DialogTitle>

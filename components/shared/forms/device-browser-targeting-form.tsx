@@ -13,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Smartphone } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +21,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { PiDevicesFill } from "react-icons/pi";
 
 const deviceBrowserTargetingSchema = z.object({
   allowedDevices: z.array(z.enum(["mobile", "desktop", "tablet"])).optional(),
@@ -115,7 +115,7 @@ export function DeviceBrowserTargetingForm({
       <DialogContent className="max-w-7xl min-w-5xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <Smartphone className="h-5 w-5" />
+            <PiDevicesFill className="h-5 w-5" />
             <DialogTitle>
               {isEditing
                 ? "Edit Device & Browser Targeting"

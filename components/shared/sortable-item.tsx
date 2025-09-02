@@ -2,13 +2,15 @@ import { cn } from "@/lib/utils";
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { MdAnimation, MdOutlineDevicesOther } from "react-icons/md";
-import { GiTransparentTubes, GiWorld } from "react-icons/gi";
-import { TiArrowForwardOutline } from "react-icons/ti";
-import { BsLayoutWtf } from "react-icons/bs";
-import { IoLockOpenOutline } from "react-icons/io5";
+import { MdAnimation } from "react-icons/md";
+import { TiWorld } from "react-icons/ti";
+import { IoLockClosed } from "react-icons/io5";
+import { RiLayout4Fill, RiShareForwardFill } from "react-icons/ri";
+import { PiDevicesFill } from "react-icons/pi";
+import { FaGripVertical } from "react-icons/fa6";
+import { HiBeaker } from "react-icons/hi2";
+import { AiFillSchedule } from "react-icons/ai";
 
 export default function SortableItems({
   id,
@@ -30,23 +32,27 @@ export default function SortableItems({
   const iconsSocials = [
     {
       name: "Layout",
-      icon: BsLayoutWtf,
+      icon: RiLayout4Fill,
     },
     {
       name: "Devices target",
-      icon: MdOutlineDevicesOther,
+      icon: PiDevicesFill,
     },
     {
       name: "Geo Target",
-      icon: GiWorld,
+      icon: TiWorld,
+    },
+    {
+      name: "Click Limits & Scheduling",
+      icon: AiFillSchedule,
     },
     {
       name: "AB Testing",
-      icon: GiTransparentTubes,
+      icon: HiBeaker,
     },
     {
       name: "Forward Link",
-      icon: TiArrowForwardOutline,
+      icon: RiShareForwardFill,
     },
     {
       name: "Animate",
@@ -54,7 +60,7 @@ export default function SortableItems({
     },
     {
       name: "Lock",
-      icon: IoLockOpenOutline,
+      icon: IoLockClosed,
     },
   ]
 
@@ -69,7 +75,7 @@ export default function SortableItems({
       className={cn("flex flex-row")}
     >
       <div className="flex items-center gap-3 p-1 w-fit">
-        <GripVertical
+        <FaGripVertical
           className={cn(
             "cursor-grab touch-none transition-all duration-200 hover:shadow-md active:cursor-grabbing h-8 w-8 text-muted-foreground/60 hover:text-muted-foreground transition-color",
             isDragging && "z-50 opacity-60 shadow-lg scale-105 rotate-2"
@@ -83,7 +89,7 @@ export default function SortableItems({
           </span>
         </div>
         <div className="flex items-center gap-4">
-          {iconsSocials.map((item) => (
+          {iconsSocials.map((item, i) => (
             <item.icon className="size-4" key={item.name} />
           ))}
         </div>
