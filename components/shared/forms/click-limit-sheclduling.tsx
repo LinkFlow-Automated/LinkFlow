@@ -28,6 +28,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { HiUser } from "react-icons/hi2";
@@ -102,7 +104,12 @@ export function ClickLimitsSchedulingForm({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger asChild className="cursor-pointer">
+        {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
+          <AiFillSchedule className="size-5" />
+        {/* </Button> */}
+      </DialogTrigger>
       <DialogContent className="max-w-4xl min-w-2xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
@@ -300,9 +307,11 @@ export function ClickLimitsSchedulingForm({
 
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button type="button" variant="outline" onClick={handleCancel}>
-                Cancel
-              </Button>
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button type="submit" className="">
                 {isEditing ? "Update Test" : "Create A/B Test"}
               </Button>

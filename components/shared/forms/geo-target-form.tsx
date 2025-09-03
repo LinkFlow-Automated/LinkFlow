@@ -19,6 +19,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { TiWorld } from "react-icons/ti";
@@ -119,7 +121,12 @@ export function GeographicTargetingForm({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger asChild className="cursor-pointer">
+        {/* <Button variant="outline" className="border-0 cursor-pointer p-0"> */}
+          <TiWorld className="h-5 w-5" />
+        {/* </Button> */}
+      </DialogTrigger>
       <DialogContent className="max-w-7xl min-w-3xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
@@ -287,9 +294,11 @@ export function GeographicTargetingForm({
             </div>
 
             <div className="flex justify-end gap-3 pt-4">
-              <Button type="button" variant="outline" onClick={handleCancel}>
-                Cancel
-              </Button>
+              <DialogClose>
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button type="submit">
                 {isEditing ? "Update Targeting" : "Save Geographic Rules"}
               </Button>

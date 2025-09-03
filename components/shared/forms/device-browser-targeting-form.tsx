@@ -19,6 +19,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { PiDevicesFill } from "react-icons/pi";
@@ -111,7 +113,12 @@ export function DeviceBrowserTargetingForm({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger asChild className="cursor-pointer">
+        {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
+          <PiDevicesFill className="size-5" />
+        {/* </Button> */}
+      </DialogTrigger>
       <DialogContent className="max-w-7xl min-w-5xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
@@ -388,9 +395,11 @@ export function DeviceBrowserTargetingForm({
             </div> */}
 
             <div className="flex justify-end gap-3 pt-4">
-              <Button type="button" variant="outline" onClick={handleCancel}>
-                Cancel
-              </Button>
+              <DialogClose>
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button type="submit">
                 {isEditing
                   ? "Update Device Targeting"

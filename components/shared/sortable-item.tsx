@@ -4,13 +4,14 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Card } from "@/components/ui/card";
 import { MdAnimation } from "react-icons/md";
-import { TiWorld } from "react-icons/ti";
 import { IoLockClosed } from "react-icons/io5";
 import { RiLayout4Fill, RiShareForwardFill } from "react-icons/ri";
-import { PiDevicesFill } from "react-icons/pi";
 import { FaGripVertical } from "react-icons/fa6";
-import { HiBeaker } from "react-icons/hi2";
-import { AiFillSchedule } from "react-icons/ai";
+import BaseLinkForm from "./forms/base-link-form";
+import { ABTestingForm } from "./forms/ab-testing-form";
+import { ClickLimitsSchedulingForm } from "./forms/click-limit-sheclduling";
+import { GeographicTargetingForm } from "./forms/geo-target-form";
+import { DeviceBrowserTargetingForm } from "./forms/device-browser-targeting-form";
 
 export default function SortableItems({
   id,
@@ -35,22 +36,6 @@ export default function SortableItems({
       icon: RiLayout4Fill,
     },
     {
-      name: "Devices target",
-      icon: PiDevicesFill,
-    },
-    {
-      name: "Geo Target",
-      icon: TiWorld,
-    },
-    {
-      name: "Click Limits & Scheduling",
-      icon: AiFillSchedule,
-    },
-    {
-      name: "AB Testing",
-      icon: HiBeaker,
-    },
-    {
       name: "Forward Link",
       icon: RiShareForwardFill,
     },
@@ -62,7 +47,7 @@ export default function SortableItems({
       name: "Lock",
       icon: IoLockClosed,
     },
-  ]
+  ];
 
   return (
     <Card
@@ -84,14 +69,25 @@ export default function SortableItems({
       </div>
       <div className="flex-1 flex flex-col justify-between gap-4">
         <div className="flex-1">
-          <span className="text-foreground font-medium select-none">
+          {/* <span className="text-foreground font-medium select-none">
             {context}
-          </span>
+          </span> */}
+          <BaseLinkForm
+            initialValues={{
+              name: "Portfolio",
+              url: "https://amherley.dev",
+              type: "",
+            }}
+          />
         </div>
         <div className="flex items-center gap-4">
           {iconsSocials.map((item, i) => (
-            <item.icon className="size-4" key={item.name} />
+            <item.icon className="size-5" key={item.name} />
           ))}
+          <DeviceBrowserTargetingForm/>
+          <GeographicTargetingForm/>
+          <ClickLimitsSchedulingForm/>
+          <ABTestingForm/>
         </div>
       </div>
     </Card>
