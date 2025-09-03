@@ -6,31 +6,31 @@ import { Description, HeroTitle, TypographyContainer } from "./typograghy";
 export default function Features() {
   const featuresTop = [
     {
-      title: "Feature 1",
-      description: "Feature 1 description",
+      title: "Smart Rules",
+      description: "Personalize your links for every visitor. Show different content based on location, language, or device to maximize engagement and conversions.",
       image: "/test/2.png",
     },
     {
-      title: "Feature 2",
-      description: "Feature 2 description",
+      title: "AI Optimization",
+      description: "Let AI do the heavy lifting. Breezi analyzes visitor behavior and automatically promotes your best-performing links.",
       image: "/test/2.jpg",
     },
   ];
 
   const featuresBottom = [
     {
-      title: "Feature 3",
-      description: "Feature 3 description",
+      title: "Instant Editing via Telegram",
+      description: "Update on the go. Instantly edit your bio and links directly from Telegram, no need to log in to a dashboard.",
       image: "/test/3.png",
     },
     {
-      title: "Feature 4",
-      description: "Feature 4 description",
+      title: "Built-in Analytics",
+      description: "See what really works. Track clicks, geographic reach, devices, browsers, and campaign results in real time.",
       image: "/test/4.png",
     },
     {
-      title: "Feature 5",
-      description: "Feature 5 description",
+      title: "Multi-Channel Ready",
+      description: "One link, everywhere. Use your Breezi identity across Facebook, Instagram, TikTok, X, LinkedIn, or even business cards.",
       image: "/test/1.jpg",
     },
   ];
@@ -64,7 +64,7 @@ export default function Features() {
         <div>
           <Button
             size="lg"
-            className="md:text-xl md:px-8 md:py-6 rounded-2xl bg-secondary text-primary"
+            className="md:text-xl md:px-8 md:py-6 mt-2 rounded-2xl bg-secondary text-primary hover:bg-secondary/60 hover:text-primary"
           >
             Get Started - For Free
           </Button>

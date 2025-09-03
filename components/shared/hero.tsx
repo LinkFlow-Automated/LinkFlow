@@ -10,7 +10,7 @@ import {
 export default function Hero() {
   return (
     <Container className="h-screen pt-20 md:pt-32 flex flex-col justify-center items-center relative">
-      <div className="h-4/5 w-full">
+      <div className="h-4/5 w-full select-none">
         <TypographyContainer
           spacing="loose"
           className="sm:max-w-full sm:w-full"
@@ -28,7 +28,7 @@ export default function Hero() {
       </div>
       <div className="h-1/5 flex md:flex-row flex-col md:justify-around w-full sm:gap-4">
         <div className="w-full md:w-1/2 flex items-center justify-center md:justify-start text-center md:text-start">
-          <Description size="md" className="mt-8 max-w-md">
+          <Description size="md" className="mt-3 max-w-md">
             AI-powered keywords all meta descriptions to enhance discoverability
             on search engines.
           </Description>

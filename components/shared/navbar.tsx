@@ -88,7 +88,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-2">
             <Button
               variant="ghost"
-              className="text-primary font-medium hover:text-primary/60 hover:bg-primary transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2"
+              className="text-primary font-medium hover:text-secondary/60 hover:bg-primary transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2"
             >
               <Link href="/login">LOGIN</Link>
             </Button>
