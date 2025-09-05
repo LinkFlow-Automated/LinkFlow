@@ -86,7 +86,7 @@ export default function SortableItems({
             initialValues={{
               name: "Portfolio",
               url: "https://amherley.dev",
-              type: "",
+              type: "link",
             }}
           />
         </div>

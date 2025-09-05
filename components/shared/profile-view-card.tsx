@@ -60,7 +60,7 @@ export default function ProfileViewCard() {
           <div className="flex flex-row gap-2">
             {icons.map((icon) => (
               <div key={icon.label}>
-                <icon.icon className="size-5 text-muted-foreground hover:text-primary" />
+                <icon.icon className="size-5 text-muted-foreground hover:text-primary cursor-pointer" />
               </div>
             ))}
           </div>
