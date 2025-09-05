@@ -21,9 +21,19 @@ export type Profile = {
 };
 
 export type LinkItem = {
+  id: string;
   label: string;
   url: string;
   icon?: string;
+  iconType?: "emoji" | "image" | "icon-font"; // Specify icon type
+  backgroundColor?: string; // Custom background for specific links
+  textColor?: string; // Custom text color for specific links
+  layout?: "default" | "minimal" | "highlighted";
+  behavior: "new-tab" | "same-tab" | "modal"; // How the link should open
+  tracking?: {
+    enabled: boolean;
+    id?: string; // For analytics tracking
+  };
 };
 
 export type Section =
@@ -31,6 +41,7 @@ export type Section =
       type: "links";
       title?: string;
       links: LinkItem[];
+      layout?: string;
     }
   | {
       type: "spotify";
@@ -38,6 +49,7 @@ export type Section =
       displayMode: "embed" | "list";
       playlistId?: string;
       showFollowButton?: boolean;
+      layout?: string;
     }
   | {
       type: "youtube";
@@ -46,6 +58,7 @@ export type Section =
       displayMode: "grid" | "list";
       limit?: number;
       showSubscribeButton?: boolean;
+      layout?: string;
     }
   | {
       type: "instagram";
@@ -54,6 +67,7 @@ export type Section =
       displayMode: "grid" | "carousel";
       limit?: number;
       showFollowButton?: boolean;
+      layout?: string;
     }
   | {
       type: "products";
@@ -62,11 +76,13 @@ export type Section =
       storeId: string;
       displayMode: "cards" | "list";
       limit?: number;
+      layout?: string;
     }
   | {
       type: "customHtml";
       title?: string;
       html: string;
+      layout?: string;
     };
 
 export type BioPage = {

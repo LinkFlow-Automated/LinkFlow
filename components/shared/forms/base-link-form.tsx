@@ -20,17 +20,9 @@ type BaseLinkForm = z.infer<typeof baseLinkFormSchema>;
 
 interface BaseLinkFormProps {
   initialValues?: BaseLinkForm;
-  isEditing?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
 }
 
-export default function BaseLinkForm({
-  initialValues,
-  isEditing,
-  open,
-  onOpenChange,
-}: BaseLinkFormProps) {
+export default function BaseLinkForm({ initialValues }: BaseLinkFormProps) {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [isEditingUrl, setIsEditingUrl] = useState(false);
 
@@ -65,7 +57,7 @@ export default function BaseLinkForm({
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="bg-red-500 dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
+                        className=" dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
                         placeholder="Name"
                         {...field}
                       />
@@ -98,7 +90,7 @@ export default function BaseLinkForm({
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="bg-red-500 dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
+                        className="dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
                         placeholder="Name"
                         {...field}
                       />

@@ -113,7 +113,7 @@ export function ClickLimitsSchedulingForm({
       <DialogContent className="max-w-4xl min-w-2xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <AiFillSchedule className="h-5 w-5 text-blue-600" />
+            <AiFillSchedule className="h-5 w-5" />
             <DialogTitle className="text-xl">
               {isEditing ? "Edit Link Settings" : "Click Limits & Scheduling"}
             </DialogTitle>

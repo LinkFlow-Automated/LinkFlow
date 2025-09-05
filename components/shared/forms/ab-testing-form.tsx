@@ -110,7 +110,7 @@ export function ABTestingForm({
       <DialogContent className="max-w-7xl min-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <HiBeaker className="h-5 w-5 text-blue-600" />
+            <HiBeaker className="h-5 w-5" />
             <DialogTitle>
               {isEditing ? "Edit A/B Test" : "Create A/B Test"}
             </DialogTitle>
