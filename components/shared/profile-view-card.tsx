@@ -7,7 +7,7 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa6";
-
+import { SiWakatime } from "react-icons/si";
 export default function ProfileViewCard() {
   const user = {
     name: "Anshul",
@@ -39,6 +39,10 @@ export default function ProfileViewCard() {
       label: "Youtube",
       icon: FaYoutube,
     },
+    {
+      label: "Wakatime",
+      icon: SiWakatime,
+    }
   ];
   return (
     <div>
