@@ -12,6 +12,8 @@ import { ABTestingForm } from "./forms/ab-testing-form";
 import { ClickLimitsSchedulingForm } from "./forms/click-limit-sheclduling";
 import { GeographicTargetingForm } from "./forms/geo-target-form";
 import { DeviceBrowserTargetingForm } from "./forms/device-browser-targeting-form";
+import { HiTrash } from "react-icons/hi2";
+import { HiArchive } from "react-icons/hi";
 
 export default function SortableItems({
   id,
@@ -47,6 +49,14 @@ export default function SortableItems({
       name: "Lock",
       icon: IoLockClosed,
     },
+    {
+      name: "Archive",
+      icon: HiArchive
+    },
+    {
+      name: "Delete",
+      icon: HiTrash,
+    }
   ];
 
   return (
