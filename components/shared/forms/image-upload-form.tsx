@@ -7,6 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import z from "zod";
+import PopoverWrapper from "../popover-wrapper";
 
 
 // accept image or video
@@ -33,6 +34,9 @@ export default function ImageUploadForm() {
         <DialogHeader>
           <DialogTitle>Upload Image</DialogTitle>
         </DialogHeader>
+        <PopoverWrapper title="Test 1 3">
+            test
+        </PopoverWrapper>
       </DialogContent>
     </Dialog>
   );
