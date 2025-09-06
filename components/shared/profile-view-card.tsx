@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   FaGithub,
   FaInstagram,
@@ -7,7 +6,9 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa6";
-import { SiWakatime } from "react-icons/si";
+import { SiLeetcode, SiWakatime } from "react-icons/si";
+import ImageUploadForm from "./forms/image-upload-form";
+
 export default function ProfileViewCard() {
   const user = {
     name: "Anshul",
@@ -36,13 +37,17 @@ export default function ProfileViewCard() {
       icon: FaSpotify,
     },
     {
+      label: "LeetCode",
+      icon: SiLeetcode,
+    },
+    {
       label: "Youtube",
       icon: FaYoutube,
     },
     {
       label: "Wakatime",
       icon: SiWakatime,
-    }
+    },
   ];
   return (
     <div>
@@ -50,12 +55,13 @@ export default function ProfileViewCard() {
         // size="lg"
         className=" flex flex-row gap-2 max-w-md min-w-md"
       >
-        <Avatar className="size-16 rounded-full">
+        {/* <Avatar className="size-16 rounded-full">
           <AvatarImage src={user.avatar} alt={user.name} />
           <AvatarFallback className="rounded-lg">
             {user.name.split(" ")[0]}
           </AvatarFallback>
-        </Avatar>
+        </Avatar> */}
+        <ImageUploadForm />
         <div className="grid flex-1 text-left text-sm leading-tight">
           <span className="truncate font-medium">{user.name}</span>
           <span className="text-muted-foreground truncate text-md">
