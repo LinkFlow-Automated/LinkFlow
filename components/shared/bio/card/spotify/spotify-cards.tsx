@@ -23,7 +23,7 @@ export function ArtistInfoCard({ className, isExpanded = false, onToggle }: Spot
       layout
       animate={{
         width: isExpanded ? 320 : 320,
-        height: isExpanded ? 320 : 160,
+        height: isExpanded ? 320 : 120,
       }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
       whileHover={{ y: -4, scale: 1.02 }}
@@ -31,13 +31,13 @@ export function ArtistInfoCard({ className, isExpanded = false, onToggle }: Spot
     >
       <Card
         className={cn(
-          "group cursor-pointer transition-all duration-300 hover:shadow-lg",
+          "group cursor-pointer transition-all duration-300 hover:shadow-lg p-0 m-0",
           "bg-card border-border h-full w-full",
           className,
         )}
         onClick={onToggle}
       >
-        <div className="p-6 h-full flex flex-col">
+        <div className="p-3 h-full flex flex-col">
           <AnimatePresence mode="wait">
             {isExpanded ? (
               <motion.div
@@ -115,7 +115,7 @@ export function ArtistInfoCard({ className, isExpanded = false, onToggle }: Spot
                     <p className="text-sm text-muted-foreground">12.4M followers</p>
                   </div>
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.3, delay: 0.1 }}>
-                    <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20 text-xs">
+                    <Badge variant="default" className="bg-accent/10 text-accent border-accent/20 text-xs">
                       New
                     </Badge>
                   </motion.div>
@@ -153,7 +153,7 @@ export function NewSongCard({ className, isExpanded = false, onToggle }: Spotify
       layout
       animate={{
         width: isExpanded ? 320 : 320,
-        height: isExpanded ? 320 : 160,
+        height: isExpanded ? 320 : 120,
       }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
       whileHover={{ y: -4, scale: 1.02 }}
@@ -161,13 +161,13 @@ export function NewSongCard({ className, isExpanded = false, onToggle }: Spotify
     >
       <Card
         className={cn(
-          "group cursor-pointer transition-all duration-300 hover:shadow-lg",
+          "group cursor-pointer transition-all duration-300 hover:shadow-lg p-0 m-0",
           "bg-card border-border h-full w-full",
           className,
         )}
         onClick={onToggle}
       >
-        <div className="p-6 h-full flex flex-col">
+        <div className="p-3 h-full flex flex-col">
           <AnimatePresence mode="wait">
             {isExpanded ? (
               <motion.div
@@ -323,7 +323,7 @@ export function NewAlbumCard({ className, isExpanded = false, onToggle }: Spotif
       layout
       animate={{
         width: isExpanded ? 320 : 320,
-        height: isExpanded ? 320 : 160,
+        height: isExpanded ? 320 : 120,
       }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
       whileHover={{ y: -4, scale: 1.02 }}
@@ -331,13 +331,13 @@ export function NewAlbumCard({ className, isExpanded = false, onToggle }: Spotif
     >
       <Card
         className={cn(
-          "group cursor-pointer transition-all duration-300 hover:shadow-lg",
+          "group cursor-pointer transition-all duration-300 hover:shadow-lg p-0 m-0",
           "bg-card border-border h-full w-full",
           className,
         )}
         onClick={onToggle}
       >
-        <div className="p-6 h-full flex flex-col">
+        <div className="p-3 h-full flex flex-col">
           <AnimatePresence mode="wait">
             {isExpanded ? (
               <motion.div
@@ -482,7 +482,7 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
       layout
       animate={{
         width: isExpanded ? 320 : 320,
-        height: isExpanded ? 320 : 160,
+        height: isExpanded ? 320 : 120,
       }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
       whileHover={{ y: -4, scale: 1.02 }}
@@ -490,7 +490,7 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
     >
       <Card
         className={cn(
-          "group cursor-pointer transition-all duration-300 hover:shadow-lg",
+          "group cursor-pointer transition-all duration-300 hover:shadow-lg p-0 m-0",
           "bg-card border-border relative overflow-hidden h-full w-full",
           className,
         )}
@@ -509,7 +509,7 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
           }}
         />
 
-        <div className="relative p-6 h-full flex flex-col">
+        <div className="relative p-3 h-full flex flex-col">
           <AnimatePresence mode="wait">
             {isExpanded ? (
               <motion.div
