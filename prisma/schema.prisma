@@ -23,6 +23,49 @@ model Waitlist {
   @@map("waitlist")
 }
 
+model AvatarBorder {
+  id         String   @id @default(cuid())
+  name       String
+  type       String // "static" | "animated"
+  previewUrl String
+  config     Json // shape, thickness, colors, animation
+  rarity     String // "common" | "rare" | "epic" | "legendary"
+  price      Float?
+  currency   String? // "USD" | "CREDITS"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  users UserAvatarBorder[]
+}
+
+model UserAvatarBorder {
+  id       String  @id @default(cuid())
+  userId   String
+  borderId String
+  owned    Boolean @default(false) // if purchased/unlocked
+  equipped Boolean @default(false) // if currently active
+
+  user   User         @relation(fields: [userId], references: [id])
+  border AvatarBorder @relation(fields: [borderId], references: [id])
+}
+
+model Theme {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  settings    Json
+
+  type      ThemeType @default(USER)
+  isPublic  Boolean   @default(false)
+  isDefault Boolean   @default(false)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model ClickEvent {
   id        String  @id @default(cuid())
   linkId    String
@@ -92,8 +135,10 @@ model User {
 
   apikeys Apikey[]
 
-  members     Member[]
-  invitations Invitation[]
+  members          Member[]
+  invitations      Invitation[]
+  Theme            Theme[]
+  UserAvatarBorder UserAvatarBorder[]
 
   @@unique([email])
   @@map("user")
@@ -265,4 +310,10 @@ model Invitation {
   user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
 
   @@map("invitation")
+}
+
+enum ThemeType {
+  USER
+  SYSTEM
+  SHARED
 }
