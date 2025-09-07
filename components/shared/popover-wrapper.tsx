@@ -20,7 +20,7 @@ export default function PopoverWrapper({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="cursor-pointer">
           {title}
           </Button>
       </PopoverTrigger>

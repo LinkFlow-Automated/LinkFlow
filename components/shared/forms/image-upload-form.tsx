@@ -9,11 +9,10 @@ import {
 import z from "zod";
 import PopoverWrapper from "../popover-wrapper";
 
-
 // accept image or video
 const fileUploadeSchema = z.object({
-    imageOrVide: z.string().min(1, "Image or Video is required"),
-})
+  imageOrVide: z.string().min(1, "Image or Video is required"),
+});
 
 export default function ImageUploadForm() {
   const user = {
@@ -34,9 +33,8 @@ export default function ImageUploadForm() {
         <DialogHeader>
           <DialogTitle>Upload Image</DialogTitle>
         </DialogHeader>
-        <PopoverWrapper title="Test 1 3">
-            test
-        </PopoverWrapper>
+        <PopoverWrapper title="Upload a photo or a gif">test</PopoverWrapper>
+        <PopoverWrapper title="Upload a video">test</PopoverWrapper>
       </DialogContent>
     </Dialog>
   );
