@@ -65,7 +65,6 @@ export default function SortableItems({
       {...listeners}
       style={style}
       ref={setNodeRef}
-      key={id}
       data-sortable-id={id}
       className={cn("flex flex-row")}
     >
