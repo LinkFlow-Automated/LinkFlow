@@ -4,7 +4,7 @@ import { FaSpotify } from "react-icons/fa6";
 
 export default function LinkCard() {
   return (
-    <Card className="p-3">
+    <Card className="p-3 bg-green-600">
       <CardContent className="flex flex-row justify-between p-0 m-0 items-center">
         <div className="flex flex-row gap-4">
           <FaSpotify className="size-8" />
