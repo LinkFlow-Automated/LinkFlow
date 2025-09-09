@@ -6,11 +6,11 @@ import HeroSection from "@/components/shared/bio/hero/hero-section";
 
 export default function page() {
   return (
-    <div className="flex flex-col gap-12 py-4 w-full">
+    <div className="flex flex-col gap-8 w-full pb-8">
       <div>
         <HeroSection />
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 px-4">
         <ArtistInfoCard />
         <LinkCard />
         <NewSongCard />
