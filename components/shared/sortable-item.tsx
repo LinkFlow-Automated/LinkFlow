@@ -5,22 +5,24 @@ import { CSS } from "@dnd-kit/utilities";
 import { Card } from "@/components/ui/card";
 import { MdAnimation } from "react-icons/md";
 import { IoLockClosed } from "react-icons/io5";
-import { RiLayout4Fill, RiShareForwardFill } from "react-icons/ri";
+import { RiShareForwardFill } from "react-icons/ri";
 import { FaGripVertical } from "react-icons/fa6";
 import BaseLinkForm from "./forms/base-link-form";
 import { ABTestingForm } from "./forms/ab-testing-form";
 import { ClickLimitsSchedulingForm } from "./forms/click-limit-sheclduling";
 import { GeographicTargetingForm } from "./forms/geo-target-form";
 import { DeviceBrowserTargetingForm } from "./forms/device-browser-targeting-form";
-import { HiTrash } from "react-icons/hi2";
-import { HiArchive } from "react-icons/hi";
+import { Link } from "@/lib/generated/prisma";
+import DeleteDlogButton from "./forms/delete-dialog-button";
+import ArchiveDialogButton from "./forms/archive-dialog-button";
+import LayoutSelector from "./forms/layout-selector";
 
 export default function SortableItems({
   id,
-  context,
+  link,
 }: {
   id: UniqueIdentifier;
-  context: string;
+  link: Link;
 }) {
   const {
     attributes,
@@ -34,10 +36,6 @@ export default function SortableItems({
   const style = { transform: CSS.Transform.toString(transform), transition };
   const iconsSocials = [
     {
-      name: "Layout",
-      icon: RiLayout4Fill,
-    },
-    {
       name: "Forward Link",
       icon: RiShareForwardFill,
     },
@@ -49,14 +47,6 @@ export default function SortableItems({
       name: "Lock",
       icon: IoLockClosed,
     },
-    {
-      name: "Archive",
-      icon: HiArchive
-    },
-    {
-      name: "Delete",
-      icon: HiTrash,
-    }
   ];
 
   return (
@@ -79,25 +69,19 @@ export default function SortableItems({
       </div>
       <div className="flex-1 flex flex-col justify-between gap-4">
         <div className="flex-1">
-          {/* <span className="text-foreground font-medium select-none">
-            {context}
-          </span> */}
-          <BaseLinkForm
-            initialValues={{
-              name: "Portfolio",
-              url: "https://amherley.dev",
-              type: "link",
-            }}
-          />
+          <BaseLinkForm link={link} />
         </div>
         <div className="flex items-center gap-4">
+          <LayoutSelector />
           {iconsSocials.map((item, i) => (
             <item.icon className="size-5" key={item.name} />
           ))}
-          <DeviceBrowserTargetingForm/>
-          <GeographicTargetingForm/>
-          <ClickLimitsSchedulingForm/>
-          <ABTestingForm/>
+          <DeviceBrowserTargetingForm link={link} />
+          <GeographicTargetingForm />
+          <ClickLimitsSchedulingForm />
+          <ABTestingForm />
+          <ArchiveDialogButton link={link} />
+          <DeleteDlogButton link={link} />
         </div>
       </div>
     </Card>

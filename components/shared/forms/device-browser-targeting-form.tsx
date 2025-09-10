@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/dialog";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { PiDevicesFill } from "react-icons/pi";
+import { Link } from "@/lib/generated/prisma";
+import TooltipWrapper from "../tooltip-wrapper";
 
 const deviceBrowserTargetingSchema = z.object({
   allowedDevices: z.array(z.enum(["mobile", "desktop", "tablet"])).optional(),
@@ -44,7 +46,7 @@ const DEVICE_OPTIONS = [
   { value: "mobile", label: "Mobile" },
   { value: "desktop", label: "Desktop" },
   { value: "tablet", label: "Tablet" },
-]
+];
 
 const BROWSER_OPTIONS = [
   { value: "Chrome", label: "Chrome" },
@@ -55,7 +57,7 @@ const BROWSER_OPTIONS = [
   { value: "Internet Explorer", label: "Internet Explorer" },
   { value: "Samsung Internet", label: "Samsung Internet" },
   { value: "UC Browser", label: "UC Browser" },
-]
+];
 
 const OS_OPTIONS = [
   { value: "iOS", label: "iOS" },
@@ -66,21 +68,26 @@ const OS_OPTIONS = [
   { value: "Chrome OS", label: "Chrome OS" },
   { value: "Windows Phone", label: "Windows Phone" },
   { value: "BlackBerry", label: "BlackBerry" },
-]
+];
 
 interface DeviceBrowserTargetingFormProps {
-  initialData?: Partial<DeviceBrowserTargetingData>;
+  link: Link;
+  // initialData?: Partial<DeviceBrowserTargetingData>;
   isEditing?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  // open?: boolean;
+  // onOpenChange?: (open: boolean) => void;
 }
 
 export function DeviceBrowserTargetingForm({
-  initialData,
+  link,
+  // initialData,
   isEditing = false,
-  open,
-  onOpenChange,
-}: DeviceBrowserTargetingFormProps) {
+}: // open,
+// onOpenChange,
+DeviceBrowserTargetingFormProps) {
+  const initialData = link?.rules
+    ? ((link.rules as any).deviceBrowserTargeting as DeviceBrowserTargetingData)
+    : undefined;
   const form = useForm<DeviceBrowserTargetingData>({
     resolver: zodResolver(deviceBrowserTargetingSchema),
     defaultValues: {
@@ -100,10 +107,10 @@ export function DeviceBrowserTargetingForm({
   const handleSubmit = async (data: DeviceBrowserTargetingData) => {
     try {
       // TODO: Implement your form submission logic here
-      console.log('Form submitted:', data);
+      console.log("Form submitted:", data);
       // Example: await submitDeviceBrowserTargetingData(data);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
     }
   };
 
@@ -114,11 +121,13 @@ export function DeviceBrowserTargetingForm({
 
   return (
     <Dialog>
-      <DialogTrigger asChild className="cursor-pointer">
-        {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
+      <TooltipWrapper content="Device & Browser Targeting">
+        <DialogTrigger asChild className="cursor-pointer">
+          {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
           <PiDevicesFill className="size-5" />
-        {/* </Button> */}
-      </DialogTrigger>
+          {/* </Button> */}
+        </DialogTrigger>
+      </TooltipWrapper>
       <DialogContent className="max-w-7xl min-w-5xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
@@ -158,7 +167,9 @@ export function DeviceBrowserTargetingForm({
                           placeholder="Select allowed devices..."
                         />
                       </FormControl>
-                      <FormDescription>Leave empty to allow all devices</FormDescription>
+                      <FormDescription>
+                        Leave empty to allow all devices
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -178,7 +189,9 @@ export function DeviceBrowserTargetingForm({
                           placeholder="Select blocked devices..."
                         />
                       </FormControl>
-                      <FormDescription>Devices to block access from</FormDescription>
+                      <FormDescription>
+                        Devices to block access from
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -206,7 +219,9 @@ export function DeviceBrowserTargetingForm({
                           placeholder="Select allowed browsers..."
                         />
                       </FormControl>
-                      <FormDescription>Leave empty to allow all browsers</FormDescription>
+                      <FormDescription>
+                        Leave empty to allow all browsers
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -226,7 +241,9 @@ export function DeviceBrowserTargetingForm({
                           placeholder="Select blocked browsers..."
                         />
                       </FormControl>
-                      <FormDescription>Browsers to block access from</FormDescription>
+                      <FormDescription>
+                        Browsers to block access from
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -254,7 +271,9 @@ export function DeviceBrowserTargetingForm({
                           placeholder="Select allowed OS..."
                         />
                       </FormControl>
-                      <FormDescription>Leave empty to allow all OS</FormDescription>
+                      <FormDescription>
+                        Leave empty to allow all OS
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -274,7 +293,9 @@ export function DeviceBrowserTargetingForm({
                           placeholder="Select blocked OS..."
                         />
                       </FormControl>
-                      <FormDescription>Operating systems to block</FormDescription>
+                      <FormDescription>
+                        Operating systems to block
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

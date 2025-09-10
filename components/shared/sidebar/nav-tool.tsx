@@ -77,8 +77,6 @@ export function NavTools({
             isLinkActive(item.url) ||
             (item.items?.some((subItem) => isLinkActive(subItem.url)) ?? false);
 
-          console.log("isActive", isActive);
-
           if (hasSubmenu) {
             // Render item with submenu
             return (

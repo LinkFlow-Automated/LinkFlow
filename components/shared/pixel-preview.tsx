@@ -4,6 +4,11 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import HeroSection from "./bio/hero/hero-section";
+import { ArtistInfoCard } from "./bio/card/spotify/artist-info-card";
+import LinkCard from "./bio/card/link/link-card";
+import { NewSongCard } from "./bio/card/spotify/new-song-card";
+import { NewAlbumCard } from "./bio/card/spotify/new-album-card";
 
 // Helper component for SVG icons to keep the main component clean
 const WifiIcon = ({ className }: { className: string }) => (
@@ -87,8 +92,7 @@ export const PixelPreview = () => {
   }, []);
 
   return (
-    <div className="relative mx-auto w-full max-w-[380px]">
-
+    <div className="relative mx-auto w-full max-w-[380px] p-6 overflow-auto">
       {/* Main phone container with metallic border */}
       <div className="relative border-[0.375rem] rounded-[2.5rem] aspect-[9/19.5] w-full shadow-2xl bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 border-transparent">
         {/* Metallic border overlay */}
@@ -126,65 +130,15 @@ export const PixelPreview = () => {
             </div> */}
 
             {/* App Content Area with enhanced styling */}
-            <div className="flex-grow p-4 overflow-y-auto">
-              <div className="flex items-center mb-6">
-                <div className="relative">
-                  <img
-                    src="https://placehold.co/48x48/7c3aed/ffffff?text=G"
-                    alt="Google Logo"
-                    className="w-12 h-12 rounded-full mr-4 shadow-lg ring-2 ring-white/50 dark:ring-slate-700/50"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).onerror = null;
-                      (e.target as HTMLImageElement).src =
-                        "https://placehold.co/48x48/cccccc/ffffff?text=G";
-                    }}
-                  />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent mr-4"></div>
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 dark:from-slate-100 dark:via-slate-200 dark:to-slate-300 bg-clip-text text-transparent">
-                    Welcome
-                  </h1>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
-                    Your day at a glance
-                  </p>
-                </div>
+            <div className="flex-grow p-0 overflow-y-auto flex flex-col gap-8 w-full pb-8">
+              <div>
+                <HeroSection />
               </div>
-
-              {/* Enhanced Card with glass morphism */}
-              <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-xl mb-4 border border-white/20 dark:border-slate-700/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
-                <h2 className="font-bold text-lg bg-gradient-to-r from-slate-800 to-slate-600 dark:from-white dark:to-slate-200 bg-clip-text text-transparent mb-2 relative z-10">
-                  Project Deadline
-                </h2>
-                <p className="text-slate-600 dark:text-slate-300 mb-3 relative z-10">
-                  Your team's project, "Phoenix Initiative," is due this Friday.
-                </p>
-                <Button className="w-full bg-gradient-to-r from-purple-600 via-purple-700 to-purple-800 hover:from-purple-700 hover:via-purple-800 hover:to-purple-900 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl relative z-10 border border-purple-500/20">
-                  View Details
-                </Button>
-              </div>
-
-              {/* Enhanced List with glass morphism */}
-              <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-white/20 dark:border-slate-700/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
-                <h2 className="font-bold text-lg bg-gradient-to-r from-slate-800 to-slate-600 dark:from-white dark:to-slate-200 bg-clip-text text-transparent mb-3 relative z-10">
-                  Upcoming Events
-                </h2>
-                <ul className="space-y-3 relative z-10">
-                  <li className="flex items-center text-slate-700 dark:text-slate-200">
-                    <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mr-3 shadow-sm"></div>
-                    <span>1:00 PM - Design Sync</span>
-                  </li>
-                  <li className="flex items-center text-slate-700 dark:text-slate-200">
-                    <div className="w-2 h-2 bg-gradient-to-r from-green-400 to-green-600 rounded-full mr-3 shadow-sm"></div>
-                    <span>3:30 PM - Client Call</span>
-                  </li>
-                  <li className="flex items-center text-slate-700 dark:text-slate-200">
-                    <div className="w-2 h-2 bg-gradient-to-r from-red-400 to-red-600 rounded-full mr-3 shadow-sm"></div>
-                    <span>6:00 PM - Team Dinner</span>
-                  </li>
-                </ul>
+              <div className="flex flex-col gap-2 px-4">
+                <ArtistInfoCard />
+                <LinkCard />
+                <NewSongCard />
+                <NewAlbumCard />
               </div>
             </div>
 

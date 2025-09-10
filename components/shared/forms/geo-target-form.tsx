@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { TiWorld } from "react-icons/ti";
+import TooltipWrapper from "../tooltip-wrapper";
 
 const COUNTRIES = [
   { label: "United States", value: "US" },
@@ -122,11 +123,13 @@ export function GeographicTargetingForm({
 
   return (
     <Dialog>
-      <DialogTrigger asChild className="cursor-pointer">
-        {/* <Button variant="outline" className="border-0 cursor-pointer p-0"> */}
+      <TooltipWrapper content="Geographic Targeting">
+        <DialogTrigger asChild className="cursor-pointer">
+          {/* <Button variant="outline" className="border-0 cursor-pointer p-0"> */}
           <TiWorld className="h-5 w-5" />
-        {/* </Button> */}
-      </DialogTrigger>
+          {/* </Button> */}
+        </DialogTrigger>
+      </TooltipWrapper>
       <DialogContent className="max-w-7xl min-w-3xl">
         <DialogHeader>
           <div className="flex items-center gap-2">

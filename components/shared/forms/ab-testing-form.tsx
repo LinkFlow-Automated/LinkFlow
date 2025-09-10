@@ -28,6 +28,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { HiBeaker } from "react-icons/hi2";
+import TooltipWrapper from "../tooltip-wrapper";
 
 const abTestingSchema = z.object({
   // Basic fields
@@ -102,11 +103,13 @@ export function ABTestingForm({
 
   return (
     <Dialog>
-      <DialogTrigger asChild className="cursor-pointer">
-        {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
+      <TooltipWrapper content="Create A/B Test">
+        <DialogTrigger asChild className="cursor-pointer">
+          {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
           <HiBeaker className="size-5" />
-        {/* </Button> */}
-      </DialogTrigger>
+          {/* </Button> */}
+        </DialogTrigger>
+      </TooltipWrapper>
       <DialogContent className="max-w-7xl min-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2">

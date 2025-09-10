@@ -8,13 +8,14 @@ import {
 } from "react-icons/fa6";
 import { SiLeetcode, SiWakatime } from "react-icons/si";
 import ImageUploadForm from "./forms/image-upload-form";
+import { Link, User } from "@/lib/generated/prisma";
 
-export default function ProfileViewCard() {
-  const user = {
-    name: "Anshul",
-    bio: "Software Developer",
-    avatar: "https://github.com/anshul-01.png",
-  };
+export default function ProfileViewCard({user}: {user: User & {links: Link[]}}) {
+  // const user = {
+  //   name: "Anshul",
+  //   bio: "Software Developer",
+  //   avatar: "https://github.com/anshul-01.png",
+  // };
   const icons = [
     {
       icon: FaGithub,
@@ -55,15 +56,9 @@ export default function ProfileViewCard() {
         // size="lg"
         className=" flex flex-row gap-2 max-w-md min-w-md"
       >
-        {/* <Avatar className="size-16 rounded-full">
-          <AvatarImage src={user.avatar} alt={user.name} />
-          <AvatarFallback className="rounded-lg">
-            {user.name.split(" ")[0]}
-          </AvatarFallback>
-        </Avatar> */}
-        <ImageUploadForm />
+        <ImageUploadForm user={user as User} />
         <div className="grid flex-1 text-left text-sm leading-tight">
-          <span className="truncate font-medium">{user.name}</span>
+          <span className="truncate font-medium">{user.username}</span>
           <span className="text-muted-foreground truncate text-md">
             {user.bio}
           </span>

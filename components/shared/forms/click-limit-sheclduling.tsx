@@ -34,6 +34,7 @@ import {
 import { useState } from "react";
 import { HiUser } from "react-icons/hi2";
 import DateTimePicker from "@/components/ui/date-time-picker";
+import TooltipWrapper from "../tooltip-wrapper";
 
 const clickLimitsSchedulingSchema = z.object({
   maxClicks: z.number().int().min(1).optional(),
@@ -105,11 +106,13 @@ export function ClickLimitsSchedulingForm({
 
   return (
     <Dialog>
-      <DialogTrigger asChild className="cursor-pointer">
-        {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
+      <TooltipWrapper content="Click Limits & Scheduling">
+        <DialogTrigger asChild className="cursor-pointer">
+          {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
           <AiFillSchedule className="size-5" />
-        {/* </Button> */}
-      </DialogTrigger>
+          {/* </Button> */}
+        </DialogTrigger>
+      </TooltipWrapper>
       <DialogContent className="max-w-4xl min-w-2xl">
         <DialogHeader>
           <div className="flex items-center gap-2">

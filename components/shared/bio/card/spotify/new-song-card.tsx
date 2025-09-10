@@ -27,6 +27,7 @@ export function NewSongCard({ className, isExpanded = false, onToggle }: Spotify
       transition={{ duration: 0.4, ease: "easeInOut" }}
       whileHover={{ y: -4, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
+      className="max-w-full"
     >
       <Card
         className={cn(

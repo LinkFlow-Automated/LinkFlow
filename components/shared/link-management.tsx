@@ -1,5 +1,4 @@
 "use client";
-
 import {
   closestCenter,
   DndContext,
@@ -19,44 +18,88 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItems from "./sortable-item";
 import { useState } from "react";
-import { GripVertical } from "lucide-react";
+import { GripVertical, Loader2, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useManageLink } from "@/hooks/use-manage-link";
+// Import your auth hook or user context
+// import { useAuth } from "@/hooks/use-auth";
 
-export default function LinkManagement() {
-  const [items, setItems] = useState([
-    { id: 1, context: "Dashboard Overview" },
-    { id: 2, context: "User Management" },
-    { id: 3, context: "Analytics Reports" },
-    { id: 4, context: "Settings & Configuration" },
-  ]);
+interface LinkManagementProps {
+  userId: string; // Pass userId as prop or get from auth context
+}
 
+export default function LinkManagement({ userId }: LinkManagementProps) {
+  const { createLink, updateLink, links, isCreating, isLoading } = useManageLink(userId);
+
+  const items = links || [];
+  console.log("from db links", items)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
   const handleDragEvent = (event: DragEndEvent) => {
     setActiveId(null);
-
     const { active, over } = event;
 
-    if (!over) return;
+    if (!over || active.id === over.id) return;
 
-    if (active.id !== over.id) {
-      setItems((items) => {
-        const activeIndex = items.findIndex(
-          (item) => item.id === Number(active.id)
-        );
-        const overIndex = items.findIndex(
-          (item) => item.id === Number(over.id)
-        );
-        const newItems = [...items];
-        newItems.splice(activeIndex, 1);
-        newItems.splice(overIndex, 0, items[activeIndex]);
-        return newItems;
-      });
-    }
+    const activeIndex = items.findIndex((item) => item.id === active.id);
+    const overIndex = items.findIndex((item) => item.id === over.id);
+
+    if (activeIndex === -1 || overIndex === -1) return;
+
+    // Create new array with reordered items
+    const newItems = [...items];
+    const [movedItem] = newItems.splice(activeIndex, 1);
+    newItems.splice(overIndex, 0, movedItem);
+
+    // Update the order field for all affected items
+    const updatedItems = newItems.map((item, index) => ({
+      ...item,
+      order: index + 1,
+    }));
+
+    // Update each item that had its position changed
+    updatedItems.forEach((item, index) => {
+      const originalItem = items.find((i) => i.id === item.id);
+      if (originalItem && item.order !== originalItem.order) {
+        updateLink({
+          ...originalItem,
+          order: index + 1,
+        });
+      }
+    });
   };
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id);
+  };
+
+  const handleCreateLink = () => {
+    const currentTime = Date.now();
+    const newOrder =
+      items.length > 0
+        ? Math.max(...items.map((item) => item.order || 0)) + 1
+        : 1;
+
+    createLink({
+      userId: userId, // Use the passed userId or user?.id from auth
+      title: `New Link ${currentTime}`,
+      description: null,
+      url: "https://example.com",
+      category: null,
+      order: newOrder,
+      clicks: 0,
+      featured: false,
+      autoSyncId: null,
+      platform: null,
+      icon: null,
+      isArchived: false,
+      visibility: "PUBLIC",
+      scheduledAt: null,
+      expiresAt: null,
+      rules: {}, // Adjust based on your rulesSchema structure
+      // createdAt: new Date(),
+    });
   };
 
   const sensors = useSensors(
@@ -73,7 +116,20 @@ export default function LinkManagement() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-2">
+    <div className="w-full max-w-md mx-auto space-y-4">
+      {/* Add Link Button */}
+      <div className="flex justify-end">
+        <Button
+          onClick={handleCreateLink}
+          disabled={isCreating}
+          size="sm"
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <Plus className="h-4 w-4" />
+          {isCreating ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add Link"}
+        </Button>
+      </div>
+
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -85,13 +141,15 @@ export default function LinkManagement() {
           strategy={verticalListSortingStrategy}
         >
           <div className="space-y-2">
-            {items.map((item) => (
-              <SortableItems
-                key={item.id}
-                id={item.id.toString()}
-                context={item.context}
-              />
-            ))}
+            {items
+              .sort((a, b) => (a.order || 0) - (b.order || 0))
+              .map((item) => (
+                <SortableItems
+                  key={item.id}
+                  id={item.id.toString()}
+                  link={item}
+                />
+              ))}
           </div>
         </SortableContext>
         <DragOverlay
@@ -106,13 +164,24 @@ export default function LinkManagement() {
               <div className="flex items-center gap-3 p-4">
                 <GripVertical className="h-4 w-4 text-muted-foreground/60" />
                 <span className="text-foreground font-medium">
-                  {getActiveItem()?.context}
+                  {getActiveItem()?.title}
                 </span>
               </div>
             </Card>
           ) : null}
         </DragOverlay>
       </DndContext>
+
+      {/* Show loading or empty state */}
+      {isLoading ? (
+        <div className="text-center py-8 text-muted-foreground">
+          <p>Loading links...</p>
+        </div>
+      ) : items.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          <p>No links yet. Click "Add Link" to create your first link.</p>
+        </div>
+      ) : null}
     </div>
   );
 }
