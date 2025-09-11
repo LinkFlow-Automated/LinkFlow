@@ -25,6 +25,11 @@ import {
 import { MultiSelect } from "@/components/ui/multi-select";
 import { TiWorld } from "react-icons/ti";
 import TooltipWrapper from "../tooltip-wrapper";
+import { Link } from "@/lib/generated/prisma";
+import { toast } from "sonner";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const COUNTRIES = [
   { label: "United States", value: "US" },
@@ -82,18 +87,21 @@ const geoTargetingSchema = z.object({
 type GeoTargetingData = z.infer<typeof geoTargetingSchema>;
 
 interface GeographicTargetingFormProps {
-  initialData?: Partial<GeoTargetingData>;
+  link: Link;
   isEditing?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
 export function GeographicTargetingForm({
-  initialData,
+  link,
   isEditing = false,
-  open,
-  onOpenChange,
 }: GeographicTargetingFormProps) {
+  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const [open, setOpen] = useState(false);
+  const initialData = link?.rules
+    ? ((link.rules as any).geographicTargeting as GeoTargetingData)
+    : undefined;
   const form = useForm<GeoTargetingData>({
     resolver: zodResolver(geoTargetingSchema),
     defaultValues: {
@@ -108,10 +116,17 @@ export function GeographicTargetingForm({
 
   const handleSubmit = async (data: GeoTargetingData) => {
     try {
-      // TODO: Implement your form submission logic here
-      console.log("Form submitted:", data);
-      // Example: await submitGeoTargetingData(data);
+      await updateLink({
+        id: link.id,
+        rules: {
+          ...((link.rules as object) || {}),
+          geographicTargeting: data,
+        },
+      });
+      toast.success("Geographic Targeting has been updated");
+      setOpen(false);
     } catch (error) {
+      toast.error("Error updating Geographic Targeting");
       console.error("Error submitting form:", error);
     }
   };
@@ -122,7 +137,7 @@ export function GeographicTargetingForm({
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content="Geographic Targeting">
         <DialogTrigger asChild className="cursor-pointer">
           {/* <Button variant="outline" className="border-0 cursor-pointer p-0"> */}
@@ -298,12 +313,23 @@ export function GeographicTargetingForm({
 
             <div className="flex justify-end gap-3 pt-4">
               <DialogClose>
-                <Button type="button" variant="outline">
+                <Button
+                  onClick={handleCancel}
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer"
+                >
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">
-                {isEditing ? "Update Targeting" : "Save Geographic Rules"}
+              <Button type="submit" className="cursor-pointer">
+                {isUpdating ? (
+                  <Loader2 className="animate-spin size-4" />
+                ) : isEditing ? (
+                  "Update Targeting"
+                ) : (
+                  "Save Geographic Rules"
+                )}
               </Button>
             </div>
           </form>

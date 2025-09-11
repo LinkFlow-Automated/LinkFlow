@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ChevronDown, ChevronUp, Settings } from "lucide-react";
+import { ChevronDown, ChevronUp, Loader2, Settings } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +29,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { HiBeaker } from "react-icons/hi2";
 import TooltipWrapper from "../tooltip-wrapper";
+import { Link } from "@/lib/generated/prisma";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { toast } from "sonner";
 
 const abTestingSchema = z.object({
   // Basic fields
@@ -55,19 +58,19 @@ const abTestingSchema = z.object({
 type ABTestingData = z.infer<typeof abTestingSchema>;
 
 interface ABTestingFormProps {
-  initialData?: Partial<ABTestingData>;
+  link: Link;
   isEditing?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
 }
 
-export function ABTestingForm({
-  initialData,
-  isEditing = false,
-  open,
-  onOpenChange,
-}: ABTestingFormProps) {
+export function ABTestingForm({ link, isEditing = false }: ABTestingFormProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const [open, setOpen] = useState(false);
+
+  const initialData = link?.rules
+    ? ((link.rules as any).abTesting as ABTestingData)
+    : undefined;
 
   const form = useForm<ABTestingData>({
     resolver: zodResolver(abTestingSchema),
@@ -89,20 +92,27 @@ export function ABTestingForm({
 
   const handleSubmit = async (data: ABTestingData) => {
     try {
-      console.log("Form submitted:", data);
-      // TODO: Implement your form submission logic here
+      await updateLink({
+        id: link.id,
+        rules: {
+          ...((link.rules as object) || {}),
+          abTesting: data,
+        },
+      });
+      toast.success("A/B Test has been updated");
+      setOpen(false);
     } catch (error) {
+      toast.error("Error updating A/B Test");
       console.error("Error submitting form:", error);
     }
   };
 
   const handleCancel = () => {
     form.reset();
-    onOpenChange?.(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content="Create A/B Test">
         <DialogTrigger asChild className="cursor-pointer">
           {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
@@ -418,12 +428,23 @@ export function ABTestingForm({
             {/* Action Buttons */}
             <div className="flex justify-end gap-3 pt-4 border-t">
               <DialogClose asChild>
-                <Button type="button" variant="outline">
+                <Button
+                  onClick={handleCancel}
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer"
+                >
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit" className="">
-                {isEditing ? "Update Test" : "Create A/B Test"}
+              <Button type="submit" className="cursor-pointer">
+                {isUpdating ? (
+                  <Loader2 className="animate-spin size-4" />
+                ) : isEditing ? (
+                  "Update Test"
+                ) : (
+                  "Create A/B Test"
+                )}
               </Button>
             </div>
           </form>

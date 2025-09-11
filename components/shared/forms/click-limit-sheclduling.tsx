@@ -20,7 +20,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Settings2 } from "lucide-react";
+import { Loader2, Settings2 } from "lucide-react";
 import { AiFillSchedule } from "react-icons/ai";
 import {
   Dialog,
@@ -35,6 +35,9 @@ import { useState } from "react";
 import { HiUser } from "react-icons/hi2";
 import DateTimePicker from "@/components/ui/date-time-picker";
 import TooltipWrapper from "../tooltip-wrapper";
+import { Link } from "@/lib/generated/prisma";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { toast } from "sonner";
 
 const clickLimitsSchedulingSchema = z.object({
   maxClicks: z.number().int().min(1).optional(),
@@ -66,18 +69,20 @@ const DAYS_OPTIONS = [
 ];
 
 interface ClickLimitsSchedulingFormProps {
-  initialData?: Partial<ClickLimitsSchedulingData>;
+  link: Link;
   isEditing?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
 }
 
 export function ClickLimitsSchedulingForm({
-  initialData,
+  link,
   isEditing = false,
-  open,
-  onOpenChange,
 }: ClickLimitsSchedulingFormProps) {
+  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const [open, setOpen] = useState(false);
+
+  const initialData = link?.rules
+    ? ((link.rules as any).clickLimitsScheduling as ClickLimitsSchedulingData)
+    : undefined;
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const form = useForm<ClickLimitsSchedulingData>({
@@ -92,20 +97,31 @@ export function ClickLimitsSchedulingForm({
 
   const handleSubmit = async (data: ClickLimitsSchedulingData) => {
     try {
-      console.log("Form submitted:", data);
-      onOpenChange?.(false);
+      await updateLink({
+        id: link.id,
+        rules: {
+          ...((link.rules as object) || {}),
+          clickLimitsScheduling: {
+            ...data,
+            scheduledAt: data.scheduledAt?.toISOString() || null,
+            expiresAt: data.expiresAt?.toISOString() || null,
+          },
+        },
+      });
+      toast.success("Click Limits & Scheduling has been updated");
+      setOpen(false);
     } catch (error) {
+      toast.error("Error updating Click Limits & Scheduling");
       console.error("Error submitting form:", error);
     }
   };
 
   const handleCancel = () => {
     form.reset();
-    onOpenChange?.(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content="Click Limits & Scheduling">
         <DialogTrigger asChild className="cursor-pointer">
           {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
@@ -311,12 +327,23 @@ export function ClickLimitsSchedulingForm({
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-4 border-t">
               <DialogClose asChild>
-                <Button type="button" variant="outline">
+                <Button
+                  onClick={handleCancel}
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer"
+                >
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit" className="">
-                {isEditing ? "Update Test" : "Create A/B Test"}
+              <Button type="submit" className="cursor-pointer">
+                {isUpdating ? (
+                  <Loader2 className="animate-spin size-4" />
+                ) : isEditing ? (
+                  "Update Test"
+                ) : (
+                  "Create A/B Test"
+                )}
               </Button>
             </div>
           </form>

@@ -3,7 +3,6 @@ import type { UniqueIdentifier } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Card } from "@/components/ui/card";
-import { MdAnimation } from "react-icons/md";
 import { IoLockClosed } from "react-icons/io5";
 import { RiShareForwardFill } from "react-icons/ri";
 import { FaGripVertical } from "react-icons/fa6";
@@ -16,6 +15,7 @@ import { Link } from "@/lib/generated/prisma";
 import DeleteDlogButton from "./forms/delete-dialog-button";
 import ArchiveDialogButton from "./forms/archive-dialog-button";
 import LayoutSelector from "./forms/layout-selector";
+import AnimationSelector from "./forms/animation-selector";
 
 export default function SortableItems({
   id,
@@ -38,10 +38,6 @@ export default function SortableItems({
     {
       name: "Forward Link",
       icon: RiShareForwardFill,
-    },
-    {
-      name: "Animate",
-      icon: MdAnimation,
     },
     {
       name: "Lock",
@@ -71,15 +67,16 @@ export default function SortableItems({
         <div className="flex-1">
           <BaseLinkForm link={link} />
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1.5 md:gap-4">
           <LayoutSelector />
           {iconsSocials.map((item, i) => (
             <item.icon className="size-5" key={item.name} />
           ))}
-          <DeviceBrowserTargetingForm link={link} />
-          <GeographicTargetingForm />
-          <ClickLimitsSchedulingForm />
-          <ABTestingForm />
+          <AnimationSelector />
+          <DeviceBrowserTargetingForm key={link.id} link={link} />
+          <GeographicTargetingForm key={link.id} link={link} />
+          <ClickLimitsSchedulingForm key={link.id} link={link} />
+          <ABTestingForm key={link.id} link={link} />
           <ArchiveDialogButton link={link} />
           <DeleteDlogButton link={link} />
         </div>

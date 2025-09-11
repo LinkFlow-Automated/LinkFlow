@@ -33,7 +33,6 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
   const { createLink, updateLink, links, isCreating, isLoading } = useManageLink(userId);
 
   const items = links || [];
-  console.log("from db links", items)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
   const handleDragEvent = (event: DragEndEvent) => {
@@ -118,14 +117,14 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
   return (
     <div className="w-full max-w-md mx-auto space-y-4">
       {/* Add Link Button */}
-      <div className="flex justify-end">
+      <div className="w-full flex justify-center md:justify-end">
         <Button
           onClick={handleCreateLink}
           disabled={isCreating}
-          size="sm"
-          className="flex items-center gap-2 cursor-pointer"
+          // size="lg"
+          className="flex items-center gap-2 justify-center cursor-pointer w-fit "
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="size-4" />
           {isCreating ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add Link"}
         </Button>
       </div>

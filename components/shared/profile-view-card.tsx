@@ -51,10 +51,10 @@ export default function ProfileViewCard({user}: {user: User & {links: Link[]}}) 
     },
   ];
   return (
-    <div>
+    <div className="w-fit">
       <div
         // size="lg"
-        className=" flex flex-row gap-2 max-w-md min-w-md"
+        className=" flex flex-row gap-2 max-w-md md:min-w-md"
       >
         <ImageUploadForm user={user as User} />
         <div className="grid flex-1 text-left text-sm leading-tight">

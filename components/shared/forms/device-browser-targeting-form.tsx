@@ -26,6 +26,10 @@ import { MultiSelect } from "@/components/ui/multi-select";
 import { PiDevicesFill } from "react-icons/pi";
 import { Link } from "@/lib/generated/prisma";
 import TooltipWrapper from "../tooltip-wrapper";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const deviceBrowserTargetingSchema = z.object({
   allowedDevices: z.array(z.enum(["mobile", "desktop", "tablet"])).optional(),
@@ -74,20 +78,19 @@ interface DeviceBrowserTargetingFormProps {
   link: Link;
   // initialData?: Partial<DeviceBrowserTargetingData>;
   isEditing?: boolean;
-  // open?: boolean;
-  // onOpenChange?: (open: boolean) => void;
 }
 
 export function DeviceBrowserTargetingForm({
   link,
-  // initialData,
   isEditing = false,
-}: // open,
-// onOpenChange,
-DeviceBrowserTargetingFormProps) {
+}: DeviceBrowserTargetingFormProps) {
+  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const [open, setOpen] = useState(false);
+
   const initialData = link?.rules
     ? ((link.rules as any).deviceBrowserTargeting as DeviceBrowserTargetingData)
     : undefined;
+
   const form = useForm<DeviceBrowserTargetingData>({
     resolver: zodResolver(deviceBrowserTargetingSchema),
     defaultValues: {
@@ -106,26 +109,31 @@ DeviceBrowserTargetingFormProps) {
 
   const handleSubmit = async (data: DeviceBrowserTargetingData) => {
     try {
-      // TODO: Implement your form submission logic here
-      console.log("Form submitted:", data);
-      // Example: await submitDeviceBrowserTargetingData(data);
+      await updateLink({
+        id: link.id,
+        rules: {
+          ...((link.rules as object) || {}),
+          deviceBrowserTargeting: data,
+        },
+      });
+      toast.success("Device & Browser Targeting has been updated");
+      setOpen(false);
     } catch (error) {
+      toast.error("Error updating Device & Browser Targeting");
       console.error("Error submitting form:", error);
     }
   };
 
   const handleCancel = () => {
     form.reset();
-    // Additional cancel logic if needed
+    setOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content="Device & Browser Targeting">
         <DialogTrigger asChild className="cursor-pointer">
-          {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
           <PiDevicesFill className="size-5" />
-          {/* </Button> */}
         </DialogTrigger>
       </TooltipWrapper>
       <DialogContent className="max-w-7xl min-w-5xl">
@@ -156,23 +164,25 @@ DeviceBrowserTargetingFormProps) {
                 <FormField
                   control={form.control}
                   name="allowedDevices"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Allowed Devices</FormLabel>
-                      <FormControl>
-                        <MultiSelect
-                          options={DEVICE_OPTIONS}
-                          value={field.value || []}
-                          onValueChange={field.onChange}
-                          placeholder="Select allowed devices..."
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Leave empty to allow all devices
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Allowed Devices</FormLabel>
+                        <FormControl>
+                          <MultiSelect
+                            options={DEVICE_OPTIONS}
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            placeholder="Select allowed devices..."
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Leave empty to allow all devices
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
 
                 <FormField
@@ -417,14 +427,23 @@ DeviceBrowserTargetingFormProps) {
 
             <div className="flex justify-end gap-3 pt-4">
               <DialogClose>
-                <Button type="button" variant="outline">
+                <Button
+                  onClick={handleCancel}
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer"
+                >
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">
-                {isEditing
-                  ? "Update Device Targeting"
-                  : "Save Device Targeting"}
+              <Button type="submit" className="cursor-pointer">
+                {isUpdating ? (
+                  <Loader2 className="animate-spin size-4" />
+                ) : isEditing ? (
+                  "Update Device Targeting"
+                ) : (
+                  "Save Device Targeting"
+                )}
               </Button>
             </div>
           </form>
