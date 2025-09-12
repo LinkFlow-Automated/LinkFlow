@@ -5,7 +5,7 @@ import {
   type DragEndEvent,
   DragOverlay,
   type DragStartEvent,
-  KeyboardSensor,
+  // KeyboardSensor,
   PointerSensor,
   type UniqueIdentifier,
   useSensor,
@@ -13,7 +13,7 @@ import {
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  sortableKeyboardCoordinates,
+  // sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import SortableItems from "./sortable-item";
@@ -107,7 +107,7 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
         distance: 8,
       },
     }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    // useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
   const getActiveItem = () => {

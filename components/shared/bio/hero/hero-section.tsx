@@ -31,10 +31,20 @@ export default function HeroSection() {
   return (
     <div>
       <div className="m-0 p-0 h-24">
-        <Image className="h-full w-full object-cover" width={1000} height={1000} alt="" src={"/Sun.jpg"} />
+        <Image
+          className="h-full w-full object-cover"
+          width={1000}
+          height={1000}
+          alt=""
+          src={"/Sun.jpg"}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
       </div>
-      <div className={cn("flex flex-col items-center gap-1 -mt-11 relative justify-center")}>
+      <div
+        className={cn(
+          "flex flex-col items-center gap-1 -mt-11 relative justify-center"
+        )}
+      >
         <Avatar className={cn("size-22 rounded-full")}>
           <AvatarImage src={user.avatar} alt={user.name} />
           <AvatarFallback className="rounded-lg">

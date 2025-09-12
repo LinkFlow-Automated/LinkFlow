@@ -1,9 +1,8 @@
-/** biome-ignore-all lint/a11y/noSvgWithoutTitle: <explanation> */
+/** biome-ignore-all lint/a11y/noSvgWithoutTitle: <> */
 
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import HeroSection from "./bio/hero/hero-section";
 import { ArtistInfoCard } from "./bio/card/spotify/artist-info-card";
 import LinkCard from "./bio/card/link/link-card";

@@ -51,7 +51,6 @@ export default function SortableItems({
       {...listeners}
       style={style}
       ref={setNodeRef}
-      key={id}
       data-sortable-id={id}
       className={cn("flex flex-row")}
     >
@@ -69,14 +68,14 @@ export default function SortableItems({
         </div>
         <div className="flex items-center gap-1.5 md:gap-4">
           <LayoutSelector />
-          {iconsSocials.map((item, i) => (
+          {iconsSocials.map((item) => (
             <item.icon className="size-5" key={item.name} />
           ))}
           <AnimationSelector />
-          <DeviceBrowserTargetingForm key={link.id} link={link} />
-          <GeographicTargetingForm key={link.id} link={link} />
-          <ClickLimitsSchedulingForm key={link.id} link={link} />
-          <ABTestingForm key={link.id} link={link} />
+          <DeviceBrowserTargetingForm link={link} />
+          <GeographicTargetingForm link={link} />
+          <ClickLimitsSchedulingForm link={link} />
+          <ABTestingForm link={link} />
           <ArchiveDialogButton link={link} />
           <DeleteDlogButton link={link} />
         </div>
