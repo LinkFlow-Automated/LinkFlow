@@ -13,7 +13,7 @@ export default function page() {
       <div className="flex flex-col gap-2 px-4">
         <ArtistInfoCard />
         <LinkCard />
-        <NewSongCard />
+        <NewSongCard songName="Counting Star" artistImage="/1.jpg" isNewRelease />
         <NewAlbumCard />
       </div>
     </div>
