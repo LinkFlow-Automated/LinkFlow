@@ -136,8 +136,12 @@ export const PixelPreview = () => {
               <div className="flex flex-col gap-2 px-4">
                 <ArtistInfoCard />
                 <LinkCard />
-                <NewSongCard />
-                <NewAlbumCard />
+                <NewSongCard
+                  songName="Counting Star"
+                  artistImage="/test/2.png"
+                  isNewRelease
+                />
+                <NewAlbumCard artistImage="/test/3.png" isNewRelease isExpanded={false} />
               </div>
             </div>
 
