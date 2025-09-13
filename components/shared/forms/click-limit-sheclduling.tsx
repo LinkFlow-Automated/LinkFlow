@@ -38,14 +38,16 @@ import TooltipWrapper from "../tooltip-wrapper";
 import { Link } from "@/lib/generated/prisma";
 import { useManageLink } from "@/hooks/use-manage-link";
 import { toast } from "sonner";
+import { safeToDate } from "@/lib/utils";
 
+// Updated schema with better date handling
 const clickLimitsSchedulingSchema = z.object({
   maxClicks: z.number().int().min(1).optional(),
   maxClicksPerDay: z.number().int().min(1).optional(),
   maxClicksPerHour: z.number().int().min(1).optional(),
   maxClicksPerUser: z.number().int().min(1).optional(),
-  scheduledAt: z.coerce.date().nullable(),
-  expiresAt: z.coerce.date().nullable(),
+  scheduledAt: z.date().nullable().optional(),
+  expiresAt: z.date().nullable().optional(),
   allowedDays: z.array(z.string()).optional(),
   allowedHours: z
     .object({
@@ -73,6 +75,17 @@ interface ClickLimitsSchedulingFormProps {
   isEditing?: boolean;
 }
 
+// // Helper function to safely convert to Date
+// function safeToDate(value: any): Date | null {
+//   if (!value) return null;
+//   if (value instanceof Date) return value;
+//   if (typeof value === 'string') {
+//     const date = new Date(value);
+//     return isNaN(date.getTime()) ? null : date;
+//   }
+//   return null;
+// }
+
 export function ClickLimitsSchedulingForm({
   link,
   isEditing = false,
@@ -90,22 +103,27 @@ export function ClickLimitsSchedulingForm({
     defaultValues: {
       maxClicks: initialData?.maxClicks,
       maxClicksPerUser: initialData?.maxClicksPerUser,
-      expiresAt: initialData?.expiresAt || null,
+      // Safely convert dates
+      scheduledAt: safeToDate(initialData?.scheduledAt),
+      expiresAt: safeToDate(initialData?.expiresAt),
       allowedDays: initialData?.allowedDays || [],
     },
   });
 
   const handleSubmit = async (data: ClickLimitsSchedulingData) => {
     try {
+      // Safely handle date conversion
+      const processedData = {
+        ...data,
+        scheduledAt: data.scheduledAt instanceof Date ? data.scheduledAt.toISOString() : null,
+        expiresAt: data.expiresAt instanceof Date ? data.expiresAt.toISOString() : null,
+      };
+
       await updateLink({
         id: link.id,
         rules: {
           ...((link.rules as object) || {}),
-          clickLimitsScheduling: {
-            ...data,
-            scheduledAt: data.scheduledAt?.toISOString() || null,
-            expiresAt: data.expiresAt?.toISOString() || null,
-          },
+          clickLimitsScheduling: processedData,
         },
       });
       toast.success("Click Limits & Scheduling has been updated");
@@ -124,9 +142,7 @@ export function ClickLimitsSchedulingForm({
     <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content="Click Limits & Scheduling">
         <DialogTrigger asChild className="cursor-pointer">
-          {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
           <AiFillSchedule className="size-5" />
-          {/* </Button> */}
         </DialogTrigger>
       </TooltipWrapper>
       <DialogContent className="max-w-4xl min-w-2xl">
@@ -193,8 +209,8 @@ export function ClickLimitsSchedulingForm({
                       <FormLabel>Scheduled date</FormLabel>
                       <FormControl>
                         <DateTimePicker
-                          value={field.value}
-                          onChange={field.onChange}
+                          value={field.value ?? null}
+                          onChange={(date) => field.onChange(safeToDate(date))}
                           placeholder="Select when link actives"
                         />
                       </FormControl>
@@ -213,8 +229,8 @@ export function ClickLimitsSchedulingForm({
                       <FormLabel>Expiration date</FormLabel>
                       <FormControl>
                         <DateTimePicker
-                          value={field.value}
-                          onChange={field.onChange}
+                          value={field.value ?? null}
+                          onChange={(date) => field.onChange(safeToDate(date))}
                           placeholder="Select when link expires"
                         />
                       </FormControl>
@@ -340,9 +356,9 @@ export function ClickLimitsSchedulingForm({
                 {isUpdating ? (
                   <Loader2 className="animate-spin size-4" />
                 ) : isEditing ? (
-                  "Update Test"
+                  "Update Settings"
                 ) : (
-                  "Create A/B Test"
+                  "Save Settings"
                 )}
               </Button>
             </div>

@@ -1,15 +1,15 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <> */
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import ColorThief from "colorthief";
 import Image from "next/image";
 import { FaSpotify } from "react-icons/fa6";
 import { getCardAnimation } from "@/lib/utils/card-animation";
+import { useImageColor } from "@/hooks/use-image-color";
 
 interface SpotifyCardProps {
   className?: string;
@@ -27,74 +27,7 @@ export function NewAlbumCard({
   onToggle,
 }: SpotifyCardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState<string>("#1f2937");
-  const [textColor, setTextColor] = useState<string>("text-white");
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  // Function to convert RGB array to hex
-  const rgbToHex = (rgb: number[]): string => {
-    return `#${rgb
-      .map((x) => {
-        const hex = x.toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-      })
-      .join("")}`;
-  };
-
-  // Function to determine if color is light or dark
-  const isLightColor = (rgb: number[]): boolean => {
-    const brightness = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
-    return brightness > 128;
-  };
-
-  // Function to darken a color
-  const darkenColor = (rgb: number[], factor: number = 0.3): number[] => {
-    return rgb.map((channel) => Math.round(channel * (1 - factor)));
-  };
-
-  useEffect(() => {
-    const extractColors = async () => {
-      if (imgRef.current?.complete) {
-        try {
-          const colorThief = new ColorThief();
-
-          // Get dominant color
-          const dominantColor = await colorThief.getColor(imgRef.current);
-
-          // Darken the dominant color for better contrast
-          const darkerRgb = darkenColor(dominantColor, 0.2);
-          const darkerHex = rgbToHex(darkerRgb);
-
-          // Set background color
-          setBackgroundColor(darkerHex);
-
-          // Set text color based on brightness
-          const isLight = isLightColor(darkerRgb);
-          setTextColor(isLight ? "text-gray-800" : "text-white");
-        } catch (error) {
-          console.error("Error extracting colors:", error);
-          // Fallback gradient
-          setBackgroundColor("#1f2937");
-          setTextColor("text-white");
-        }
-      }
-    };
-
-    // Handle image load
-    const handleImageLoad = () => {
-      extractColors();
-    };
-
-    const imgElement = imgRef.current;
-    if (imgElement) {
-      if (imgElement.complete) {
-        extractColors();
-      } else {
-        imgElement.addEventListener("load", handleImageLoad);
-        return () => imgElement.removeEventListener("load", handleImageLoad);
-      }
-    }
-  }, [artistImage]);
+  const { backgroundColor, textColor, imgRef } = useImageColor(artistImage);
 
   const animation = getCardAnimation("pulse");
 

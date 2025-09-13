@@ -112,3 +112,34 @@ export function periodToDateRange(
 export const getStripeLink = (url: string, data: string) => {
   return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_STRIPE_CLIENT_ID}&scope=read_write&redirect_uri=${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${url}&state=${data}`;
 };
+
+export const rgbToHex = (rgb: number[]): string => {
+  return `#${rgb
+    .map((x) => {
+      const hex = x.toString(16);
+      return hex.length === 1 ? "0" + hex : hex;
+    })
+    .join("")}`;
+};
+
+// Function to determine if color is light or dark
+export const isLightColor = (rgb: number[]): boolean => {
+  const brightness = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
+  return brightness > 128;
+};
+
+// Function to darken a color
+export const darkenColor = (rgb: number[], factor: number = 0.3): number[] => {
+  return rgb.map((channel) => Math.round(channel * (1 - factor)));
+};
+
+// Helper function to safely convert to Date
+export function safeToDate(value: any): Date | null {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  if (typeof value === 'string') {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+  return null;
+}
