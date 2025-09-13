@@ -33,6 +33,7 @@ export type Theme = {
   cardStyle: "flat" | "neumorphism" | "glassmorphism";
   buttonStyle: "rounded" | "pill" | "square";
   showFooter: boolean;
+  cardTheme: CardTheme;
 };
 
 // Per-card theme overrides
@@ -41,7 +42,7 @@ export type CardTheme = {
   textColor?: string;
   borderStyle?: "none" | "solid" | "dashed" | "glow";
   borderColor?: string;
-  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "full";
+  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "full" | "2xl";
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "glow";
   animation?: "none" | "hover-rise" | "pulse" | "fade-in" | "slide-in";
   layout?: "compact" | "expanded" | "minimal";
