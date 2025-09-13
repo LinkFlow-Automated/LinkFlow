@@ -141,7 +141,7 @@ export const PixelPreview = () => {
                   artistImage="/test/2.png"
                   isNewRelease
                 />
-                <NewAlbumCard artistImage="/test/3.png" isNewRelease isExpanded={false} />
+                <NewAlbumCard artistImage="/test/3.png" isNewRelease isExpanded={true} />
               </div>
             </div>
 

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: <> */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -8,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ColorThief from "colorthief";
 import Image from "next/image";
 import { FaSpotify } from "react-icons/fa6";
+import { getCardAnimation } from "@/lib/utils/card-animation";
 
 interface SpotifyCardProps {
   className?: string;
@@ -94,13 +96,17 @@ export function NewAlbumCard({
     }
   }, [artistImage]);
 
+  const animation = getCardAnimation("pulse");
+
   return (
     <motion.div
       layout
-      whileHover={{ y: -2, scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
+      initial="initial"
+      animate="animate"
+      whileHover={animation.whileHover}
+      whileTap={animation.whileTap}
+      variants={animation.variants}
       className="w-full max-w-md"
-      // className="max-w-full min-w-full w-full"
     >
       <Card
         className={cn(
@@ -218,42 +224,25 @@ export function NewAlbumCard({
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
                 >
-                  <CardFooter className="flex flex-col gap-2 p-0 m-0">
+                  <CardFooter className="flex flex-col gap-2 p-0">
                     <span
                       className={cn(
-                        "self-start text-xs font-semibold",
+                        "text-xs font-semibold self-start",
                         textColor
                       )}
                     >
-                      List Songs
+                      Tracks
                     </span>
                     <div className="grid grid-cols-4 gap-2">
-                      {[
-                        { label: "Released", value: "2 days ago" },
-                        { label: "Tracks", value: "14" },
-                        { label: "Duration", value: "56:23" },
-                        { label: "test", value: "56:23" },
-                      ].map((item, index) => (
-                        <motion.div
-                          key={item.label}
-                          className=""
-                          initial={{ x: -20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{
-                            duration: 0.3,
-                            delay: 0.4 + index * 0.1,
-                          }}
-                        >
-                          <Image
-                            // ref={imgRef}
-                            src={artistImage || "/placeholder.svg"}
-                            alt="Artist"
-                            width={1000}
-                            height={1000}
-                            className="w-fit h-full object-cover rounded-md shadow-lg"
-                            crossOrigin="anonymous"
-                          />
-                        </motion.div>
+                      {[...Array(4)].map((_, idx) => (
+                        <Image
+                          key={idx}
+                          src="/test/3.png"
+                          alt="Track"
+                          width={80}
+                          height={80}
+                          className="rounded-md shadow-md"
+                        />
                       ))}
                     </div>
                   </CardFooter>

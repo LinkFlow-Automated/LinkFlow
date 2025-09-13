@@ -12,7 +12,7 @@ export default function page() {
         <HeroSection />
       </div>
       <div className="flex flex-col gap-2 px-4">
-        <ArtistInfoCard />
+        {/* <ArtistInfoCard /> */}
         <LinkCard />
         <NewSongCard
           songName="Counting Star"
@@ -20,7 +20,7 @@ export default function page() {
           isNewRelease
         />
         <NewAlbumCard artistImage="/test/3.png" isNewRelease />
-        <CurrentlyPlayingCard />
+        {/* <CurrentlyPlayingCard /> */}
       </div>
     </div>
   );
