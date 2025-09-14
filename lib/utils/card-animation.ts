@@ -53,3 +53,31 @@ export const getCardAnimation = (
       return {};
   }
 };
+
+export const animationOptions = [
+  {
+    value: "none",
+    label: "None",
+    description: "No animation",
+  },
+  {
+    value: "hover-rise",
+    label: "Hover Rise",
+    description: "Lifts and scales on hover",
+  },
+  {
+    value: "pulse",
+    label: "Pulse",
+    description: "Continuous gentle pulsing",
+  },
+  {
+    value: "fade-in",
+    label: "Fade In",
+    description: "Fades in from bottom",
+  },
+  {
+    value: "slide-in",
+    label: "Slide In",
+    description: "Slides in from left",
+  },
+] as const
