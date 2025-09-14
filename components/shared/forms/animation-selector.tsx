@@ -22,6 +22,7 @@ import z from "zod";
 import { animationOptions, AnimationType } from "@/lib/utils/card-animation";
 import TooltipWrapper from "../tooltip-wrapper";
 import { AnimationPreview } from "../animation-preview";
+import { toast } from "sonner";
 
 const animationSchema = z.object({
   animationStyle: z.string().optional(),
@@ -38,9 +39,9 @@ export default function AnimationSelector({
   onAnimationSelect,
   defaultAnimation = "none",
 }: AnimationSelectorProps) {
+  const [open, setOpen] = useState(false);
   const [selectedAnimation, setSelectedAnimation] =
     useState<AnimationType>(defaultAnimation);
-  const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<AnimationFormData>({
     resolver: zodResolver(animationSchema),
@@ -55,17 +56,30 @@ export default function AnimationSelector({
     onAnimationSelect?.(animation);
   };
 
-  const handleApply = () => {
-    setIsOpen(false);
+  const handleSubmit = async () => {
+    try {
+      //   await updateLink({
+      //     id: link.id,
+      //     rules: {
+      //       ...((link.rules as object) || {}),
+      //       abTesting: data,
+      //     },
+      //   });
+      toast.success("A/B Test has been updated");
+      setOpen(false);
+    } catch (error) {
+      toast.error("Error updating A/B Test");
+      console.error("Error submitting form:", error);
+    }
   };
 
   const handleCancel = () => {
     form.reset();
-    setSelectedAnimation("none")
+    setSelectedAnimation("none");
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content="Animate link">
         <DialogTrigger asChild>
           <MdAnimation className="size-5" />
@@ -145,7 +159,7 @@ export default function AnimationSelector({
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="button" onClick={handleApply} className="min-w-20">
+              <Button type="button" className="min-w-20">
                 Apply
               </Button>
             </div>

@@ -4,7 +4,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Card } from "@/components/ui/card";
 import { IoLockClosed } from "react-icons/io5";
-import { RiShareForwardFill } from "react-icons/ri";
 import { FaGripVertical } from "react-icons/fa6";
 import BaseLinkForm from "./forms/base-link-form";
 import { ABTestingForm } from "./forms/ab-testing-form";
@@ -16,6 +15,7 @@ import DeleteDlogButton from "./forms/delete-dialog-button";
 import ArchiveDialogButton from "./forms/archive-dialog-button";
 import LayoutSelector from "./forms/layout-selector";
 import AnimationSelector from "./forms/animation-selector";
+import RedirectForm from "./forms/redirect-form";
 
 export default function SortableItems({
   id,
@@ -35,10 +35,6 @@ export default function SortableItems({
 
   const style = { transform: CSS.Transform.toString(transform), transition };
   const iconsSocials = [
-    {
-      name: "Forward Link",
-      icon: RiShareForwardFill,
-    },
     {
       name: "Lock",
       icon: IoLockClosed,
@@ -68,6 +64,7 @@ export default function SortableItems({
         </div>
         <div className="flex items-center gap-1.5 md:gap-4">
           <LayoutSelector />
+          <RedirectForm />
           {iconsSocials.map((item) => (
             <item.icon className="size-5" key={item.name} />
           ))}
