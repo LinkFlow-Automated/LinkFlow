@@ -30,7 +30,8 @@ interface LinkManagementProps {
 }
 
 export default function LinkManagement({ userId }: LinkManagementProps) {
-  const { createLink, updateLink, links, isCreating, isLoading } = useManageLink(userId);
+  const { createLink, updateLink, links, isCreating, isLoading } =
+    useManageLink(userId);
 
   const items = links || [];
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
@@ -88,6 +89,9 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
       category: null,
       order: newOrder,
       isHadRedirectLink: false,
+      layout: "",
+      animation: "none",
+      themeOverrides: {},
       redirectTo: "",
       clicks: 0,
       featured: false,
@@ -100,6 +104,7 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
       expiresAt: null,
       rules: {}, // Adjust based on your rulesSchema structure
       // createdAt: new Date(),
+      metadata: {},
     });
   };
 
@@ -108,7 +113,7 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
       activationConstraint: {
         distance: 8,
       },
-    }),
+    })
     // useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
@@ -127,7 +132,11 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
           className="flex items-center gap-2 justify-center cursor-pointer w-fit "
         >
           <Plus className="size-4" />
-          {isCreating ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add Link"}
+          {isCreating ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            "Add Link"
+          )}
         </Button>
       </div>
 

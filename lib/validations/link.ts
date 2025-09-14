@@ -99,6 +99,30 @@ export const getLinkQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(10),
 });
 
+export const metadataSchema = z.object({
+  provider: z.enum([
+    "spotify",
+    "youtube",
+    "instagram",
+    "soundcloud",
+    "gumroad",
+    "custom",
+  ]),
+  type: z.string(), // e.g. "NEW_ALBUM", "NOW_PLAYING", "CHANNEL", "FEED", "PRODUCTS"
+  id: z.string().optional(), // external ID (albumId, channelId, etc.)
+  data: z.record(z.any()).optional(), // provider-specific payload
+  lastSynced: z.string().datetime().optional(), // ISO string
+});
+
+export const themeOverridesSchema = z.object({
+  background: z.string().optional(), // hex, rgb, gradient, or "auto" (from image)
+  textColor: z.string().optional(), // hex or rgb
+  borderRadius: z.number().min(0).max(50).optional(), // px
+  shadow: z.boolean().optional(), // enable/disable shadow
+  animation: z.string().optional(), // e.g. "fade", "bounce", "zoom"
+  layout: z.enum(["compact", "detailed", "media"]).optional(), // card layout style
+});
+
 // Validation schema for POST request (creating links)
 export const createLinkSchema = z.object({
   id: z.string().optional(),
@@ -117,6 +141,12 @@ export const createLinkSchema = z.object({
   visibility: z.nativeEnum(Visibility).default(Visibility.PUBLIC),
   scheduledAt: z.coerce.date().nullable(),
   expiresAt: z.coerce.date().nullable(),
+  redirectTo: z.string().nullable(),
+  isHadRedirectLink: z.boolean(),
+  layout: z.string().nullable(),
+  animation: z.string().nullable(),
+  themeOverrides: themeOverridesSchema,
+  metadata: metadataSchema,
   rules: rulesSchema,
   createdAt: z.coerce.date().default(() => new Date()),
 });
@@ -138,6 +168,12 @@ export const updateLinkSchema = z.object({
   visibility: z.nativeEnum(Visibility).default(Visibility.PUBLIC),
   scheduledAt: z.coerce.date().nullable(),
   expiresAt: z.coerce.date().nullable(),
+  redirectTo: z.string().nullable(),
+  isHadRedirectLink: z.boolean(),
+  layout: z.string().nullable(),
+  animation: z.string().nullable(),
+  themeOverrides: z.any().nullable(),
+  metadata: z.any().nullable(),
   rules: rulesSchema,
   createdAt: z.coerce.date().default(() => new Date()),
 });

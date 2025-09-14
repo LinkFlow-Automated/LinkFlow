@@ -150,7 +150,7 @@ export default function AnimationSelector({
               )}
             />
 
-            <div className="flex justify-end gap-2 pt-4 border-t">
+            <div className="flex justify-end gap-2 pt-4">
               <DialogClose asChild>
                 <Button
                   onClick={handleCancel}
@@ -161,7 +161,7 @@ export default function AnimationSelector({
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="button" className="min-w-20">
+              <Button type="button" className="min-w-20 cursor-pointer">
                 Apply
               </Button>
             </div>
