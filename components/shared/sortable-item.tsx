@@ -78,7 +78,7 @@ export default function SortableItems({
       </div>
       <div className="flex-1 flex flex-col justify-between gap-4">
         <div className="flex-1">
-          {/* <span className="text-foreground font-medium select-none">
+          {/* <span className="text-foreground font-medium select--none">
             {context}
           </span> */}
           <BaseLinkForm
