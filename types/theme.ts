@@ -1,8 +1,31 @@
+export type BaseCardProps = {
+  title?: string; // optional section title
+  layout?: "compact" | "expanded" | "minimal";
+  themeOverrides?: CardTheme; // local style overrides
+};
+
+// Background options
 export type Background =
   | { type: "solid"; color: string }
-  | { type: "gradient"; colors: string[] }
-  | { type: "image"; url: string };
+  | { type: "gradient"; colors: string[]; angle?: number }
+  | {
+      type: "image";
+      url: string;
+      overlayColor?: string;
+      blur?: boolean;
+      opacity?: number;
+    }
+  | {
+      type: "video";
+      url: string;
+      autoplay?: boolean;
+      loop?: boolean;
+      muted?: boolean;
+    }
+  | { type: "gif"; url: string }
+  | { type: "dynamic-photo"; source: "cover" | "avatar"; fallback?: string };
 
+// Global theme for a page
 export type Theme = {
   font: string;
   primaryColor: string;
@@ -10,8 +33,22 @@ export type Theme = {
   cardStyle: "flat" | "neumorphism" | "glassmorphism";
   buttonStyle: "rounded" | "pill" | "square";
   showFooter: boolean;
+  cardTheme: CardTheme;
 };
 
+// Per-card theme overrides
+export type CardTheme = {
+  background?: Background;
+  textColor?: string;
+  borderStyle?: "none" | "solid" | "dashed" | "glow";
+  borderColor?: string;
+  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "full" | "2xl";
+  shadow?: "none" | "sm" | "md" | "lg" | "xl" | "glow";
+  animation?: "none" | "hover-rise" | "pulse" | "fade-in" | "slide-in";
+  layout?: "compact" | "expanded" | "minimal";
+};
+
+// Profile info
 export type Profile = {
   name: string;
   username: string;
@@ -20,71 +57,79 @@ export type Profile = {
   verified?: boolean;
 };
 
+// Link items
 export type LinkItem = {
   id: string;
   label: string;
   url: string;
   icon?: string;
-  iconType?: "emoji" | "image" | "icon-font"; // Specify icon type
-  backgroundColor?: string; // Custom background for specific links
-  textColor?: string; // Custom text color for specific links
+  iconType?: "emoji" | "image" | "icon-font";
+  backgroundColor?: string;
+  textColor?: string;
   layout?: "default" | "minimal" | "highlighted";
-  behavior: "new-tab" | "same-tab" | "modal"; // How the link should open
+  behavior: "new-tab" | "same-tab" | "modal";
   tracking?: {
     enabled: boolean;
-    id?: string; // For analytics tracking
+    id?: string;
   };
 };
 
+// Sections (each one extends BaseCardProps)
 export type Section =
-  | {
+  | (BaseCardProps & {
       type: "links";
-      title?: string;
       links: LinkItem[];
-      layout?: string;
-    }
-  | {
+    })
+  | (BaseCardProps & {
       type: "spotify";
-      title?: string;
-      displayMode: "embed" | "list";
+      displayMode: "embed" | "list" | "card";
       playlistId?: string;
+      artistId?: string;
       showFollowButton?: boolean;
-      layout?: string;
-    }
-  | {
+      showNowPlaying?: boolean;
+    })
+  | (BaseCardProps & {
       type: "youtube";
-      title?: string;
       channelId: string;
-      displayMode: "grid" | "list";
+      displayMode: "grid" | "list" | "carousel";
       limit?: number;
       showSubscribeButton?: boolean;
-      layout?: string;
-    }
-  | {
+      showViewCount?: boolean;
+    })
+  | (BaseCardProps & {
       type: "instagram";
-      title?: string;
       username: string;
       displayMode: "grid" | "carousel";
       limit?: number;
       showFollowButton?: boolean;
-      layout?: string;
-    }
-  | {
+      showLikes?: boolean;
+      showCaptions?: boolean;
+    })
+  | (BaseCardProps & {
       type: "products";
-      title?: string;
       provider: "gumroad" | "wix";
       storeId: string;
       displayMode: "cards" | "list";
       limit?: number;
-      layout?: string;
-    }
-  | {
+      showPrice?: boolean;
+      showBuyButton?: boolean;
+      buttonStyle?: "primary" | "outline" | "ghost";
+    })
+  | (BaseCardProps & {
+      type: "newsletter";
+      provider: "mailchimp" | "convertkit" | "beehiiv";
+      formAction: string;
+      placeholder?: string;
+      ctaLabel?: string;
+      successMessage?: string;
+    })
+  | (BaseCardProps & {
       type: "customHtml";
-      title?: string;
       html: string;
-      layout?: string;
-    };
+      responsive?: boolean;
+    });
 
+// Full BioPage schema
 export type BioPage = {
   profile: Profile;
   theme: Theme;

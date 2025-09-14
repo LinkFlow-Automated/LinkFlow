@@ -87,23 +87,25 @@ model ClickEvent {
 }
 
 model Link {
-  id          String     @id @default(cuid())
-  userId      String
-  title       String
-  description String?
-  url         String
-  category    String?
-  order       Int
-  clicks      Int        @default(0)
-  featured    Boolean    @default(false)
-  autoSyncId  String?
-  platform    String?
-  icon        String?
-  isArchived  Boolean    @default(false)
-  visibility  Visibility @default(PUBLIC)
-  scheduledAt DateTime?
-  expiresAt   DateTime?
-  rules       Json?
+  id                String     @id @default(cuid())
+  userId            String
+  title             String
+  description       String?
+  url               String
+  isHadRedirectLink Boolean    @default(false)
+  redirectTo        String?
+  category          String?
+  order             Int
+  clicks            Int        @default(0)
+  featured          Boolean    @default(false)
+  autoSyncId        String?
+  platform          String?
+  icon              String?
+  isArchived        Boolean    @default(false)
+  visibility        Visibility @default(PUBLIC)
+  scheduledAt       DateTime?
+  expiresAt         DateTime?
+  rules             Json?
 
   createdAt   DateTime     @default(now())
   user        User         @relation(fields: [userId], references: [id])
@@ -117,7 +119,7 @@ model User {
   id               String    @id
   name             String
   email            String
-  username         String    @unique
+  username         String?   @unique
   bio              String?
   emailVerified    Boolean
   image            String?

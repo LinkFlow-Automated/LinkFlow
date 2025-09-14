@@ -1,39 +1,39 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Play, Pause, Music } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Play, Pause, Music } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SpotifyCardProps {
-  className?: string
-  isExpanded?: boolean
-  onToggle?: () => void
+  className?: string;
+  isExpanded?: boolean;
+  onToggle?: () => void;
 }
 
-export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }: SpotifyCardProps) {
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [progress, setProgress] = useState(65)
+export function CurrentlyPlayingCard({
+  className,
+  isExpanded = false,
+  onToggle,
+}: SpotifyCardProps) {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [progress, setProgress] = useState(65);
 
   return (
     <motion.div
       layout
-      animate={{
-        width: isExpanded ? 320 : 320,
-        height: isExpanded ? 320 : 120,
-      }}
-      transition={{ duration: 0.4, ease: "easeInOut" }}
-      whileHover={{ y: -4, scale: 1.02 }}
+      whileHover={{ y: -2, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
+      className="w-full max-w-md"
     >
       <Card
         className={cn(
           "group cursor-pointer transition-all duration-300 hover:shadow-lg p-0 m-0",
           "bg-card border-border relative overflow-hidden h-full w-full",
-          className,
+          className
         )}
         onClick={onToggle}
       >
@@ -77,7 +77,10 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
                       ease: "easeInOut",
                     }}
                   >
-                    <Badge variant="secondary" className="bg-accent text-white border-accent/30">
+                    <Badge
+                      variant="secondary"
+                      className="bg-accent text-white border-accent/30"
+                    >
                       Now Playing
                     </Badge>
                   </motion.div>
@@ -108,16 +111,28 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
                       scale: isPlaying ? [1, 1.05, 1] : 1,
                     }}
                     transition={{
-                      rotate: { duration: 8, repeat: isPlaying ? Number.POSITIVE_INFINITY : 0, ease: "linear" },
-                      scale: { duration: 2, repeat: isPlaying ? Number.POSITIVE_INFINITY : 0, ease: "easeInOut" },
+                      rotate: {
+                        duration: 8,
+                        repeat: isPlaying ? Number.POSITIVE_INFINITY : 0,
+                        ease: "linear",
+                      },
+                      scale: {
+                        duration: 2,
+                        repeat: isPlaying ? Number.POSITIVE_INFINITY : 0,
+                        ease: "easeInOut",
+                      },
                     }}
                   >
                     <Music className="w-10 h-10 text-white" />
                   </motion.div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-primary">Blinding Lights</h3>
+                    <h3 className="text-xl font-bold text-primary">
+                      Blinding Lights
+                    </h3>
                     <p className="text-sm text-muted-foreground">The Weeknd</p>
-                    <p className="text-xs text-muted-foreground mt-1">After Hours • 2020</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      After Hours • 2020
+                    </p>
                   </div>
                 </motion.div>
 
@@ -147,17 +162,27 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.6 }}
                 >
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <Button
                       size="lg"
                       className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-12 h-12"
                       onClick={(e) => {
-                        e.stopPropagation()
-                        setIsPlaying(!isPlaying)
+                        e.stopPropagation();
+                        setIsPlaying(!isPlaying);
                       }}
                     >
-                      <motion.div animate={{ scale: isPlaying ? [1, 1.2, 1] : 1 }} transition={{ duration: 0.3 }}>
-                        {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                      <motion.div
+                        animate={{ scale: isPlaying ? [1, 1.2, 1] : 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {isPlaying ? (
+                          <Pause className="w-5 h-5" />
+                        ) : (
+                          <Play className="w-5 h-5" />
+                        )}
                       </motion.div>
                     </Button>
                   </motion.div>
@@ -188,7 +213,10 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
                       ease: "easeInOut",
                     }}
                   >
-                    <Badge variant="secondary" className="bg-accent text-white border-accent/30 text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="bg-accent text-white border-accent/30 text-xs"
+                    >
                       Now Playing
                     </Badge>
                   </motion.div>
@@ -226,21 +254,35 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
                     <Music className="w-6 h-6 text-white" />
                   </motion.div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-primary truncate">Blinding Lights</p>
-                    <p className="text-xs text-muted-foreground">The Weeknd • 2:10 / 3:20</p>
+                    <p className="text-sm font-bold text-primary truncate">
+                      Blinding Lights
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      The Weeknd • 2:10 / 3:20
+                    </p>
                   </div>
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <Button
                       size="sm"
                       variant="ghost"
                       className="text-accent hover:text-accent hover:bg-accent/10"
                       onClick={(e) => {
-                        e.stopPropagation()
-                        setIsPlaying(!isPlaying)
+                        e.stopPropagation();
+                        setIsPlaying(!isPlaying);
                       }}
                     >
-                      <motion.div animate={{ scale: isPlaying ? [1, 1.2, 1] : 1 }} transition={{ duration: 0.3 }}>
-                        {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                      <motion.div
+                        animate={{ scale: isPlaying ? [1, 1.2, 1] : 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {isPlaying ? (
+                          <Pause className="w-4 h-4" />
+                        ) : (
+                          <Play className="w-4 h-4" />
+                        )}
                       </motion.div>
                     </Button>
                   </motion.div>
@@ -265,5 +307,5 @@ export function CurrentlyPlayingCard({ className, isExpanded = false, onToggle }
         </div>
       </Card>
     </motion.div>
-  )
+  );
 }

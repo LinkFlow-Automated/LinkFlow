@@ -2,7 +2,7 @@ import {
   deleteLink,
   getLinkById,
   updateLink,
-} from "@/lib/services/link-management";
+} from "@/lib/services/link-management-server";
 import { updateLinkSchema } from "@/lib/validations/link";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";

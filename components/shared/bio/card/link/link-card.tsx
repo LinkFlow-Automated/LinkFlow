@@ -12,7 +12,7 @@ export default function LinkCard() {
             <span className="leading-relaxed text-lg">Spotify</span>
           </div>
         </div>
-        <MoreVertical className="size-4 text-muted-foreground" />
+        <MoreVertical className="size-4" />
       </CardContent>
     </Card>
   );

@@ -58,7 +58,7 @@ const sidebarData = {
         },
         {
           title: "Design",
-          url: "/admin/breezi/1",
+          url: "/admin/design",
         },
       ],
     },

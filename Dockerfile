@@ -15,7 +15,7 @@ COPY prisma ./prisma/
 # Generate Prisma client BEFORE copying rest of files
 ENV PRISMA_SCHEMA_ENGINE_TYPE=binary
 ENV PRISMA_QUERY_ENGINE_TYPE=binary
-RUN pnpm dlx prisma generate
+RUN pnpm prisma generate
 
 # copy the rest of the files and build the app
 COPY . .

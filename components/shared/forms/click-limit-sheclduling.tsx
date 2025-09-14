@@ -20,7 +20,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Settings2 } from "lucide-react";
+import { Loader2, Settings2 } from "lucide-react";
 import { AiFillSchedule } from "react-icons/ai";
 import {
   Dialog,
@@ -34,14 +34,20 @@ import {
 import { useState } from "react";
 import { HiUser } from "react-icons/hi2";
 import DateTimePicker from "@/components/ui/date-time-picker";
+import TooltipWrapper from "../tooltip-wrapper";
+import { Link } from "@/lib/generated/prisma";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { toast } from "sonner";
+import { safeToDate } from "@/lib/utils";
 
+// Updated schema with better date handling
 const clickLimitsSchedulingSchema = z.object({
   maxClicks: z.number().int().min(1).optional(),
   maxClicksPerDay: z.number().int().min(1).optional(),
   maxClicksPerHour: z.number().int().min(1).optional(),
   maxClicksPerUser: z.number().int().min(1).optional(),
-  scheduledAt: z.coerce.date().nullable(),
-  expiresAt: z.coerce.date().nullable(),
+  scheduledAt: z.date().nullable().optional(),
+  expiresAt: z.date().nullable().optional(),
   allowedDays: z.array(z.string()).optional(),
   allowedHours: z
     .object({
@@ -65,18 +71,31 @@ const DAYS_OPTIONS = [
 ];
 
 interface ClickLimitsSchedulingFormProps {
-  initialData?: Partial<ClickLimitsSchedulingData>;
+  link: Link;
   isEditing?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
 }
 
+// // Helper function to safely convert to Date
+// function safeToDate(value: any): Date | null {
+//   if (!value) return null;
+//   if (value instanceof Date) return value;
+//   if (typeof value === 'string') {
+//     const date = new Date(value);
+//     return isNaN(date.getTime()) ? null : date;
+//   }
+//   return null;
+// }
+
 export function ClickLimitsSchedulingForm({
-  initialData,
+  link,
   isEditing = false,
-  open,
-  onOpenChange,
 }: ClickLimitsSchedulingFormProps) {
+  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const [open, setOpen] = useState(false);
+
+  const initialData = link?.rules
+    ? ((link.rules as any).clickLimitsScheduling as ClickLimitsSchedulingData)
+    : undefined;
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const form = useForm<ClickLimitsSchedulingData>({
@@ -84,32 +103,48 @@ export function ClickLimitsSchedulingForm({
     defaultValues: {
       maxClicks: initialData?.maxClicks,
       maxClicksPerUser: initialData?.maxClicksPerUser,
-      expiresAt: initialData?.expiresAt || null,
+      // Safely convert dates
+      scheduledAt: safeToDate(initialData?.scheduledAt),
+      expiresAt: safeToDate(initialData?.expiresAt),
       allowedDays: initialData?.allowedDays || [],
     },
   });
 
   const handleSubmit = async (data: ClickLimitsSchedulingData) => {
     try {
-      console.log("Form submitted:", data);
-      onOpenChange?.(false);
+      // Safely handle date conversion
+      const processedData = {
+        ...data,
+        scheduledAt: data.scheduledAt instanceof Date ? data.scheduledAt.toISOString() : null,
+        expiresAt: data.expiresAt instanceof Date ? data.expiresAt.toISOString() : null,
+      };
+
+      await updateLink({
+        id: link.id,
+        rules: {
+          ...((link.rules as object) || {}),
+          clickLimitsScheduling: processedData,
+        },
+      });
+      toast.success("Click Limits & Scheduling has been updated");
+      setOpen(false);
     } catch (error) {
+      toast.error("Error updating Click Limits & Scheduling");
       console.error("Error submitting form:", error);
     }
   };
 
   const handleCancel = () => {
     form.reset();
-    onOpenChange?.(false);
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild className="cursor-pointer">
-        {/* <Button variant="outline" className="border-0 cursor-pointer"> */}
+    <Dialog open={open} onOpenChange={setOpen}>
+      <TooltipWrapper content="Click Limits & Scheduling">
+        <DialogTrigger asChild className="cursor-pointer">
           <AiFillSchedule className="size-5" />
-        {/* </Button> */}
-      </DialogTrigger>
+        </DialogTrigger>
+      </TooltipWrapper>
       <DialogContent className="max-w-4xl min-w-2xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
@@ -174,8 +209,8 @@ export function ClickLimitsSchedulingForm({
                       <FormLabel>Scheduled date</FormLabel>
                       <FormControl>
                         <DateTimePicker
-                          value={field.value}
-                          onChange={field.onChange}
+                          value={field.value ?? null}
+                          onChange={(date) => field.onChange(safeToDate(date))}
                           placeholder="Select when link actives"
                         />
                       </FormControl>
@@ -194,8 +229,8 @@ export function ClickLimitsSchedulingForm({
                       <FormLabel>Expiration date</FormLabel>
                       <FormControl>
                         <DateTimePicker
-                          value={field.value}
-                          onChange={field.onChange}
+                          value={field.value ?? null}
+                          onChange={(date) => field.onChange(safeToDate(date))}
                           placeholder="Select when link expires"
                         />
                       </FormControl>
@@ -308,12 +343,23 @@ export function ClickLimitsSchedulingForm({
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-4 border-t">
               <DialogClose asChild>
-                <Button type="button" variant="outline">
+                <Button
+                  onClick={handleCancel}
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer"
+                >
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit" className="">
-                {isEditing ? "Update Test" : "Create A/B Test"}
+              <Button type="submit" className="cursor-pointer">
+                {isUpdating ? (
+                  <Loader2 className="animate-spin size-4" />
+                ) : isEditing ? (
+                  "Update Settings"
+                ) : (
+                  "Save Settings"
+                )}
               </Button>
             </div>
           </form>
