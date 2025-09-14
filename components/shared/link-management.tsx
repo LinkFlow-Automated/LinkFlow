@@ -87,6 +87,8 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
       url: "https://example.com",
       category: null,
       order: newOrder,
+      isHadRedirectLink: false,
+      redirectTo: "",
       clicks: 0,
       featured: false,
       autoSyncId: null,

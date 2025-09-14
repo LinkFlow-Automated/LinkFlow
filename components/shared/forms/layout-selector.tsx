@@ -8,8 +8,9 @@ import {
 } from "@/components/ui/dialog";
 import TooltipWrapper from "../tooltip-wrapper";
 import { RiLayout4Fill } from "react-icons/ri";
+import { Link } from "@/lib/generated/prisma";
 
-export default function LayoutSelector() {
+export default function LayoutSelector({link}:{link:Link}) {
   return (
     <Dialog>
       <TooltipWrapper content="Select Layout">

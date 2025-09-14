@@ -23,6 +23,7 @@ import { animationOptions, AnimationType } from "@/lib/utils/card-animation";
 import TooltipWrapper from "../tooltip-wrapper";
 import { AnimationPreview } from "../animation-preview";
 import { toast } from "sonner";
+import { Link } from "@/lib/generated/prisma";
 
 const animationSchema = z.object({
   animationStyle: z.string().optional(),
@@ -33,20 +34,21 @@ type AnimationFormData = z.infer<typeof animationSchema>;
 interface AnimationSelectorProps {
   onAnimationSelect?: (animation: AnimationType) => void;
   defaultAnimation?: AnimationType;
+  link: Link
 }
 
 export default function AnimationSelector({
   onAnimationSelect,
-  defaultAnimation = "none",
+  link
 }: AnimationSelectorProps) {
   const [open, setOpen] = useState(false);
   const [selectedAnimation, setSelectedAnimation] =
-    useState<AnimationType>(defaultAnimation);
+    useState<AnimationType>("none");
 
   const form = useForm<AnimationFormData>({
     resolver: zodResolver(animationSchema),
     defaultValues: {
-      animationStyle: defaultAnimation,
+      animationStyle: "none",
     },
   });
 

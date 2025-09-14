@@ -7,9 +7,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import TooltipWrapper from "../tooltip-wrapper";
 import { RiShareForwardFill } from "react-icons/ri";
 import {
@@ -36,27 +36,26 @@ const redirectSchema = z.object({
 type redirectProp = z.infer<typeof redirectSchema>;
 
 export default function RedirectForm({ link }: { link: Link }) {
+  const initialData = link.redirectTo;
   const [open, setOpen] = useState(false);
   const { updateLink, isUpdating } = useManageLink(link.userId);
   const form = useForm({
     resolver: zodResolver(redirectSchema),
     defaultValues: {
-      redirectLink: "",
+      redirectLink: initialData || "",
     },
   });
   const handleSubmit = async (data: redirectProp) => {
     try {
-      //   await updateLink({
-      //     id: link.id,
-      //     rules: {
-      //       ...((link.rules as object) || {}),
-      //       abTesting: data,
-      //     },
-      //   });
-      toast.success("A/B Test has been updated");
+      await updateLink({
+        id: link.id,
+        redirectTo: data.redirectLink,
+        isHadRedirectLink: !!data.redirectLink,
+      });
+      toast.success("Redirect Link has been updated");
       setOpen(false);
     } catch (error) {
-      toast.error("Error updating A/B Test");
+      toast.error("Error updating Redirect link");
       console.error("Error submitting form:", error);
     }
   };
@@ -68,7 +67,9 @@ export default function RedirectForm({ link }: { link: Link }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content={"Forward Link"}>
         <DialogTrigger asChild>
-          <RiShareForwardFill className="size-5" />
+          <RiShareForwardFill
+            className={`${link.isHadRedirectLink ? "text-blue-900" : ""} size-5`}
+          />
         </DialogTrigger>
       </TooltipWrapper>
       <DialogContent>
