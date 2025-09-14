@@ -64,10 +64,10 @@ export default function SortableItems({
         </div>
         <div className="flex items-center gap-1.5 md:gap-4">
           <LayoutSelector />
-          <RedirectForm />
-          {iconsSocials.map((item) => (
+          <RedirectForm link={link}/>
+          {/* {iconsSocials.map((item) => (
             <item.icon className="size-5" key={item.name} />
-          ))}
+          ))} */}
           <AnimationSelector />
           <DeviceBrowserTargetingForm link={link} />
           <GeographicTargetingForm link={link} />

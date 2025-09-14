@@ -15,7 +15,7 @@ import { RiShareForwardFill } from "react-icons/ri";
 import {
   Form,
   FormControl,
-//   FormDescription,
+  //   FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,6 +25,9 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { Link } from "@/lib/generated/prisma";
+import { Loader2 } from "lucide-react";
 
 const redirectSchema = z.object({
   redirectLink: z.string().optional(),
@@ -32,8 +35,9 @@ const redirectSchema = z.object({
 
 type redirectProp = z.infer<typeof redirectSchema>;
 
-export default function RedirectForm() {
+export default function RedirectForm({ link }: { link: Link }) {
   const [open, setOpen] = useState(false);
+  const { updateLink, isUpdating } = useManageLink(link.userId);
   const form = useForm({
     resolver: zodResolver(redirectSchema),
     defaultValues: {
@@ -108,7 +112,7 @@ export default function RedirectForm() {
               />
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t">
+            <div className="flex justify-end gap-3 pt-4">
               <DialogClose asChild>
                 <Button
                   onClick={handleCancel}
@@ -120,13 +124,11 @@ export default function RedirectForm() {
                 </Button>
               </DialogClose>
               <Button type="submit" className="cursor-pointer">
-                {/* {isUpdating ? (
+                {isUpdating ? (
                   <Loader2 className="animate-spin size-4" />
-                ) : isEditing ? (
-                  "Update Test"
                 ) : (
-                  "Create A/B Test"
-                )} */}
+                  "Add redirect link"
+                )}
               </Button>
             </div>
           </form>
