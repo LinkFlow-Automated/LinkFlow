@@ -59,7 +59,7 @@ export default function SortableItems({
         <div className="flex items-center gap-1.5 md:gap-4">
           <LayoutSelector link={link} />
           <RedirectForm link={link} />
-          <AddLinkThumbnail />
+          <AddLinkThumbnail link={link}/>
           <AnimationSelector link={link} />
           <DeviceBrowserTargetingForm link={link} />
           <GeographicTargetingForm link={link} />
