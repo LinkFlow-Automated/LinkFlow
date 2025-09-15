@@ -1,17 +1,18 @@
-"use client";
+"use client"
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, Eye } from "lucide-react";
-import { getLayoutConfig, LayoutType } from "@/lib/utils/card-layout";
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Calendar, Eye } from "lucide-react"
+import { getLayoutConfig, LayoutType } from "@/lib/utils/card-layout"
 
 interface LayoutPreviewProps {
-  layout: LayoutType;
-  isSelected: boolean;
+  layout: LayoutType
+  isSelected: boolean
 }
 
 export function LayoutPreview({ layout, isSelected }: LayoutPreviewProps) {
-  const config = getLayoutConfig(layout);
+  const config = getLayoutConfig(layout)
 
   return (
     <div className="border rounded-lg bg-background/50 p-2">
@@ -28,31 +29,35 @@ export function LayoutPreview({ layout, isSelected }: LayoutPreviewProps) {
 
           {/* Statistic layout shows big number */}
           {layout === "statistic" && config.statsClass && (
-            <div className={config.statsClass}>42.5K</div>
+            <div className={config.statsClass}>
+              <Skeleton className="h-8 w-16" />
+            </div>
           )}
 
-          <h3 className={config.titleClass}>Sample Card Title</h3>
+          <div className={config.titleClass}>
+            <Skeleton className="h-5 w-32" />
+          </div>
 
-          <p className={config.descriptionClass}>
-            This is a sample description that shows how the layout will look
-            with your content.
-          </p>
+          <div className={config.descriptionClass}>
+            <Skeleton className="h-4 w-full mb-2" />
+            <Skeleton className="h-4 w-3/4" />
+          </div>
 
           <div className={config.metaClass}>
             {layout === "detailed" ? (
               <>
                 <Calendar className="size-3" />
-                <span>Dec 15, 2024</span>
+                <Skeleton className="h-3 w-20" />
                 <Badge variant="secondary" className="text-xs">
-                  New
+                  <Skeleton className="h-3 w-6" />
                 </Badge>
               </>
             ) : (
-              <span>Dec 15, 2024</span>
+              <Skeleton className="h-3 w-20" />
             )}
           </div>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

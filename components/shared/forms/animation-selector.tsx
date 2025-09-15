@@ -92,11 +92,11 @@ export default function AnimationSelector({
         <DialogHeader>
           <div className="flex items-center gap-2">
             <MdAnimation className="size-5" />
-            <DialogTitle>Choose Animation Style</DialogTitle>
+            <DialogTitle>Add an Animation Effect</DialogTitle>
           </div>
           <DialogDescription>
-            Select an animation style for your link. Preview each animation to
-            see how it looks.
+            Make your link stand out and grab your audience's attention. Select
+            an animation from the options below to see a live preview.
           </DialogDescription>
         </DialogHeader>
 

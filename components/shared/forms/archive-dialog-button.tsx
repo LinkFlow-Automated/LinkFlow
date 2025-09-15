@@ -45,8 +45,8 @@ export default function ArchiveDialogButton({ link }: { link: Link }) {
           </div>
           <DialogDescription>
             {link.isArchived
-              ? "Are you sure you want to unarchive this link?"
-              : "Are you sure you want to archive this link?"}
+              ? "This will restore the link to your main dashboard, making it visible with your other active links."
+              : "This action will hide the link from your main list to keep your dashboard organized. The link itself will remain active and continue to work."}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

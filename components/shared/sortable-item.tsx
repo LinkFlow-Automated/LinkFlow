@@ -3,7 +3,6 @@ import type { UniqueIdentifier } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Card } from "@/components/ui/card";
-import { IoLockClosed } from "react-icons/io5";
 import { FaGripVertical } from "react-icons/fa6";
 import BaseLinkForm from "./forms/base-link-form";
 import { ABTestingForm } from "./forms/ab-testing-form";
@@ -16,6 +15,7 @@ import ArchiveDialogButton from "./forms/archive-dialog-button";
 import LayoutSelector from "./forms/layout-selector";
 import AnimationSelector from "./forms/animation-selector";
 import RedirectForm from "./forms/redirect-form";
+import AddLinkThumbnail from "./forms/add-link-thumbnail";
 
 export default function SortableItems({
   id,
@@ -34,12 +34,6 @@ export default function SortableItems({
   } = useSortable({ id });
 
   const style = { transform: CSS.Transform.toString(transform), transition };
-  const iconsSocials = [
-    {
-      name: "Lock",
-      icon: IoLockClosed,
-    },
-  ];
 
   return (
     <Card
@@ -65,9 +59,7 @@ export default function SortableItems({
         <div className="flex items-center gap-1.5 md:gap-4">
           <LayoutSelector link={link} />
           <RedirectForm link={link} />
-          {/* {iconsSocials.map((item) => (
-            <item.icon className="size-5" key={item.name} />
-          ))} */}
+          <AddLinkThumbnail link={link}/>
           <AnimationSelector link={link} />
           <DeviceBrowserTargetingForm link={link} />
           <GeographicTargetingForm link={link} />
