@@ -24,6 +24,8 @@ import TooltipWrapper from "../tooltip-wrapper";
 import { AnimationPreview } from "../animation-preview";
 import { toast } from "sonner";
 import { Link } from "@/lib/generated/prisma";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { Loader2 } from "lucide-react";
 
 const animationSchema = z.object({
   animationStyle: z.string().optional(),
@@ -34,13 +36,14 @@ type AnimationFormData = z.infer<typeof animationSchema>;
 interface AnimationSelectorProps {
   onAnimationSelect?: (animation: AnimationType) => void;
   defaultAnimation?: AnimationType;
-  link: Link
+  link: Link;
 }
 
 export default function AnimationSelector({
   onAnimationSelect,
-  link
+  link,
 }: AnimationSelectorProps) {
+  const { updateLink, isUpdating } = useManageLink(link.userId);
   const [open, setOpen] = useState(false);
   const [selectedAnimation, setSelectedAnimation] =
     useState<AnimationType>("none");
@@ -48,7 +51,7 @@ export default function AnimationSelector({
   const form = useForm<AnimationFormData>({
     resolver: zodResolver(animationSchema),
     defaultValues: {
-      animationStyle: "none",
+      animationStyle: link.animation as AnimationType,
     },
   });
 
@@ -60,17 +63,14 @@ export default function AnimationSelector({
 
   const handleSubmit = async () => {
     try {
-      //   await updateLink({
-      //     id: link.id,
-      //     rules: {
-      //       ...((link.rules as object) || {}),
-      //       abTesting: data,
-      //     },
-      //   });
-      toast.success("A/B Test has been updated");
+      await updateLink({
+        id: link.id,
+        animation: selectedAnimation,
+      });
+      toast.success(`Animation has been updated to ${selectedAnimation}`);
       setOpen(false);
     } catch (error) {
-      toast.error("Error updating A/B Test");
+      toast.error("Error updating animation");
       console.error("Error submitting form:", error);
     }
   };
@@ -101,7 +101,10 @@ export default function AnimationSelector({
         </DialogHeader>
 
         <Form {...form}>
-          <form className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="animationStyle"
@@ -161,8 +164,16 @@ export default function AnimationSelector({
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="button" className="min-w-20 cursor-pointer">
-                Apply
+              <Button
+                disabled={isUpdating}
+                type="submit"
+                className="min-w-20 cursor-pointer"
+              >
+                {isUpdating ? (
+                  <Loader2 className="animate-spin size-5" />
+                ) : (
+                  "Apply"
+                )}
               </Button>
             </div>
           </form>
