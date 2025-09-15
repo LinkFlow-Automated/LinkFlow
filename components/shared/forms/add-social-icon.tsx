@@ -21,10 +21,12 @@ export default function AddSocialIcon() {
         <DialogHeader>
           <div className="flex items-center gap-2">
             <IoAddCircle className="size-5" />
-            <DialogTitle>Adding social icon</DialogTitle>
+            <DialogTitle>Add Social Icon</DialogTitle>
           </div>
+          <DialogDescription>
+            Select a platform and enter the full URL to your profile.
+          </DialogDescription>
         </DialogHeader>
-        <DialogDescription>Manage your social icon</DialogDescription>
       </DialogContent>
     </Dialog>
   );

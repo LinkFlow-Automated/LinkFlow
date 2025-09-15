@@ -3,7 +3,7 @@ import {
   FaInstagram,
   FaLinkedin,
   FaSpotify,
-  FaTwitter,
+  // FaTwitter,
   // FaYoutube,
 } from "react-icons/fa6";
 // import { SiLeetcode, SiWakatime } from "react-icons/si";
@@ -11,6 +11,7 @@ import ImageUploadForm from "./forms/image-upload-form";
 import { Link, User } from "@/lib/generated/prisma";
 import AddSocialIcon from "./forms/add-social-icon";
 import { cn } from "@/lib/utils";
+import { RiTwitterXFill } from "react-icons/ri";
 
 export default function ProfileViewCard({
   user,
@@ -40,7 +41,7 @@ export default function ProfileViewCard({
     },
     {
       label: "Twitter",
-      icon: FaTwitter,
+      icon: RiTwitterXFill,
       className: "text-primary"
     },
     {

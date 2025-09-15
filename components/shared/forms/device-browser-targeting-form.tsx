@@ -141,13 +141,13 @@ export function DeviceBrowserTargetingForm({
           <div className="flex items-center gap-2">
             <PiDevicesFill className="h-5 w-5" />
             <DialogTitle>
-              {isEditing
-                ? "Edit Device & Browser Targeting"
-                : "Device & Browser Targeting"}
+              {isEditing ? "Edit Device Targeting" : "Set Up Device Targeting"}
             </DialogTitle>
           </div>
           <DialogDescription>
-            Control access based on device type, browser, and screen size
+            {isEditing
+              ? "Modify the rules that redirect users based on their device, browser, or screen size."
+              : "Send visitors to different URLs based on their device. Perfect for directing iOS users to the App Store and Android users to the Google Play Store."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

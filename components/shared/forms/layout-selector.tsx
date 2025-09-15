@@ -85,9 +85,12 @@ export default function LayoutSelector({ link }: { link: Link }) {
         <DialogHeader>
           <div className="flex items-center gap-2">
             <RiLayout4Fill className="size-5" />
-            <DialogTitle>Select Layout</DialogTitle>
+            <DialogTitle>Choose a Page Layout</DialogTitle>
           </div>
-          <DialogDescription>Select the layout for the link</DialogDescription>
+          <DialogDescription>
+            Change the visual arrangement of your links and content. Select a
+            layout below to instantly see how your page will look to visitors.
+          </DialogDescription>
         </DialogHeader>
         <div>
           <Form {...form}>

@@ -150,11 +150,15 @@ export function GeographicTargetingForm({
           <div className="flex items-center gap-2">
             <TiWorld className="h-5 w-5" />
             <DialogTitle>
-              {isEditing ? "Edit Geographic Targeting" : "Geographic Targeting"}
+              {isEditing
+                ? "Edit Location Targeting"
+                : "Set Up Location Targeting"}
             </DialogTitle>
           </div>
           <DialogDescription>
-            Control where your link is accessible based on location
+            {isEditing
+              ? "Modify the rules that redirect visitors based on their geographic location."
+              : "Send visitors to different URLs based on their country, region, or city. For example, you can redirect users in Canada to your .ca site."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

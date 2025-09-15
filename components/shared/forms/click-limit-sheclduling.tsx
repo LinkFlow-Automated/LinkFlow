@@ -115,8 +115,12 @@ export function ClickLimitsSchedulingForm({
       // Safely handle date conversion
       const processedData = {
         ...data,
-        scheduledAt: data.scheduledAt instanceof Date ? data.scheduledAt.toISOString() : null,
-        expiresAt: data.expiresAt instanceof Date ? data.expiresAt.toISOString() : null,
+        scheduledAt:
+          data.scheduledAt instanceof Date
+            ? data.scheduledAt.toISOString()
+            : null,
+        expiresAt:
+          data.expiresAt instanceof Date ? data.expiresAt.toISOString() : null,
       };
 
       await updateLink({
@@ -150,11 +154,15 @@ export function ClickLimitsSchedulingForm({
           <div className="flex items-center gap-2">
             <AiFillSchedule className="h-5 w-5" />
             <DialogTitle className="text-xl">
-              {isEditing ? "Edit Link Settings" : "Click Limits & Scheduling"}
+              {isEditing
+                ? "Edit Schedule & Click Limits"
+                : "Set Schedule & Click Limits"}
             </DialogTitle>
           </div>
           <DialogDescription>
-            Control how your link can be accessed
+            {isEditing
+              ? "Adjust the rules for when this link is active. You can update its schedule or change the click limit."
+              : "Automatically disable your link based on time or usage. Set a start/end date or a maximum number of clicks."}
           </DialogDescription>
         </DialogHeader>
 

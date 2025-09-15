@@ -129,7 +129,9 @@ export function ABTestingForm({ link, isEditing = false }: ABTestingFormProps) {
             </DialogTitle>
           </div>
           <DialogDescription>
-            Test different versions to see which performs better
+            {isEditing
+              ? "Update the destination URLs for your split test. Changes will affect new traffic immediately."
+              : "Find out which destination URL performs better. We'll automatically split traffic between two versions and track the results."}
           </DialogDescription>
         </DialogHeader>
 
