@@ -6,7 +6,8 @@ export type AnimationType =
   | "hover-rise"
   | "pulse"
   | "fade-in"
-  | "slide-in";
+  | "slide-in"
+  | "enter-in";
 
 export const getCardAnimation = (
   animation: AnimationType = "none"
@@ -49,6 +50,23 @@ export const getCardAnimation = (
         },
       };
 
+    case "enter-in":
+      return {
+        variants: {
+          initial: { opacity: 0, scale: 0 },
+          animate: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+              duration: 0.4,
+              scale: { type: "spring" },
+              visualDuration: 0.4,
+              bounce: 0.5,
+            },
+          },
+        },
+      };
+
     default:
       return {};
   }
@@ -80,4 +98,9 @@ export const animationOptions = [
     label: "Slide In",
     description: "Slides in from left",
   },
-] as const
+  {
+    value: "enter-in",
+    label: "Enter In",
+    description: "Enter in animation",
+  },
+] as const;

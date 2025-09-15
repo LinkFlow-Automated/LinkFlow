@@ -107,6 +107,14 @@ model Link {
   expiresAt         DateTime?
   rules             Json?
 
+  // 🆕 Presentation layer
+  layout         String? // e.g. "default" | "minimal" | "highlighted"
+  animation      String? // e.g. "none" | "hover-rise" | "pulse" | "fade-in"
+  themeOverrides Json? // optional per-link theme (bg, border, textColor...)
+
+  // provider-specific payload
+  metadata Json? // 🆕 structured info (album, artist, track…)
+
   createdAt   DateTime     @default(now())
   user        User         @relation(fields: [userId], references: [id])
   clickEvents ClickEvent[]
