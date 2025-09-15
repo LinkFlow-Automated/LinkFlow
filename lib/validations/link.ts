@@ -172,8 +172,8 @@ export const updateLinkSchema = z.object({
   isHadRedirectLink: z.boolean(),
   layout: z.string().nullable(),
   animation: z.string().nullable(),
-  themeOverrides: z.any().nullable(),
-  metadata: z.any().nullable(),
+  themeOverrides: themeOverridesSchema,
+  metadata: metadataSchema,
   rules: rulesSchema,
   createdAt: z.coerce.date().default(() => new Date()),
 });
