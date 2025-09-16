@@ -1,62 +1,71 @@
-FROM node:alpine AS builder
-RUN apk add --no-cache openssl curl
-# install pnpm
+# syntax=docker/dockerfile:1
+FROM node:alpine AS base
+# Install system dependencies
+RUN apk add --no-cache \
+    openssl \
+    curl \
+    libc6-compat
+# Enable pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
+# Dependencies stage
+FROM base AS deps
 WORKDIR /app
-
-# copy and install dependencies with pnpm
+# Copy dependency files
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+# Install dependencies with cache mount for better performance
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile --prefer-offline
 
+# Builder stage
+FROM base AS builder
+WORKDIR /app
+# Copy installed dependencies
+COPY --from=deps /app/node_modules ./node_modules
 # Copy prisma schema BEFORE generating client
 COPY prisma ./prisma/
-
-# Generate Prisma client BEFORE copying rest of files
+# Set Prisma environment variables for Alpine
 ENV PRISMA_SCHEMA_ENGINE_TYPE=binary
 ENV PRISMA_QUERY_ENGINE_TYPE=binary
-RUN pnpm prisma generate
-
-# copy the rest of the files and build the app
+# Generate Prisma client with cache mount
+RUN --mount=type=cache,id=prisma,target=/root/.cache/prisma \
+    pnpm prisma generate
+# Copy source code
 COPY . .
-
-# Build Next.js app (remove duplicate build command)
+# Build the application
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm run build
 
-# Stage 2: Production
-FROM node:alpine AS runner
-# Install runtime dependencies
-RUN apk add --no-cache curl openssl
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
+# Production stage
+FROM base AS runner
 WORKDIR /app
-
-# Environment variables
+# Set production environment
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Create a non-root user
-RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
+# Create non-root user with specific IDs for better security
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs --ingroup nodejs
 
-# Copy only necessary files from builder
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# Copy built application with proper ownership
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy generated Prisma client
-COPY --from=builder /app/lib/generated ./lib/generated
+# Copy generated Prisma client from custom location
+COPY --from=builder --chown=nextjs:nodejs /app/lib/generated ./lib/generated
 
-# Change ownership to nextjs user
-RUN chown -R nextjs:nodejs /app
+# Switch to non-root user
 USER nextjs
 
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+# Add healthcheck with more realistic timing
+HEALTHCHECK --interval=60s --timeout=10s --start-period=30s --retries=3 \
     CMD curl -f http://localhost:3000/api/health || exit 1
 
 # Expose port
 EXPOSE 3000
 
-# start the app
+# Start the application
 CMD ["node", "server.js"]
