@@ -140,6 +140,8 @@ export const updateLink = async (data: Link) => {
         description: data.description,
         url: data.url,
         order: data.order,
+        type: data.type,
+        thumbnail: data.thumbnail,
         category: data.category,
         clicks: data.clicks,
         createdAt: data.createdAt,

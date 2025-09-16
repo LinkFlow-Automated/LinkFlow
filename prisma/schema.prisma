@@ -100,7 +100,8 @@ model Link {
   featured          Boolean    @default(false)
   autoSyncId        String?
   platform          String?
-  icon              String?
+  thumbnail         String?
+  type              ThumbnailType?
   isArchived        Boolean    @default(false)
   visibility        Visibility @default(PUBLIC)
   scheduledAt       DateTime?
@@ -326,4 +327,9 @@ enum ThemeType {
   USER
   SYSTEM
   SHARED
+}
+
+enum ThumbnailType {
+  icon
+  image
 }

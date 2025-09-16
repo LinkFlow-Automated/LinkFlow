@@ -123,6 +123,8 @@ export const themeOverridesSchema = z.object({
   layout: z.enum(["compact", "detailed", "media"]).optional(), // card layout style
 });
 
+export const ThumbnailType = z.enum(["image", "icon"]);
+
 // Validation schema for POST request (creating links)
 export const createLinkSchema = z.object({
   id: z.string().optional(),
@@ -133,6 +135,8 @@ export const createLinkSchema = z.object({
   category: z.string().max(50, "Category too long").nullable(),
   order: z.number().int().min(0),
   clicks: z.number().int().min(0).default(0),
+  type: ThumbnailType.nullable().default(null),
+  thumbnail: z.string().optional(),
   featured: z.boolean().default(false),
   autoSyncId: z.string().nullable(),
   platform: z.string().max(50, "Platform too long").nullable(),
@@ -158,6 +162,8 @@ export const updateLinkSchema = z.object({
   description: z.string().max(500, "Description too long").nullable(),
   url: z.string().url("Invalid URL format"),
   category: z.string().max(50, "Category too long").nullable(),
+  type: ThumbnailType.nullable().default(null),
+  thumbnail:z.string().nullable().default(null),
   order: z.number().int().min(0),
   clicks: z.number().int().min(0).default(0),
   featured: z.boolean().default(false),

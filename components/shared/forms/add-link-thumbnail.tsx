@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { RiImageAddFill } from "react-icons/ri";
 import z from "zod";
-import type { Link } from "@/lib/generated/prisma";
+import type { Link, ThumbnailType } from "@/lib/generated/prisma";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -31,6 +31,8 @@ import TooltipWrapper from "../tooltip-wrapper";
 import IconPicker from "./icon-picker";
 import Image from "next/image";
 import { uploadThemes } from "@/lib/utils/upload-theme";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { toast } from "sonner";
 
 const AddLinkThumbnailSchema = z.object({
   type: z.enum(["image", "icon"]),
@@ -40,20 +42,34 @@ const AddLinkThumbnailSchema = z.object({
 type AddLinkThumbnailProp = z.infer<typeof AddLinkThumbnailSchema>;
 
 export default function AddLinkThumbnail({ link }: { link: Link }) {
+  const { updateLink, isUpdating } = useManageLink(link.userId);
   const [thumbnailType, setThumbnailType] = useState<"image" | "icon">("image");
+  const [open, setOpen] = useState<boolean>(false);
 
   const form = useForm<AddLinkThumbnailProp>({
     resolver: zodResolver(AddLinkThumbnailSchema),
     defaultValues: {
-      type: "image",
-      image: link.icon as string,
-      icon: undefined,
+      type: link.type as ThumbnailType,
+      image: link.type === "image" ? (link.thumbnail as string) : "",
+      icon: link.type === "icon" ? (link.thumbnail as string) : "",
     },
   });
 
-  const onSubmit = (data: AddLinkThumbnailProp) => {
+  const onSubmit = async (data: AddLinkThumbnailProp) => {
     console.log("Thumbnail data:", data);
     // Here you would typically save the data to your backend
+    try {
+      await updateLink({
+        id: link.id,
+        type: data.type,
+        thumbnail: data.type === "image" ? data.image : data.icon,
+      });
+      toast.success("A/B Test has been updated");
+      setOpen(false);
+    } catch (error) {
+      toast.error("Error updating A/B Test");
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -97,7 +113,7 @@ export default function AddLinkThumbnail({ link }: { link: Link }) {
                         <FormControl>
                           <div className="space-y-4 mt-2">
                             <UploadButton
-                            appearance={uploadThemes.modern.uploadButton}
+                              appearance={uploadThemes.modern.uploadButton}
                               endpoint="imageUploader"
                               onClientUploadComplete={(res: any) => {
                                 if (res?.[0]?.url) {
