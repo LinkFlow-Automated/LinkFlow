@@ -34,7 +34,6 @@ export default function ProfileForm({
     defaultValues: {
       name: userData?.username || "",
       bio: userData?.bio || "",
-      //   image: initialValues?.image || "",
     },
   });
 
