@@ -4,6 +4,7 @@ import type React from "react";
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -56,24 +57,25 @@ export default function AddLinkThumbnail({ link }: { link: Link }) {
   });
 
   const onSubmit = async (data: AddLinkThumbnailProp) => {
-    console.log("Thumbnail data:", data);
-    // Here you would typically save the data to your backend
     try {
       await updateLink({
         id: link.id,
         type: data.type,
         thumbnail: data.type === "image" ? data.image : data.icon,
       });
-      toast.success("A/B Test has been updated");
+      toast.success("Your thumbnail has been updated");
       setOpen(false);
     } catch (error) {
-      toast.error("Error updating A/B Test");
+      toast.error("Error updating thumbnail");
       console.error("Error submitting form:", error);
     }
   };
 
+  const handleCancel = () => {
+    form.reset();
+  };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content="Add thumbnail to your link">
         <DialogTrigger asChild className="cursor-pointer">
           <RiImageAddFill className="size-5" />
@@ -206,10 +208,20 @@ export default function AddLinkThumbnail({ link }: { link: Link }) {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-3 pt-4 border-t">
+                <DialogClose asChild>
+                  <Button
+                    onClick={handleCancel}
+                    type="button"
+                    variant="outline"
+                    className="cursor-pointer"
+                  >
+                    Cancel
+                  </Button>
+                </DialogClose>
                 <Button
                   type="submit"
-                  disabled={!form.watch("image") && !form.watch("icon")}
+                  disabled={!form.watch("image") && !form.watch("icon") && isUpdating}
                 >
                   Save Thumbnail
                 </Button>
