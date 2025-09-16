@@ -17,10 +17,11 @@ COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile --prefer-offline
 
-# Builder stage
+# Builder stage  
 FROM base AS builder
 WORKDIR /app
-# Copy installed dependencies
+# Copy package.json and installed dependencies
+COPY package.json pnpm-lock.yaml ./
 COPY --from=deps /app/node_modules ./node_modules
 # Copy prisma schema BEFORE generating client
 COPY prisma ./prisma/
