@@ -71,7 +71,7 @@ export default function ProfileViewCard({
         <ImageUploadForm user={user as User} />
         <div className="grid flex-1 text-left text-sm leading-tight">
           <span className="truncate font-medium">{user.username}</span>
-          <span className="text-muted-foreground truncate text-md">
+          <span className="text-muted-foreground truncate text-md line-clamp-1">
             {user.bio}
           </span>
           <div className="flex flex-row gap-1.5 items-center">

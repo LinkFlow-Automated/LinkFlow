@@ -1,9 +1,11 @@
 /** biome-ignore-all lint/a11y/useKeyWithClickEvents: <> */
 "use client";
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Link, User } from "@/lib/generated/prisma";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -11,22 +13,28 @@ import z from "zod";
 const profileFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   bio: z.string().min(1, { message: "Bio is required" }),
-//   image: z.string().min(1, { message: "Image is required" }),
+  //   image: z.string().min(1, { message: "Image is required" }),
 });
 
 type ProfileForm = z.infer<typeof profileFormSchema>;
 
 interface ProfileFormProps {
-  initialValues?: ProfileForm;
+  userData: User & { links: Link[] };
+  placeHolder: string;
+  className?: string;
 }
 
-export default function ProfileForm({ initialValues }: ProfileFormProps) {
+export default function ProfileForm({
+  userData,
+  placeHolder,
+  className,
+}: ProfileFormProps) {
   const form = useForm<ProfileForm>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      name: initialValues?.name || "",
-      bio: initialValues?.bio || "",
-    //   image: initialValues?.image || "",
+      name: userData?.username || "",
+      bio: userData?.bio || "",
+      //   image: initialValues?.image || "",
     },
   });
 
@@ -41,6 +49,9 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
 
   return (
     <Dialog>
+      <DialogTrigger>
+        <span className={cn("", className)}>{placeHolder}</span>
+      </DialogTrigger>
       <DialogContent className="max-w-7xl min-w-4xl max-h-[90vh] overflow-y-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
