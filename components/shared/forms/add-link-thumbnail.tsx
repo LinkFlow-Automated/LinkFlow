@@ -30,6 +30,7 @@ import * as Icons from "react-icons/ri";
 import TooltipWrapper from "../tooltip-wrapper";
 import IconPicker from "./icon-picker";
 import Image from "next/image";
+import { uploadThemes } from "@/lib/utils/upload-theme";
 
 const AddLinkThumbnailSchema = z.object({
   type: z.enum(["image", "icon"]),
@@ -92,10 +93,11 @@ export default function AddLinkThumbnail({ link }: { link: Link }) {
                     name="image"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Upload Image</FormLabel>
+                        {/* <FormLabel>Upload Image</FormLabel> */}
                         <FormControl>
-                          <div className="space-y-4">
+                          <div className="space-y-4 mt-2">
                             <UploadButton
+                            appearance={uploadThemes.modern.uploadButton}
                               endpoint="imageUploader"
                               onClientUploadComplete={(res: any) => {
                                 if (res?.[0]?.url) {
