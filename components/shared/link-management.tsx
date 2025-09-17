@@ -22,6 +22,7 @@ import { GripVertical, Loader2, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useManageLink } from "@/hooks/use-manage-link";
+import LinkHub from "./link-hub";
 // Import your auth hook or user context
 // import { useAuth } from "@/hooks/use-auth";
 
@@ -126,7 +127,7 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
     <div className="w-full max-w-md mx-auto space-y-4">
       {/* Add Link Button */}
       <div className="w-full flex justify-center md:justify-end">
-        <Button
+        {/* <Button
           onClick={handleCreateLink}
           disabled={isCreating}
           // size="lg"
@@ -138,7 +139,8 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
           ) : (
             "Add Link"
           )}
-        </Button>
+        </Button> */}
+        <LinkHub handleCreateLink={handleCreateLink} />
       </div>
 
       <DndContext

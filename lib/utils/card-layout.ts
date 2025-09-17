@@ -38,23 +38,24 @@ export const getLayoutConfig = (
         titleClass: "text-base font-medium",
         descriptionClass: "hidden",
         metaClass: "text-xs text-muted-foreground",
+        imageClass: ""
       };
-    case "media":
-      return {
-        containerClass: "overflow-hidden",
-        titleClass: "text-base font-medium p-4 pb-2",
-        descriptionClass: "text-sm text-muted-foreground px-4",
-        metaClass: "text-xs text-muted-foreground p-4 pt-2",
-        imageClass: "w-full h-32 object-cover",
-      };
-    case "statistic":
-      return {
-        containerClass: "p-4 text-center space-y-2",
-        titleClass: "text-sm font-medium",
-        descriptionClass: "text-xs text-muted-foreground",
-        metaClass: "text-xs text-muted-foreground",
-        statsClass: "text-2xl font-bold text-primary",
-      };
+    // case "media":
+    //   return {
+    //     containerClass: "overflow-hidden",
+    //     titleClass: "text-base font-medium p-4 pb-2",
+    //     descriptionClass: "text-sm text-muted-foreground px-4",
+    //     metaClass: "text-xs text-muted-foreground p-4 pt-2",
+    //     imageClass: "w-full h-32 object-cover",
+    //   };
+    // case "statistic":
+    //   return {
+    //     containerClass: "p-4 text-center space-y-2",
+    //     titleClass: "text-sm font-medium",
+    //     descriptionClass: "text-xs text-muted-foreground",
+    //     metaClass: "text-xs text-muted-foreground",
+    //     statsClass: "text-2xl font-bold text-primary",
+    //   };
     default:
       return {
         containerClass: "p-4 space-y-2",
@@ -82,14 +83,14 @@ export const layoutOptions = [
     label: "Minimal",
     description: "Clean layout with essential info only",
   },
-  {
-    value: "media",
-    label: "Media",
-    description: "Image-focused layout with visual emphasis",
-  },
-  {
-    value: "statistic",
-    label: "Statistic",
-    description: "Number-focused layout for data display",
-  },
+  // {
+  //   value: "media",
+  //   label: "Media",
+  //   description: "Image-focused layout with visual emphasis",
+  // },
+  // {
+  //   value: "statistic",
+  //   label: "Statistic",
+  //   description: "Number-focused layout for data display",
+  // },
 ] as const;

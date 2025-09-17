@@ -107,8 +107,8 @@ export const metadataSchema = z.object({
     "soundcloud",
     "gumroad",
     "custom",
-  ]),
-  type: z.string(), // e.g. "NEW_ALBUM", "NOW_PLAYING", "CHANNEL", "FEED", "PRODUCTS"
+  ]).optional(),
+  type: z.string().optional(), // e.g. "NEW_ALBUM", "NOW_PLAYING", "CHANNEL", "FEED", "PRODUCTS"
   id: z.string().optional(), // external ID (albumId, channelId, etc.)
   data: z.record(z.any()).optional(), // provider-specific payload
   lastSynced: z.string().datetime().optional(), // ISO string
@@ -121,7 +121,7 @@ export const themeOverridesSchema = z.object({
   shadow: z.boolean().optional(), // enable/disable shadow
   animation: z.string().optional(), // e.g. "fade", "bounce", "zoom"
   layout: z.enum(["compact", "detailed", "media"]).optional(), // card layout style
-});
+}).optional();
 
 export const ThumbnailType = z.enum(["image", "icon"]);
 
@@ -140,7 +140,7 @@ export const createLinkSchema = z.object({
   featured: z.boolean().default(false),
   autoSyncId: z.string().nullable(),
   platform: z.string().max(50, "Platform too long").nullable(),
-  icon: z.string().url("Invalid icon URL").nullable(),
+  // icon: z.string().url("Invalid icon URL").nullable(),
   isArchived: z.boolean().default(false),
   visibility: z.nativeEnum(Visibility).default(Visibility.PUBLIC),
   scheduledAt: z.coerce.date().nullable(),
@@ -169,7 +169,7 @@ export const updateLinkSchema = z.object({
   featured: z.boolean().default(false),
   autoSyncId: z.string().nullable(),
   platform: z.string().max(50, "Platform too long").nullable(),
-  icon: z.string().url("Invalid icon URL").nullable(),
+  // icon: z.string().url("Invalid icon URL").nullable(),
   isArchived: z.boolean().default(false),
   visibility: z.nativeEnum(Visibility).default(Visibility.PUBLIC),
   scheduledAt: z.coerce.date().nullable(),

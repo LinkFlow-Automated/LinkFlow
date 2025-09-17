@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
+    console.log(body)
     // Validate the request body
     const validatedData = createLinkSchema.parse(body);
 
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(link, { status: 201 });
   } catch (error) {
+    console.log(error)
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.errors }, { status: 400 });
     }
