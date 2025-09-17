@@ -121,7 +121,7 @@ export const themeOverridesSchema = z.object({
   shadow: z.boolean().optional(), // enable/disable shadow
   animation: z.string().optional(), // e.g. "fade", "bounce", "zoom"
   layout: z.enum(["compact", "detailed", "media"]).optional(), // card layout style
-}).optional();
+});
 
 export const ThumbnailType = z.enum(["image", "icon"]);
 
