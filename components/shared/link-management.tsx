@@ -23,6 +23,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useManageLink } from "@/hooks/use-manage-link";
 import LinkHub from "./link-hub";
+import { toast } from "sonner";
 // Import your auth hook or user context
 // import { useAuth } from "@/hooks/use-auth";
 
@@ -108,6 +109,7 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
       // createdAt: new Date(),
       metadata: {},
     });
+    toast.success("Link created")
   };
 
   const sensors = useSensors(
