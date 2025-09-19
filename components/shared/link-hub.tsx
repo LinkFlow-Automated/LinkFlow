@@ -43,6 +43,7 @@ import { SiNotion, SiCalendly, SiFormspree } from "react-icons/si";
 import { useState } from "react";
 import { RiLightbulbFill } from "react-icons/ri";
 import { HiViewGridAdd } from "react-icons/hi";
+import { ConnectionDialog } from "./provider-connect";
 
 interface HubLinkProps {
   handleCreateLink: () => void;
@@ -306,32 +307,33 @@ export default function LinkHub({ handleCreateLink }: HubLinkProps) {
             <ScrollArea className="h-96">
               <div className="grid grid-cols-2 gap-3 p-2">
                 {currentPlatforms.map((platform) => (
-                  <Button
-                    key={platform.name}
-                    onClick={
-                      platform.name === "Link"
-                        ? handleCreateLink
-                        : () => console.log("hi")
-                    }
-                    variant="outline"
-                    className="h-auto p-4 flex flex-col items-start gap-2 hover:bg-muted/50 cursor-pointer bg-transparent"
-                  >
-                    <div className="flex items-center gap-3 w-full">
-                      <div
-                        className={`p-2 rounded-lg ${platform.color} text-white flex-shrink-0`}
-                      >
-                        <platform.icon className="size-5" />
-                      </div>
-                      <div className="flex flex-col items-start overflow-hidden">
-                        <span className="font-medium text-sm">
-                          {platform.name}
-                        </span>
-                        <span className="text-xs text-muted-foreground text-left line-clamp-1 overflow-hidden w-full">
-                          {platform.description}
-                        </span>
-                      </div>
-                    </div>
-                  </Button>
+                  // <Button
+                  //   key={platform.name}
+                  //   onClick={
+                  //     platform.name === "Link"
+                  //       ? handleCreateLink
+                  //       : () => console.log("hi")
+                  //   }
+                  //   variant="outline"
+                  //   className="h-auto p-4 flex flex-col items-start gap-2 hover:bg-muted/50 cursor-pointer bg-transparent"
+                  // >
+                  //   <div className="flex items-center gap-3 w-full">
+                  //     <div
+                  //       className={`p-2 rounded-lg ${platform.color} text-white flex-shrink-0`}
+                  //     >
+                  //       <platform.icon className="size-5" />
+                  //     </div>
+                  //     <div className="flex flex-col items-start overflow-hidden">
+                  //       <span className="font-medium text-sm">
+                  //         {platform.name}
+                  //       </span>
+                  //       <span className="text-xs text-muted-foreground text-left line-clamp-1 overflow-hidden w-full">
+                  //         {platform.description}
+                  //       </span>
+                  //     </div>
+                  //   </div>
+                  // </Button>
+                  <ConnectionDialog key={platform.name} platform="spotify" />
                 ))}
               </div>
             </ScrollArea>

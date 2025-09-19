@@ -137,9 +137,29 @@ export const darkenColor = (rgb: number[], factor: number = 0.3): number[] => {
 export function safeToDate(value: any): Date | null {
   if (!value) return null;
   if (value instanceof Date) return value;
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? null : date;
   }
   return null;
 }
+
+export const getCardStyle = (index: number, total: number) => {
+  const angleRad = (index * 2 * Math.PI) / total;
+  const angleDeg = (index * 360) / total;
+
+  // This is the radius of the central circle (w-48 => 12rem => 192px, so radius is 96px)
+  const radius = 275;
+  const centerX = 250; // Half of container width
+  const centerY = 250; // Half of container height
+
+  const x = centerX + radius * Math.cos(angleRad);
+  const y = centerY + radius * Math.sin(angleRad);
+
+  return {
+    left: `${x}px`,
+    top: `${y}px`,
+    transform: `translateY(-50%) rotate(${angleDeg}deg)`,
+    transformOrigin: "left center",
+  };
+};

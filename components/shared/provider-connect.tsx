@@ -1,13 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { FaInstagram, FaSpotify, FaYoutube } from "react-icons/fa6";
 import { TbBrandGumroad } from "react-icons/tb";
+import { getCardStyle } from "@/lib/utils";
+import { NewSongCard } from "./bio/card/spotify/new-song-card";
 
 // Platform configurations
 const platformConfigs = {
@@ -20,21 +31,99 @@ const platformConfigs = {
     cards: [
       {
         id: 1,
-        title: "Tame Impala",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        image: "/tame-impala-artist-photo.jpg",
+        title: "Blinding Lights",
+        background: "linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)",
+        image: "/blinding-lights-cover.jpg",
       },
       {
         id: 2,
-        title: "Sampha",
-        background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-        image: "/sampha-artist-photo.jpg",
+        title: "Bad Guy",
+        background: "linear-gradient(135deg, #00CDAC 0%, #02AAB0 100%)",
+        image: "/bad-guy-cover.jpg",
       },
       {
         id: 3,
-        title: "FKA twigs",
-        background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-        image: "/fka-twigs-artist-photo.jpg",
+        title: "Don't Start Now",
+        background: "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)",
+        image: "/dont-start-now-cover.jpg",
+      },
+      {
+        id: 4,
+        title: "Bohemian Rhapsody",
+        background: "linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%)",
+        image: "/bohemian-rhapsody-cover.jpg",
+      },
+      {
+        id: 5,
+        title: "HUMBLE.",
+        background: "linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%)",
+        image: "/humble-cover.jpg",
+      },
+      {
+        id: 6,
+        title: "The Less I Know The Better",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        image: "/the-less-i-know-cover.jpg",
+      },
+      {
+        id: 7,
+        title: "Good Days",
+        background: "linear-gradient(135deg, #C471F5 0%, #FA71CD 100%)",
+        image: "/good-days-cover.jpg",
+      },
+      {
+        id: 8,
+        title: "Levitating",
+        background: "linear-gradient(135deg, #654EA3 0%, #EAAFC8 100%)",
+        image: "/levitating-cover.jpg",
+      },
+      {
+        id: 9,
+        title: "Watermelon Sugar",
+        background: "linear-gradient(135deg, #FF5858 0%, #F09819 100%)",
+        image: "/watermelon-sugar-cover.jpg",
+      },
+      {
+        id: 10,
+        title: "Save Your Tears",
+        background: "linear-gradient(135deg, #4ECDC4 0%, #556270 100%)",
+        image: "/save-your-tears-cover.jpg",
+      },
+      {
+        id: 11,
+        title: "Stay",
+        background: "linear-gradient(135deg, #2193B0 0%, #6DD5ED 100%)",
+        image: "/stay-cover.jpg",
+      },
+      {
+        id: 12,
+        title: "Industry Baby",
+        background: "linear-gradient(135deg, #FF5F6D 0%, #FFC371 100%)",
+        image: "/industry-baby-cover.jpg",
+      },
+      {
+        id: 13,
+        title: "As It Was",
+        background: "linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%)",
+        image: "/as-it-was-cover.jpg",
+      },
+      {
+        id: 14,
+        title: "Heat Waves",
+        background: "linear-gradient(135deg, #FFECD2 0%, #FCB69F 100%)",
+        image: "/heat-waves-cover.jpg",
+      },
+      {
+        id: 15,
+        title: "AVF",
+        background: "linear-gradient(135deg, #FFECD2 0%, #FCB69F 100%)",
+        image: "/heat-waves-cover.jpg",
+      },
+      {
+        id: 16,
+        title: "Disque dor",
+        background: "linear-gradient(135deg, #FFECD2 0%, #FCB69F 100%)",
+        image: "/heat-waves-cover.jpg",
       },
     ],
   },
@@ -141,64 +230,45 @@ export function ConnectionDialog({
   onSkip,
   onBack,
 }: ConnectionDialogProps) {
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const config = platformConfigs[platform];
-
-  // Auto-rotate cards
-  useEffect(() => {
-    if (!open) return;
-
-    const interval = setInterval(() => {
-      setCurrentCardIndex((prev) => (prev + 1) % config.cards.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [open, config.cards.length]);
 
   const handleConnect = () => {
     onConnect?.();
-    // onOpenChange(false);
   };
 
   const handleSkip = () => {
     onSkip?.();
-    // onOpenChange(false);
   };
 
   const handleBack = () => {
     onBack?.();
-    // onOpenChange(false);
   };
 
   return (
-    <Dialog >
-      <DialogTrigger>
+    <Dialog>
+      <DialogTrigger asChild>
         <Button
           key={config.name}
-          //   onClick={
-          //     config.name === "Link"
-          //       ? handleCreateLink
-          //       : () => console.log("hi")
-          //   }
           variant="outline"
           className="h-auto p-4 flex flex-col items-start gap-2 hover:bg-muted/50 cursor-pointer bg-transparent"
         >
           <div className="flex items-center gap-3 w-full overflow-hidden">
             <div
-              className={`p-2 rounded-lg ${config.color} text-white flex-shrink-0`}
+              className="p-2 rounded-lg text-white flex-shrink-0"
+              style={{ backgroundColor: config.color }}
             >
               <config.icon className="size-5" />
             </div>
             <div className="flex flex-col items-start overflow-hidden">
               <span className="font-medium text-sm">{config.name}</span>
-              <span className="text-xs text-muted-foreground text-left line-clamp-1 overflow-hidden w-full">
+              <span className="text-xs text-muted-foreground text-left line-clamp-1">
                 {config.description}
               </span>
             </div>
           </div>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md w-full max-w-[90vw] p-0 gap-0 bg-background border-border">
+      <DialogContent className="max-w-7xl min-w-xl w-full p-0 gap-0 bg-background border-border">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
           <Button
@@ -209,13 +279,9 @@ export function ConnectionDialog({
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
-
-          <div className="text-center">
-            <span className="text-sm font-medium text-foreground">
-              Connection — {step} of {totalSteps}
-            </span>
-          </div>
-
+          <span className="text-sm font-medium text-foreground">
+            Connection — {step} of {totalSteps}
+          </span>
           <Button
             variant="ghost"
             size="sm"
@@ -227,12 +293,14 @@ export function ConnectionDialog({
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
-          {/* Title */}
-          <div className="text-center space-y-2">
+        <div className="p-0 space-y-6 relative">
+          <div className="z-10 absolute left-0 top-0 text-start space-y-2 p-6 bg-gradient-to-b from-background from-[70%] to-transparent">
             <h2 className="text-2xl font-bold text-foreground text-balance">
               Connect Your{" "}
-              <span className="inline-flex items-center gap-2">
+              <span
+                style={{ color: config.color }}
+                className="inline-flex items-center gap-2"
+              >
                 <config.icon className="text-2xl" />
                 {config.name}
               </span>
@@ -242,83 +310,56 @@ export function ConnectionDialog({
             </p>
           </div>
 
-          {/* Animated Cards Stack */}
-          <div className="relative h-48 flex items-center justify-center">
-            <div className="relative w-64 h-32">
-              <AnimatePresence mode="popLayout">
-                {config.cards.map((card, index) => {
-                  const isActive = index === currentCardIndex;
-                  const offset =
-                    (index - currentCardIndex + config.cards.length) %
-                    config.cards.length;
-
-                  return (
-                    <motion.div
-                      key={card.id}
-                      className="absolute inset-0 rounded-xl overflow-hidden shadow-lg"
-                      style={{
-                        background: card.background,
-                      }}
-                      initial={{
-                        rotate: -15 * offset,
-                        scale: 1 - offset * 0.1,
-                        zIndex: config.cards.length - offset,
-                        x: offset * 8,
-                        y: offset * 4,
-                      }}
-                      animate={{
-                        rotate: -15 * offset,
-                        scale: 1 - offset * 0.1,
-                        zIndex: config.cards.length - offset,
-                        x: offset * 8,
-                        y: offset * 4,
-                      }}
-                      exit={{
-                        rotate: -15 * (offset + 1),
-                        scale: 1 - (offset + 1) * 0.1,
-                        opacity: 0,
-                      }}
-                      transition={{
-                        duration: 0.6,
-                        ease: [0.4, 0, 0.2, 1],
-                      }}
-                    >
-                      <div className="p-4 h-full flex items-center justify-between text-white">
-                        <div>
-                          <h3 className="text-xl font-bold mb-1">
-                            {card.title}
-                          </h3>
-                          <div className="w-8 h-1 bg-white/30 rounded-full" />
-                        </div>
-                        <div className="w-16 h-16 rounded-lg overflow-hidden bg-white/20 backdrop-blur-sm">
-                          <Image
-                            width={1000}
-                            height={1000}
-                            src={card.image || "/placeholder.svg"}
-                            alt={card.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            </div>
+          {/* Animated Radial Layout */}
+          <div className="relative flex items-center justify-center h-full overflow-hidden">
+            <motion.div
+              className="relative w-[500px] h-[500px] left-[-90%]"
+              animate={{ rotate: -360 }}
+              transition={{ ease: "linear", duration: 100, repeat: Infinity }}
+            >
+              <div className="absolute top-1/2 left-1/2 w-48 h-48 -translate-x-1/2 -translate-y-1/2 bg-background rounded-full shadow-inner" />
+              {config.cards.map((card, index) => (
+                <motion.div
+                  key={card.id}
+                  className="absolute w-3/6"
+                  style={getCardStyle(index, config.cards.length)}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  {/* <motion.p
+                    className="font-semibold text-[13px] cursor-default whitespace-nowrap px-2 py-1 text-muted-foreground"
+                    whileHover={{ scale: 1.1, zIndex: 10, color: config.color }}
+                  >
+                    {card.title}
+                  </motion.p> */}
+                  <NewSongCard
+                    songName={card.title}
+                    artistImage="/test/3.png"
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
 
-          {/* Connect Button */}
-          <Button
+          {/* <Button
             onClick={handleConnect}
-            className="w-full h-12 text-base font-medium"
-            style={{
-              backgroundColor: config.color,
-              color: "white",
-            }}
+            className="text-base font-medium text-white self-center"
+            style={{ backgroundColor: config.color }}
           >
             <config.icon className="mr-2 text-lg" />
             Connect {config.name}
-          </Button>
+          </Button> */}
+          <DialogFooter className="p-6 z-10 absolute left-0 bottom-0 w-full text-start sm:justify-center items-center space-y-2 bg-gradient-to-t from-background from-[10%] to-transparent">
+            <Button
+              onClick={handleConnect}
+              className="text-base font-medium text-white self-center cursor-pointer"
+              style={{ backgroundColor: config.color }}
+            >
+              <config.icon className="mr-2 text-lg" />
+              Connect {config.name}
+            </Button>
+          </DialogFooter>
         </div>
       </DialogContent>
     </Dialog>
