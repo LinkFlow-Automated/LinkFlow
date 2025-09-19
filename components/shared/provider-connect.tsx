@@ -15,13 +15,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
-import { FaInstagram, FaSpotify, FaYoutube } from "react-icons/fa6";
+import { FaDiscord, FaGithub, FaInstagram, FaShopify, FaSpotify, FaTiktok, FaTwitch, FaYoutube } from "react-icons/fa6";
 import { TbBrandGumroad } from "react-icons/tb";
 import { getCardStyle } from "@/lib/utils";
 import { NewSongCard } from "./bio/card/spotify/new-song-card";
+import { useState } from "react";
 
 // Platform configurations
-const platformConfigs = {
+export const platformConfigs = {
   spotify: {
     name: "Spotify",
     color: "#1DB954",
@@ -184,6 +185,142 @@ const platformConfigs = {
       },
     ],
   },
+  shopify: {
+    name: "Shopify",
+    color: "#7AB55C",
+    icon: FaShopify,
+    description:
+      "Connect Shopify to sync your store products and boost online sales.",
+    cards: [
+      {
+        id: 1,
+        title: "Products",
+        background: "linear-gradient(135deg, #7AB55C 0%, #A3D977 100%)",
+        image: "/shopify-products-icon.jpg",
+      },
+      {
+        id: 2,
+        title: "Orders",
+        background: "linear-gradient(135deg, #5DA946 0%, #7AB55C 100%)",
+        image: "/shopify-orders-icon.jpg",
+      },
+      {
+        id: 3,
+        title: "Analytics",
+        background: "linear-gradient(135deg, #A3D977 0%, #C7E89B 100%)",
+        image: "/shopify-analytics-icon.jpg",
+      },
+    ],
+  },
+  tiktok: {
+    name: "TikTok",
+    color: "#000000",
+    icon: FaTiktok,
+    description:
+      "Connect TikTok to showcase your short-form videos and reach younger audiences.",
+    cards: [
+      {
+        id: 1,
+        title: "Videos",
+        background:
+          "linear-gradient(135deg, #FF0050 0%, #000000 50%, #00F2EA 100%)",
+        image: "/tiktok-videos-icon.jpg",
+      },
+      {
+        id: 2,
+        title: "Trending",
+        background: "linear-gradient(135deg, #000000 0%, #FF0050 100%)",
+        image: "/tiktok-trending-icon.jpg",
+      },
+      {
+        id: 3,
+        title: "Live",
+        background: "linear-gradient(135deg, #00F2EA 0%, #000000 100%)",
+        image: "/tiktok-live-icon.jpg",
+      },
+    ],
+  },
+  discord: {
+    name: "Discord",
+    color: "#5865F2",
+    icon: FaDiscord,
+    description:
+      "Connect Discord to link your server and grow your community engagement.",
+    cards: [
+      {
+        id: 1,
+        title: "Server",
+        background: "linear-gradient(135deg, #5865F2 0%, #7289DA 100%)",
+        image: "/discord-server-icon.jpg",
+      },
+      {
+        id: 2,
+        title: "Community",
+        background: "linear-gradient(135deg, #7289DA 0%, #99AAB5 100%)",
+        image: "/discord-community-icon.jpg",
+      },
+      {
+        id: 3,
+        title: "Voice Chat",
+        background: "linear-gradient(135deg, #4752C4 0%, #5865F2 100%)",
+        image: "/discord-voice-icon.jpg",
+      },
+    ],
+  },
+  twitch: {
+    name: "Twitch",
+    color: "#9146FF",
+    icon: FaTwitch,
+    description:
+      "Connect Twitch to showcase your live streams and build your streaming community.",
+    cards: [
+      {
+        id: 1,
+        title: "Live Streams",
+        background: "linear-gradient(135deg, #9146FF 0%, #B97EFF 100%)",
+        image: "/twitch-live-icon.jpg",
+      },
+      {
+        id: 2,
+        title: "Clips",
+        background: "linear-gradient(135deg, #772CE8 0%, #9146FF 100%)",
+        image: "/twitch-clips-icon.jpg",
+      },
+      {
+        id: 3,
+        title: "VODs",
+        background: "linear-gradient(135deg, #B97EFF 0%, #D4A7FF 100%)",
+        image: "/twitch-vods-icon.jpg",
+      },
+    ],
+  },
+  github: {
+    name: "GitHub",
+    color: "#181717",
+    icon: FaGithub,
+    description:
+      "Connect GitHub to showcase your code repositories and development projects.",
+    cards: [
+      {
+        id: 1,
+        title: "Repositories",
+        background: "linear-gradient(135deg, #181717 0%, #4A4A4A 100%)",
+        image: "/github-repos-icon.jpg",
+      },
+      {
+        id: 2,
+        title: "Contributions",
+        background: "linear-gradient(135deg, #0D1117 0%, #21262D 100%)",
+        image: "/github-contributions-icon.jpg",
+      },
+      {
+        id: 3,
+        title: "Projects",
+        background: "linear-gradient(135deg, #4A4A4A 0%, #6E6E6E 100%)",
+        image: "/github-projects-icon.jpg",
+      },
+    ],
+  },
   gumroad: {
     name: "Gumroad",
     color: "#FF90E8",
@@ -231,6 +368,7 @@ export function ConnectionDialog({
   onBack,
 }: ConnectionDialogProps) {
   const config = platformConfigs[platform];
+  const [open, setOpen] = useState(false)
 
   const handleConnect = () => {
     onConnect?.();
@@ -245,7 +383,7 @@ export function ConnectionDialog({
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           key={config.name}

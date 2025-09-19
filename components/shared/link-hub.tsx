@@ -43,11 +43,12 @@ import { SiNotion, SiCalendly, SiFormspree } from "react-icons/si";
 import { useState } from "react";
 import { RiLightbulbFill } from "react-icons/ri";
 import { HiViewGridAdd } from "react-icons/hi";
-import { ConnectionDialog } from "./provider-connect";
+import { ConnectionDialog, platformConfigs } from "./provider-connect";
 
 interface HubLinkProps {
   handleCreateLink: () => void;
 }
+
 const platformData = {
   suggested: [
     {
@@ -55,24 +56,28 @@ const platformData = {
       icon: HiViewGridAdd,
       color: "bg-green-500",
       description: "Organize your links into a section.",
+      needsConnection: false,
     },
     {
       name: "Link",
       icon: FiLink,
       color: "bg-red-500",
       description: "A single, direct link to any URL.",
+      needsConnection: false,
     },
     {
       name: "Product",
       icon: AiFillShop,
       color: "bg-blue-500",
       description: "Link to an item you are selling.",
+      needsConnection: false,
     },
     {
       name: "Form",
       icon: SiFormspree,
       color: "bg-yellow-500",
       description: "Capture leads or feedback from visitors.",
+      needsConnection: false,
     },
   ],
   connect: [
@@ -81,48 +86,56 @@ const platformData = {
       icon: FaSpotify,
       color: "bg-green-500",
       description: "Connect your music",
+      needsConnection: true,
     },
     {
       name: "YouTube",
       icon: FaYoutube,
       color: "bg-red-500",
       description: "Connect your channel",
+      needsConnection: true,
     },
     {
       name: "Shopify",
       icon: FaShopify,
       color: "bg-green-600",
       description: "Connect your store",
+      needsConnection: true,
     },
     {
       name: "Instagram",
       icon: FaInstagram,
       color: "bg-gradient-to-r from-purple-500 to-pink-500",
       description: "Connect your profile",
+      needsConnection: true,
     },
     {
       name: "TikTok",
       icon: FaTiktok,
       color: "bg-black",
       description: "Connect your videos",
+      needsConnection: true,
     },
     {
       name: "Discord",
       icon: FaDiscord,
       color: "bg-indigo-500",
       description: "Connect your server",
+      needsConnection: true,
     },
     {
       name: "Twitch",
       icon: FaTwitch,
       color: "bg-purple-600",
       description: "Connect your stream",
+      needsConnection: true,
     },
     {
       name: "GitHub",
       icon: FaGithub,
       color: "bg-gray-800",
       description: "Connect your code",
+      needsConnection: true,
     },
   ],
   social: [
@@ -131,42 +144,49 @@ const platformData = {
       icon: FaInstagram,
       color: "bg-gradient-to-r from-purple-500 to-pink-500",
       description: "Share your photos",
+      needsConnection: false,
     },
     {
       name: "Twitter",
       icon: FaTwitter,
       color: "bg-blue-400",
       description: "Share your thoughts",
+      needsConnection: false,
     },
     {
       name: "LinkedIn",
       icon: FaLinkedin,
       color: "bg-blue-600",
       description: "Professional network",
+      needsConnection: false,
     },
     {
       name: "TikTok",
       icon: FaTiktok,
       color: "bg-black",
       description: "Short form videos",
+      needsConnection: false,
     },
     {
       name: "YouTube",
       icon: FaYoutube,
       color: "bg-red-500",
       description: "Video content",
+      needsConnection: false,
     },
     {
       name: "Discord",
       icon: FaDiscord,
       color: "bg-indigo-500",
       description: "Community chat",
+      needsConnection: false,
     },
     {
       name: "Behance",
       icon: FaBehance,
       color: "bg-blue-500",
       description: "Creative portfolio",
+      needsConnection: false,
     },
   ],
   shop: [
@@ -175,30 +195,35 @@ const platformData = {
       icon: FaShopify,
       color: "bg-green-600",
       description: "Online store",
+      needsConnection: false,
     },
     {
       name: "Etsy",
       icon: FaEtsy,
       color: "bg-orange-500",
       description: "Handmade goods",
+      needsConnection: false,
     },
     {
       name: "Amazon",
       icon: FaAmazon,
       color: "bg-orange-400",
       description: "Marketplace",
+      needsConnection: false,
     },
     {
       name: "PayPal",
       icon: FaPaypal,
       color: "bg-blue-600",
       description: "Payment link",
+      needsConnection: false,
     },
     {
       name: "Website",
       icon: FaGlobe,
       color: "bg-blue-500",
       description: "Your store website",
+      needsConnection: false,
     },
   ],
   contact: [
@@ -207,36 +232,42 @@ const platformData = {
       icon: FaEnvelope,
       color: "bg-gray-500",
       description: "Send an email",
+      needsConnection: false,
     },
     {
       name: "Phone",
       icon: FaPhone,
       color: "bg-green-500",
       description: "Call directly",
+      needsConnection: false,
     },
     {
       name: "Location",
       icon: FaMapMarkerAlt,
       color: "bg-red-500",
       description: "Find us here",
+      needsConnection: false,
     },
     {
       name: "Website",
       icon: FaGlobe,
       color: "bg-blue-500",
       description: "Visit our site",
+      needsConnection: false,
     },
     {
       name: "Calendly",
       icon: SiCalendly,
       color: "bg-blue-500",
       description: "Schedule a meeting",
+      needsConnection: false,
     },
     {
       name: "Notion",
       icon: SiNotion,
       color: "bg-black",
       description: "Contact form",
+      needsConnection: false,
     },
   ],
 };
@@ -259,8 +290,11 @@ export default function LinkHub({ handleCreateLink }: HubLinkProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <TooltipWrapper content="Create your link">
-        <DialogTrigger asChild>
-          <Button className="flex items-center gap-2 justify-center cursor-pointer">
+        <DialogTrigger className="w-full">
+          <Button
+            size={"lg"}
+            className="flex items-center gap-2 justify-center cursor-pointer w-full"
+          >
             <Plus className="size-5" />
             Add link
           </Button>
@@ -306,35 +340,45 @@ export default function LinkHub({ handleCreateLink }: HubLinkProps) {
           <div className="w-3/4">
             <ScrollArea className="h-96">
               <div className="grid grid-cols-2 gap-3 p-2">
-                {currentPlatforms.map((platform) => (
-                  // <Button
-                  //   key={platform.name}
-                  //   onClick={
-                  //     platform.name === "Link"
-                  //       ? handleCreateLink
-                  //       : () => console.log("hi")
-                  //   }
-                  //   variant="outline"
-                  //   className="h-auto p-4 flex flex-col items-start gap-2 hover:bg-muted/50 cursor-pointer bg-transparent"
-                  // >
-                  //   <div className="flex items-center gap-3 w-full">
-                  //     <div
-                  //       className={`p-2 rounded-lg ${platform.color} text-white flex-shrink-0`}
-                  //     >
-                  //       <platform.icon className="size-5" />
-                  //     </div>
-                  //     <div className="flex flex-col items-start overflow-hidden">
-                  //       <span className="font-medium text-sm">
-                  //         {platform.name}
-                  //       </span>
-                  //       <span className="text-xs text-muted-foreground text-left line-clamp-1 overflow-hidden w-full">
-                  //         {platform.description}
-                  //       </span>
-                  //     </div>
-                  //   </div>
-                  // </Button>
-                  <ConnectionDialog key={platform.name} platform="spotify" />
-                ))}
+                {currentPlatforms.map((platform) => {
+                  if (platform.needsConnection) {
+                    return (
+                      <ConnectionDialog
+                        key={platform.name}
+                        platform={platform.name.toLowerCase() as keyof typeof platformConfigs}
+                      />
+                    );
+                  } else {
+                    return (
+                      <Button
+                        key={platform.name}
+                        onClick={
+                          platform.name === "Link"
+                            ? handleCreateLink
+                            : () => console.log(`Selected: ${platform.name}`)
+                        }
+                        variant="outline"
+                        className="h-auto p-4 flex flex-col items-start gap-2 hover:bg-muted/50 cursor-pointer bg-transparent"
+                      >
+                        <div className="flex items-center gap-3 w-full">
+                          <div
+                            className={`p-2 rounded-lg ${platform.color} text-white flex-shrink-0`}
+                          >
+                            <platform.icon className="size-5" />
+                          </div>
+                          <div className="flex flex-col items-start overflow-hidden">
+                            <span className="font-medium text-sm">
+                              {platform.name}
+                            </span>
+                            <span className="text-xs text-muted-foreground text-left line-clamp-1 overflow-hidden w-full">
+                              {platform.description}
+                            </span>
+                          </div>
+                        </div>
+                      </Button>
+                    );
+                  }
+                })}
               </div>
             </ScrollArea>
           </div>
