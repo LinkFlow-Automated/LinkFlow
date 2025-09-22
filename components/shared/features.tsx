@@ -35,7 +35,7 @@ export default function Features() {
     },
   ];
   return (
-    <div className="min-h-screen bg-primary py-8">
+    <div id="features" className="min-h-screen bg-primary py-8 scroll-mt-16">
       <Container className="h-full flex flex-col justify-around gap-4 items-center">
         <div className="flex flex-col justify-center items-center gap-4">
           <TypographyContainer spacing="loose">

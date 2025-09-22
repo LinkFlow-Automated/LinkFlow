@@ -11,7 +11,7 @@ import { useSession } from "@/lib/auth-client";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiArrowTrendingUp } from "react-icons/hi2";
 
@@ -21,16 +21,46 @@ export default function Navbar() {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
   const navLinks = [
-    { name: "HOME", href: "/" },
-    { name: "FEATURES", href: "/features" },
-    { name: "CREATOR", href: "/creator" },
-    { name: "PRICING", href: "/pricing" },
+    { name: "HOME", href: "/", scrollTo: "top" },
+    { name: "FEATURES", href: "/features", scrollTo: "features" },
+    { name: "CREATOR", href: "/creator", scrollTo: "creator" },
+    { name: "PRICING", href: "/pricing", scrollTo: "pricing" },
   ];
+
+  const router = useRouter();
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const handleLinkClick = () => {
     setIsSheetOpen(false);
+  };
+
+  const scrollToFeature = (scrollTo: string) => {
+    if (pathname !== "/") {
+      // If we're not on the home page, navigate first then scroll
+      router.push(`/#${scrollTo}`);
+      // Use a longer timeout to ensure navigation and rendering complete
+      setTimeout(() => {
+        const featureSection = document.getElementById(scrollTo);
+        if (featureSection) {
+          featureSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 300);
+    } else {
+      // If we're already on the home page, just scroll
+      const featureSection = document.getElementById(scrollTo);
+      if (featureSection) {
+        featureSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
+  const handleNavClick = (link: any) => {
+    if (link.name === "HOME") {
+      router.push("/");
+    } else if (link.scrollTo) {
+      scrollToFeature(link.scrollTo);
+    }
   };
 
   return (
@@ -60,7 +90,7 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <Button
-              asChild
+              onClick={() => handleNavClick(link)}
               key={link.name}
               variant="ghost"
               className={`text-primary cursor-pointer font-medium hover:text-secondary/60 hover:bg-primary transition-all duration-200 rounded-lg px-3 py-1.5 text-sm md:px-4 md:py-2 md:text-base ${
@@ -69,7 +99,7 @@ export default function Navbar() {
                   : ""
               }`}
             >
-              <Link href={link.href}>{link.name}</Link>
+              {link.name}
             </Button>
           ))}
         </nav>
@@ -146,16 +176,17 @@ export default function Navbar() {
                   <Button
                     key={link.name}
                     variant="ghost"
+                    onClick={() => {
+                      handleNavClick(link);
+                      handleLinkClick();
+                    }}
                     className={`font-medium rounded-lg justify-start px-4 mx-2 transition-all duration-200 ${
                       isActive(link.href)
                         ? "text-secondary bg-primary hover:bg-primary/60 font-semibold"
                         : ""
                     }`}
-                    asChild
                   >
-                    <Link href={link.href} onClick={handleLinkClick}>
-                      {link.name}
-                    </Link>
+                    {link.name}
                   </Button>
                 ))}
               </nav>

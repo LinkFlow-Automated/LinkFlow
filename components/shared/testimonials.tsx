@@ -31,7 +31,7 @@ export default function Testimonials() {
   ];
 
   return (
-    <Container className="py-12 gap-16 flex flex-col min-h-screen">
+    <Container id="creator" className="py-12 gap-16 flex flex-col min-h-screen">
       <TypographyContainer spacing="loose" className="sm:max-w-full sm:w-full px-0 md:px-4">
         <HeroTitle className="text-3xl xl:text-8xl sm:max-w-full">
           Trusted by <br /> Creators and Influencers

@@ -25,6 +25,7 @@ import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
 import { useState } from "react";
 import { Loader } from "@/components/ui/loader";
+import { FaGithub } from "react-icons/fa6";
 
 export function LoginForm({
   className,
@@ -72,6 +73,22 @@ export function LoginForm({
     }
   };
 
+    const loginWithGithub = async (e: React.MouseEvent) => {
+    setIsLoading(true);
+    e.preventDefault();
+    try {
+      const data = await signIn.social({
+        provider: "github",
+        callbackURL: "/",
+      });
+      console.log(data);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Github login failed:", error);
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -93,6 +110,16 @@ export function LoginForm({
                   >
                     <FcGoogle className="mr-2" />
                     {isLoading ? <Loader /> : "Login with Google"}
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={loginWithGithub}
+                    variant="outline"
+                    className="w-full"
+                    disabled={isLoading}
+                  >
+                    <FaGithub className="mr-2" />
+                    {isLoading ? <Loader /> : "Login with Github"}
                   </Button>
                 </div>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
