@@ -18,12 +18,12 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItems from "./sortable-item";
 import { useState } from "react";
-import { GripVertical, Loader2, Plus } from "lucide-react";
+import { GripVertical } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { useManageLink } from "@/hooks/use-manage-link";
 import LinkHub from "./link-hub";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 // Import your auth hook or user context
 // import { useAuth } from "@/hooks/use-auth";
 
@@ -32,8 +32,7 @@ interface LinkManagementProps {
 }
 
 export default function LinkManagement({ userId }: LinkManagementProps) {
-  const { createLink, updateLink, links, isCreating, isLoading } =
-    useManageLink(userId);
+  const { updateLink, links, isLoading } = useManageLink(userId);
 
   const items = links || [];
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
@@ -76,42 +75,6 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
     setActiveId(event.active.id);
   };
 
-  const handleCreateLink = () => {
-    const currentTime = Date.now();
-    const newOrder =
-      items.length > 0
-        ? Math.max(...items.map((item) => item.order || 0)) + 1
-        : 1;
-
-    createLink({
-      userId: userId, // Use the passed userId or user?.id from auth
-      title: `New Link ${currentTime}`,
-      description: null,
-      url: "https://example.com",
-      category: null,
-      order: newOrder,
-      isHadRedirectLink: false,
-      layout: "",
-      animation: "none",
-      themeOverrides: {},
-      redirectTo: "",
-      clicks: 0,
-      featured: false,
-      autoSyncId: null,
-      platform: null,
-      thumbnail: "",
-      type: "image",
-      isArchived: false,
-      visibility: "PUBLIC",
-      scheduledAt: null,
-      expiresAt: null,
-      rules: {}, // Adjust based on your rulesSchema structure
-      // createdAt: new Date(),
-      metadata: {},
-    });
-    toast.success("Link created")
-  };
-
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -142,7 +105,7 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
             "Add Link"
           )}
         </Button> */}
-        <LinkHub handleCreateLink={handleCreateLink} />
+        <LinkHub userId={userId} items={items} />
       </div>
 
       <DndContext

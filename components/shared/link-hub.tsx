@@ -44,9 +44,13 @@ import { useState } from "react";
 import { RiLightbulbFill } from "react-icons/ri";
 import { HiViewGridAdd } from "react-icons/hi";
 import { ConnectionDialog, platformConfigs } from "./provider-connect";
+import { toast } from "sonner";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { Link } from "@/lib/generated/prisma";
 
 interface HubLinkProps {
-  handleCreateLink: () => void;
+  userId: string;
+  items: Link[];
 }
 
 const platformData = {
@@ -272,7 +276,8 @@ const platformData = {
   ],
 };
 
-export default function LinkHub({ handleCreateLink }: HubLinkProps) {
+export default function LinkHub({ userId, items }: HubLinkProps) {
+  const { createLink, isCreating, isLoading } = useManageLink(userId);
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("suggested");
 
@@ -286,6 +291,47 @@ export default function LinkHub({ handleCreateLink }: HubLinkProps) {
 
   const currentPlatforms =
     platformData[selectedCategory as keyof typeof platformData] || [];
+
+  const handleCreateLink = ({
+    provider,
+  }: {
+    provider?: string | undefined;
+  }) => {
+    // const currentTime = Date.now();
+    const newOrder =
+      items.length > 0
+        ? Math.max(...items.map((item) => item.order || 0)) + 1
+        : 1;
+
+    createLink({
+      userId: userId, // Use the passed userId or user?.id from auth
+      title: `New Link`,
+      description: null,
+      url: "https://example.com",
+      category: null,
+      order: newOrder,
+      isHadRedirectLink: false,
+      layout: "",
+      animation: "none",
+      themeOverrides: {},
+      redirectTo: "",
+      clicks: 0,
+      featured: false,
+      autoSyncId: null,
+      platform: null,
+      thumbnail: "",
+      type: "image",
+      isArchived: false,
+      visibility: "PUBLIC",
+      scheduledAt: null,
+      expiresAt: null,
+      rules: {}, // Adjust based on your rulesSchema structure
+      // createdAt: new Date(),
+      metadata: {},
+    });
+    setOpen(false);
+    toast.success("Link created");
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -345,17 +391,17 @@ export default function LinkHub({ handleCreateLink }: HubLinkProps) {
                     return (
                       <ConnectionDialog
                         key={platform.name}
-                        platform={platform.name.toLowerCase() as keyof typeof platformConfigs}
+                        platform={
+                          platform.name.toLowerCase() as keyof typeof platformConfigs
+                        }
                       />
                     );
                   } else {
                     return (
                       <Button
                         key={platform.name}
-                        onClick={
-                          platform.name === "Link"
-                            ? handleCreateLink
-                            : () => console.log(`Selected: ${platform.name}`)
+                        onClick={() =>
+                          handleCreateLink({ provider: platform.name })
                         }
                         variant="outline"
                         className="h-auto p-4 flex flex-col items-start gap-2 hover:bg-muted/50 cursor-pointer bg-transparent"

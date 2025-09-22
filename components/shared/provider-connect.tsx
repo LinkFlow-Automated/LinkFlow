@@ -1,21 +1,25 @@
 "use client";
 
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
+  // DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import Image from "next/image";
-import { FaDiscord, FaGithub, FaInstagram, FaShopify, FaSpotify, FaTiktok, FaTwitch, FaYoutube } from "react-icons/fa6";
+import {
+  FaDiscord,
+  FaGithub,
+  FaInstagram,
+  FaShopify,
+  FaSpotify,
+  FaTiktok,
+  FaTwitch,
+  FaYoutube,
+} from "react-icons/fa6";
 import { TbBrandGumroad } from "react-icons/tb";
 import { getCardStyle } from "@/lib/utils";
 import { NewSongCard } from "./bio/card/spotify/new-song-card";
@@ -368,7 +372,7 @@ export function ConnectionDialog({
   onBack,
 }: ConnectionDialogProps) {
   const config = platformConfigs[platform];
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleConnect = () => {
     onConnect?.();
