@@ -106,7 +106,7 @@ export const metadataSchema = z.object({
     "instagram",
     "soundcloud",
     "gumroad",
-    "custom",
+    "link",
   ]).optional(),
   type: z.string().optional(), // e.g. "NEW_ALBUM", "NOW_PLAYING", "CHANNEL", "FEED", "PRODUCTS"
   id: z.string().optional(), // external ID (albumId, channelId, etc.)

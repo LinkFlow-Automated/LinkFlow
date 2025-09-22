@@ -327,7 +327,9 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
       expiresAt: null,
       rules: {}, // Adjust based on your rulesSchema structure
       // createdAt: new Date(),
-      metadata: {},
+      metadata: {
+        provider: provider?.toLowerCase(),
+      },
     });
     setOpen(false);
     toast.success("Link created");
