@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Music, Users, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useImageColor } from "@/hooks/use-image-color";
 import { getCardAnimation } from "@/lib/utils/card-animation";
 import Image from "next/image";
