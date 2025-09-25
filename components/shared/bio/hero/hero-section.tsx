@@ -6,9 +6,9 @@ import { SiLeetcode, SiWakatime } from "react-icons/si";
 
 export default function HeroSection() {
   const user = {
-    name: "Anshul",
-    bio: "Artist and Beatmaker",
-    avatar: "https://github.com/anshul-01.png",
+    name: "Aurora",
+    bio: "Aurora Aksnes, known mononymously as Aurora, is a Norwegian singer, songwriter and record producer. Born in Stavanger and raised in Høle and Os, she started writing songs and learning dance at age six",
+    avatar: "/test/aurora.jpg",
   };
   const icons = [
     {
@@ -56,9 +56,11 @@ export default function HeroSection() {
             <span className={cn("truncate font-medium text-xl")}>
               {user.name}
             </span>
-            <span className={cn("text-muted-foreground truncate text-md")}>
-              {user.bio}
-            </span>
+            <div className="text-center px-2">
+              <p className={cn("text-muted-foreground text-xs")}>
+                {user.bio}
+              </p>
+            </div>
           </div>
           <div className="flex flex-row gap-2 items-center">
             {icons.map((icon) => (
