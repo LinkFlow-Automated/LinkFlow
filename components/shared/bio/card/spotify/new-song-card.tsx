@@ -39,7 +39,7 @@ export function NewSongCard({
         }}
       >
         <div className="p-2 flex items-center gap-4 relative">
-          <div className="relative w-fit h-full flex-shrink-0">
+          <div className="relative h-20 w-20 flex-shrink-0">
             <Image
               ref={imgRef}
               src={artistImage || "/placeholder.svg"}
@@ -80,7 +80,7 @@ export function NewSongCard({
                   textColor
                 )}
               >
-                Aurora
+                {songName}
               </h3>
             </motion.div>
             <motion.div
@@ -94,7 +94,7 @@ export function NewSongCard({
                   textColor
                 )}
               >
-                {songName}
+                Aurora
               </h3>
             </motion.div>
           </div>

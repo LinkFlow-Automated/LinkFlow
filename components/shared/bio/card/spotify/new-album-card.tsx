@@ -69,7 +69,7 @@ export function NewAlbumCard({
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.2 }}
                 >
-                  <div className="relative w-fit h-full flex-shrink-0">
+                  <div className="relative h-20 w-20 flex-shrink-0">
                     <Image
                       ref={imgRef}
                       src={artistImage || "/placeholder.svg"}
@@ -112,7 +112,7 @@ export function NewAlbumCard({
                           textColor
                         )}
                       >
-                        Aurora
+                        What happened to the heart?
                       </h3>
                     </motion.div>
                     <motion.div
@@ -127,7 +127,7 @@ export function NewAlbumCard({
                           textColor
                         )}
                       >
-                        After Hours
+                        Aurora
                       </span>
                       <span
                         className={cn(
@@ -170,7 +170,7 @@ export function NewAlbumCard({
                       {[...Array(4)].map((_, idx) => (
                         <Image
                           key={idx}
-                          src="/test/3.png"
+                          src="/test/aurora.jpg"
                           alt="Track"
                           width={80}
                           height={80}
