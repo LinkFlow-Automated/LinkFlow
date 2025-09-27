@@ -134,7 +134,7 @@ export const PixelPreview = () => {
                 <HeroSection />
               </div>
               <div className="flex flex-col gap-2 px-4">
-                <ArtistInfoCard />
+                <ArtistInfoCard isExpanded artistImage="/test/aurora1.jpg" artistName="Aurora"/>
                 <LinkCard />
                 <NewSongCard
                   songName="Counting Star"

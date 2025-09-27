@@ -1,6 +1,6 @@
 import LinkCard from "@/components/shared/bio/card/link/link-card";
 import { ArtistInfoCard } from "@/components/shared/bio/card/spotify/artist-info-card";
-// import { CurrentlyPlayingCard } from "@/components/shared/bio/card/spotify/currently-playing-card";
+import { CurrentlyPlayingCard } from "@/components/shared/bio/card/spotify/currently-playing-card";
 import { NewAlbumCard } from "@/components/shared/bio/card/spotify/new-album-card";
 import { NewSongCard } from "@/components/shared/bio/card/spotify/new-song-card";
 import HeroSection from "@/components/shared/bio/hero/hero-section";
@@ -13,14 +13,14 @@ export default function page() {
       </div>
       <div className="flex flex-col gap-2 px-4">
         <ArtistInfoCard isExpanded artistImage="/test/aurora1.jpg" artistName="Aurora"/>
-        <LinkCard />
+        {/* <LinkCard /> */}
         <NewSongCard
           songName="The Seed"
           artistImage="/test/aurora.jpg"
           isNewRelease
         />
         <NewAlbumCard artistImage="/test/heart.jpg" isNewRelease isExpanded={true} />
-        {/* <CurrentlyPlayingCard /> */}
+        <CurrentlyPlayingCard artistImage="/test/aurora.jpg" isExpanded/>
       </div>
     </div>
   );
