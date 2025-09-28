@@ -27,6 +27,7 @@ export const useImageColor = (
   } = options;
 
   const [backgroundColor, setBackgroundColor] = useState<string>(fallbackBackgroundColor);
+  // const [paletteColor, setPaletteColor] = useState<ColorThief.RGBColor>();
   const [textColor, setTextColor] = useState<string>(fallbackTextColor);
   const imgRef = useRef<HTMLImageElement>(null) as React.RefObject<HTMLImageElement>;
 
@@ -35,10 +36,12 @@ export const useImageColor = (
       if (imgRef.current?.complete) {
         try {
           const colorThief = new ColorThief();
+          const palette = colorThief.getPalette(imgRef.current)
           const dominantColor = await colorThief.getColor(imgRef.current);
           const darkerRgb = darkenColor(dominantColor, darkenFactor);
           const darkerHex = rgbToHex(darkerRgb);
           setBackgroundColor(darkerHex);
+          // setPaletteColor(palette)
           const isLight = isLightColor(darkerRgb);
           setTextColor(isLight ? "text-gray-800" : "text-white");
         } catch (error) {

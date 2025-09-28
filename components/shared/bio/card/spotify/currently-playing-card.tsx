@@ -39,7 +39,7 @@ export function CurrentlyPlayingCard({
       whileHover={animation.whileHover}
       whileTap={animation.whileTap}
       variants={animation.variants}
-      className="w-full max-w-md"
+      className="w-full max-w-md "
     >
       <Card
         className={cn(
@@ -131,7 +131,6 @@ export function CurrentlyPlayingCard({
                   </h3>
                 </div>
               </motion.div>
-
               <motion.div
                 className="mb-0"
                 initial={{ opacity: 0 }}
