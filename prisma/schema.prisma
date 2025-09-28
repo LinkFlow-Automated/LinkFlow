@@ -168,7 +168,7 @@ model ProviderAcc {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([provider, userId])
 }
 
 model Session {

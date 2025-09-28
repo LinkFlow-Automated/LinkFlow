@@ -35,7 +35,7 @@ export default async function GET(
   const providerAccountId = profile?.id ?? `${providerName}:${session.user.id}`;
   await prisma.providerAcc.upsert({
     where: {
-      provider_providerAccountId: { provider: providerName, providerAccountId },
+      provider_userId: { provider: providerName, userId: session.user.id },
     },
     update: {
       accessToken: tokens.accessToken,

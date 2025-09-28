@@ -17,9 +17,9 @@ export default async function GET(
   // fetch the token acc data from db
   const account = await prisma.providerAcc.findUnique({
     where: {
-      provider_providerAccountId: {
+      provider_userId: {
         provider: providerName,
-        providerAccountId: `${providerName}:${session.user.id}`, // adjust if using real profile.id
+        userId: session.user.id,
       },
     },
   });
