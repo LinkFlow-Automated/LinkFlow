@@ -67,7 +67,7 @@ export function CurrentlyPlayingCard({
           }}
         />
 
-        <div className="relative px-3 pt-3 h-full flex flex-col">
+        <div className="relative px-3 pt-3 h-full flex flex-col ">
           <AnimatePresence mode="wait">
             <motion.div
               key="expanded"
