@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useImageColor } from "@/hooks/use-image-color";
 import { getCardAnimation } from "@/lib/utils/card-animation";
 import Image from "next/image";
+import { FaSpotify } from "react-icons/fa6";
 
 interface SpotifyCardProps {
   className?: string;
@@ -152,6 +153,16 @@ export function CurrentlyPlayingCard({
               </motion.div>
             </motion.div>
           </AnimatePresence>
+           <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+            className="absolute top-2 right-2"
+          >
+            <div className="w-8 h-8 rounded-ful">
+              <FaSpotify className="size-8" />
+            </div>
+          </motion.div>
         </div>
         <motion.div
           className="m-0 p-0"
