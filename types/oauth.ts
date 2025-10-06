@@ -7,7 +7,7 @@ export interface OAuthTokens {
 export interface OAuthProvider {
   name: string;
   defaultScopes?: string[];
-  authUrl: (state: string, extraScopes?: string[]) => string;
+  authUrl: (state: string, extraScopes?: string[]) => Promise<string>;
   exchangeCode: (code: string) => Promise<OAuthTokens>;
   refreshToken?: (
     refreshToken: string

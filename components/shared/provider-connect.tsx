@@ -24,6 +24,7 @@ import { TbBrandGumroad } from "react-icons/tb";
 import { getCardStyle } from "@/lib/utils";
 import { NewSongCard } from "./bio/card/spotify/new-song-card";
 import { useState } from "react";
+import { providers } from "@/lib/connect/registry";
 
 // Platform configurations
 export const platformConfigs = {
@@ -374,8 +375,10 @@ export function ConnectionDialog({
   const config = platformConfigs[platform];
   const [open, setOpen] = useState(false);
 
-  const handleConnect = () => {
-    onConnect?.();
+  const handleConnect = async () => {
+    const url = await providers[platform].authUrl("");
+    window.location.href = url;
+    setOpen(false);
   };
 
   const handleSkip = () => {

@@ -1,10 +1,7 @@
 // providers/gumroad.ts
 import { OAuthProvider } from "@/types/oauth";
 import axios from "axios";
-
-const CLIENT = process.env.GUMROAD_CLIENT_ID!;
-const SECRET = process.env.GUMROAD_CLIENT_SECRET!;
-const REDIRECT = process.env.GUMROAD_REDIRECT_URI!;
+import { getProviderCredentials } from "./credentials-server";
 
 export const gumroadProvider: OAuthProvider = {
   name: "gumroad",
@@ -16,7 +13,8 @@ export const gumroadProvider: OAuthProvider = {
     "mark_sales_as_shipped",
     "edit_sales",
   ],
-  authUrl(state, extraScopes = []) {
+  async authUrl(state, extraScopes = []) {
+    const { CLIENT, REDIRECT } = await getProviderCredentials("gumroad");
     const scopes = [...(this.defaultScopes ?? []), ...extraScopes].join(" ");
     const q = new URLSearchParams({
       response_type: "code",
@@ -28,6 +26,9 @@ export const gumroadProvider: OAuthProvider = {
     return `https://gumroad.com/oauth/authorize?${q.toString()}`;
   },
   async exchangeCode(code) {
+    const { CLIENT, REDIRECT, SECRET } = await getProviderCredentials(
+      "gumroad"
+    );
     const resp = await axios.post(
       "https://gumroad.com/oauth/token",
       new URLSearchParams({
@@ -47,6 +48,7 @@ export const gumroadProvider: OAuthProvider = {
     };
   },
   async refreshToken(refreshToken) {
+    const { CLIENT, SECRET } = await getProviderCredentials("gumroad");
     const resp = await axios.post(
       "https://gumroad.com/oauth/token",
       new URLSearchParams({

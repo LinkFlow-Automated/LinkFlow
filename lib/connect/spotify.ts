@@ -1,14 +1,12 @@
 import { OAuthProvider } from "@/types/oauth";
 import axios from "axios";
-
-const CLIENT = process.env.SPOTIFY_CLIENT_ID!;
-const SECRET = process.env.SPOTIFY_CLIENT_SECRET!;
-const REDIRECT = process.env.SPOTIFY_REDIRECT_URI!;
+import { getProviderCredentials } from "./credentials-server";
 
 export const spotifyProvider: OAuthProvider = {
   name: "spotify",
   defaultScopes: ["user-read-email", "user-read-private"],
-  authUrl(state, extraScopes = []) {
+  async authUrl(state, extraScopes = []) {
+    const { CLIENT, REDIRECT } = await getProviderCredentials("spotify");
     const scopes = [...(this.defaultScopes ?? []), ...extraScopes].join(" ");
     const q = new URLSearchParams({
       response_type: "code",
@@ -20,6 +18,7 @@ export const spotifyProvider: OAuthProvider = {
     return `https://accounts.spotify.com/authorize?${q.toString()}`;
   },
   async exchangeCode(code) {
+    const { CLIENT, REDIRECT, SECRET } = await getProviderCredentials("spotify");
     const resp = await axios.post(
       "https://accounts.spotify.com/api/token",
       new URLSearchParams({
@@ -43,6 +42,7 @@ export const spotifyProvider: OAuthProvider = {
     };
   },
   async refreshToken(refreshToken) {
+    const { CLIENT, SECRET } = await getProviderCredentials("spotify");
     const resp = await axios.post(
       "https://accounts.spotify.com/api/token",
       new URLSearchParams({
