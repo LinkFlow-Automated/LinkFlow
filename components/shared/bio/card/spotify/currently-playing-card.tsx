@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Play, Pause, Music } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+// import { FaPlay, FaPause } from "react-icons/fa6";
+// import { RiMusicFill } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useImageColor } from "@/hooks/use-image-color";
@@ -28,7 +29,7 @@ export function CurrentlyPlayingCard({
   const [progress, setProgress] = useState(65);
 
   const { backgroundColor, textColor, imgRef } = useImageColor(artistImage);
-
+  console.log("bg color", textColor);
   const animation = getCardAnimation("fade-in");
 
   return (
@@ -43,7 +44,7 @@ export function CurrentlyPlayingCard({
     >
       <Card
         className={cn(
-          "group cursor-pointer transition-all duration-300 hover:shadow-lg p-0 m-0",
+          "group relative cursor-pointer transition-all duration-300 hover:shadow-lg p-0 m-0",
           "bg-card border-border relative overflow-hidden h-full w-full",
           className
         )}
@@ -65,7 +66,7 @@ export function CurrentlyPlayingCard({
           }}
         />
 
-        <div className="relative p-3 h-full flex flex-col">
+        <div className="relative px-3 pt-3 h-full flex flex-col">
           <AnimatePresence mode="wait">
             <motion.div
               key="expanded"
@@ -76,7 +77,7 @@ export function CurrentlyPlayingCard({
               className="h-full flex flex-col"
             >
               <motion.div
-                className="flex items-center gap-4 mb-6"
+                className="flex items-center gap-4"
                 initial={{ scale: 0.8 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
@@ -113,6 +114,24 @@ export function CurrentlyPlayingCard({
                   </div>
                 </motion.div>
                 <div className="flex-1">
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                    className="mb-2"
+                  >
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        "bg-white/20 backdrop-blur-sm border-0 text-xs font-medium",
+                        textColor === "text-white"
+                          ? "text-white"
+                          : "text-gray-800"
+                      )}
+                    >
+                      Now Playing
+                    </Badge>
+                  </motion.div>
                   <h3
                     className={cn(
                       "text-md font-semibold leading-tight drop-shadow-sm",
@@ -131,24 +150,24 @@ export function CurrentlyPlayingCard({
                   </h3>
                 </div>
               </motion.div>
-              <motion.div
-                className="mb-0"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.4 }}
-              >
-                <div className="w-full bg-muted rounded-full h-1">
-                  <motion.div
-                    className="bg-accent h-1 rounded-full"
-                    initial={{ width: "0%" }}
-                    animate={{ width: `${progress}%` }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  />
-                </div>
-              </motion.div>
             </motion.div>
           </AnimatePresence>
         </div>
+        <motion.div
+          className="m-0 p-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+        >
+          <div className="w-full bg-transparent rounded-full h-1">
+            <motion.div
+              className={` bg-linear-60 from-white/5 to-white h-1 rounded-full`}
+              initial={{ width: "0%" }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            />
+          </div>
+        </motion.div>
       </Card>
     </motion.div>
   );
