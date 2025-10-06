@@ -30,8 +30,11 @@ const PROVIDER_ENV_MAPPING = {
   },
 } as const;
 
-export async function getProviderCredentials(provider: keyof typeof PROVIDER_ENV_MAPPING): Promise<ProviderCredentials> {
+export async function getProviderCredentials(
+  provider: keyof typeof PROVIDER_ENV_MAPPING
+): Promise<ProviderCredentials> {
   const envMapping = PROVIDER_ENV_MAPPING[provider];
+
   const credentials: ProviderCredentials = {
     clientId: "",
     clientSecret: "",
@@ -46,7 +49,7 @@ export async function getProviderCredentials(provider: keyof typeof PROVIDER_ENV
         `Missing required environment variable ${envKey} for ${provider} OAuth`
       );
     }
-    credentials[key] = value;
+    credentials[key as keyof ProviderCredentials] = value;
   }
 
   return credentials;

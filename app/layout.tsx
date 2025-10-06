@@ -37,7 +37,7 @@ export default async function RootLayout({
     from: date,
     to: date,
   });
-  console.log(links);
+  // console.log(links);
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
