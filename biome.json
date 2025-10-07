@@ -26,18 +26,18 @@
       },
       "style": {
         "useImportType": "off",
-        "noNonNullAssertion":"off"
+        "noNonNullAssertion": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "off",
         "noSwitchDeclarations": "off",
-        "noUnusedFunctionParameters":"off",
-        "noUnusedPrivateClassMembers":"off",
-        "noUnusedVariables":"off",
-        "noConstructorReturn":"off"
+        "noUnusedFunctionParameters": "off",
+        "noUnusedPrivateClassMembers": "off",
+        "noUnusedVariables": "off",
+        "noConstructorReturn": "off"
       },
-      "performance":{
-        "noImgElement":"warn"
+      "performance": {
+        "noImgElement": "warn"
       },
       "suspicious": {
         "noDocumentCookie": "off",
@@ -48,7 +48,10 @@
       "complexity": {
         "noStaticOnlyClass": "off",
         "noThisInStatic": "off",
-        "useLiteralKeys":"off"
+        "useLiteralKeys": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "warn"
       }
     }
   },
