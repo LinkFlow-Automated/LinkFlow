@@ -4,12 +4,14 @@ import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ provider: string }> }
-) {
-  const providerName = (await params).provider;
+interface RouteContext {
+  params: Promise<{ provider: string }>;
+}
+
+export async function GET(req: NextRequest, context: RouteContext) {
+  const { provider: providerName } = await context.params;
   const session = await auth.api.getSession({ headers: await headers() });
+
   if (!session) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
@@ -26,6 +28,7 @@ export async function GET(
 
   const now = new Date();
   const needRefresh = !account?.expiresAt || account.expiresAt < now;
+
   if (!needRefresh) {
     return NextResponse.json({ accessToken: account.accessToken });
   }
@@ -40,7 +43,6 @@ export async function GET(
 
   try {
     const refreshed = await provider.refreshToken(account?.refreshToken!);
-
     const updated = await prisma.providerAcc.update({
       where: { id: account?.id },
       data: {
@@ -50,7 +52,6 @@ export async function GET(
           : null,
       },
     });
-
     return NextResponse.json({ accessToken: updated.accessToken });
   } catch (e) {
     console.error(e);
