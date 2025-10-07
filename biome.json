@@ -37,7 +37,7 @@
         "noConstructorReturn":"off"
       },
       "performance":{
-        "noImgElement":"off"
+        "noImgElement":"warn"
       },
       "suspicious": {
         "noDocumentCookie": "off",

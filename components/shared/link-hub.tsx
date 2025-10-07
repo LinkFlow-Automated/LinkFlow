@@ -47,6 +47,7 @@ import { ConnectionDialog, platformConfigs } from "./provider-connect";
 import { toast } from "sonner";
 import { useManageLink } from "@/hooks/use-manage-link";
 import { Link } from "@/lib/generated/prisma";
+import { SiGumroad } from "react-icons/si";
 
 interface HubLinkProps {
   userId: string;
@@ -121,10 +122,10 @@ const platformData = {
       needsConnection: true,
     },
     {
-      name: "Discord",
-      icon: FaDiscord,
+      name: "Gumroad",
+      icon: SiGumroad,
       color: "bg-indigo-500",
-      description: "Connect your server",
+      description: "Connect your Gumroad account",
       needsConnection: true,
     },
     {
