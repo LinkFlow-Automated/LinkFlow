@@ -36,10 +36,14 @@
         "noUnusedVariables":"off",
         "noConstructorReturn":"off"
       },
+      "performance":{
+        "noImgElement":"off"
+      },
       "suspicious": {
         "noDocumentCookie": "off",
         "noImplicitAnyLet": "off",
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "warn"
       },
       "complexity": {
         "noStaticOnlyClass": "off",
