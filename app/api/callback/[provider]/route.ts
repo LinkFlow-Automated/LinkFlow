@@ -4,11 +4,12 @@ import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export default async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ provider: string }> }
-) {
-  const providerName = (await params).provider;
+interface RouteContext {
+  params: Promise<{ provider: string }>;
+}
+
+export async function GET(req: NextRequest, context: RouteContext) {
+  const { provider: providerName } = await context.params;
   const code = req.nextUrl.searchParams.get("code");
   if (!providerName || !code) {
     return NextResponse.json(
