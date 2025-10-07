@@ -1,6 +1,7 @@
 "use server";
 
-import { google } from "googleapis";
+// Import the specific YouTube client and your existing oauth2Client
+import { youtube as getYoutubeClient } from "@googleapis/youtube";
 import { oauth2Client } from "../youtube-client";
 
 /**
@@ -15,13 +16,11 @@ export async function getYoutubeAuthUrl(
 ) {
   const defaultScopes = ["https://www.googleapis.com/auth/youtube"];
   const scopes = [...new Set([...defaultScopes, ...extraScopes])];
-
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope: scopes,
     state: state,
   });
-
   return url;
 }
 
@@ -32,20 +31,23 @@ export async function getYoutubeAuthUrl(
  */
 export async function exchangeYoutubeCode(code: string) {
   const { tokens } = await oauth2Client.getToken(code);
-
   oauth2Client.setCredentials(tokens);
+
+  if (!tokens.access_token) {
+    throw new Error("Failed to get access token from YouTube");
+  }
 
   return {
     accessToken: tokens.access_token,
-    refreshToken: tokens.refresh_token,
-    expiresIn: tokens.expiry_date,
-    scope: tokens.scope,
+    refreshToken: tokens.refresh_token ?? undefined,
+    expiresIn:
+      typeof tokens.expiry_date === "number" ? tokens.expiry_date : undefined,
+    scope: tokens.scope ?? undefined,
   };
 }
 
 /**
  * Refreshes an expired access token using a valid refresh token.
- * Note: The google-auth-library can often handle this automatically if credentials are set.
  * @param refreshToken - The refresh token obtained during the initial authorization.
  * @returns An object with the new access token and its expiry information.
  */
@@ -53,34 +55,34 @@ export async function refreshYoutubeToken(refreshToken: string) {
   oauth2Client.setCredentials({
     refresh_token: refreshToken,
   });
-
   const { credentials } = await oauth2Client.refreshAccessToken();
+
+  if (!credentials.access_token) {
+    throw new Error("Failed to refresh YouTube access token");
+  }
 
   return {
     accessToken: credentials.access_token,
-    expiresIn: credentials.expiry_date,
-    scope: credentials.scope,
+    expiresIn:
+      typeof credentials.expiry_date === "number"
+        ? credentials.expiry_date
+        : undefined,
   };
 }
 
 /**
  * Retrieves basic channel information for the currently authenticated user.
  * @param accessToken - The user's active access token.
- * @param refreshToken - Optional. The user's refresh token. The library can use this to refresh the access token if it's expired.
- * @returns The user's YouTube channel ID, display name, and thumbnail URL.
+ * @returns The user's YouTube channel ID and display name.
  */
-export async function getYoutubeUser(
-  accessToken: string,
-  refreshToken?: string
-) {
+export async function getYoutubeUser(accessToken: string) {
   oauth2Client.setCredentials({
     access_token: accessToken,
-    refresh_token: refreshToken,
   });
 
-  const youtube = google.youtube({
+  const youtube = getYoutubeClient({
     version: "v3",
-    auth: oauth2Client, // youtube api will be hereeee
+    auth: oauth2Client,
   });
 
   const response = await youtube.channels.list({
@@ -96,9 +98,12 @@ export async function getYoutubeUser(
 
   const channel = response.data.items[0];
 
+  if (!channel.id) {
+    throw new Error("YouTube channel ID is missing");
+  }
+
   return {
     id: channel.id,
-    displayName: channel.snippet?.title,
-    thumbnail: channel.snippet?.thumbnails?.default?.url,
+    displayName: channel.snippet?.title ?? undefined,
   };
 }

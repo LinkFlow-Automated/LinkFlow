@@ -1,8 +1,8 @@
 "use server"
+import { OAuth2Client } from "google-auth-library";
 
-export const { google } = require("googleapis");
-
-export const oauth2Client = new google.auth.OAuth2(
+// The instantiation now uses OAuth2Client directly
+export const oauth2Client = new OAuth2Client(
   process.env.YOUTUBE_CLIENT_ID,
   process.env.YOUTUBE_CLIENT_SECRET,
   process.env.YOUTUBE_REDIRECT_URI
