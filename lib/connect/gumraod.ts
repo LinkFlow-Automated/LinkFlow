@@ -12,7 +12,10 @@ const defaultScopes = [
   "edit_sales",
 ];
 
-export async function getGumroadAuthUrl(state: string, extraScopes: string[] = []) {
+export async function getGumroadAuthUrl(
+  state: string,
+  extraScopes: string[] = []
+) {
   const { clientId, redirectUri } = await getProviderCredentials("gumroad");
   const scopes = [...defaultScopes, ...extraScopes].join(" ");
   const q = new URLSearchParams({
@@ -26,7 +29,9 @@ export async function getGumroadAuthUrl(state: string, extraScopes: string[] = [
 }
 
 export async function exchangeGumroadCode(code: string) {
-  const { clientId, redirectUri, clientSecret } = await getProviderCredentials("gumroad");
+  const { clientId, redirectUri, clientSecret } = await getProviderCredentials(
+    "gumroad"
+  );
   const resp = await axios.post(
     "https://gumroad.com/oauth/token",
     new URLSearchParams({
@@ -73,5 +78,38 @@ export async function getGumroadUser(accessToken: string) {
     id: String(user.id),
     email: user.email,
     displayName: user.name,
+  };
+}
+
+export function gumroadHandler(accessToken: string) {
+  // Create a reusable axios instance with the base URL and auth headers
+  const apiClient = axios.create({
+    baseURL: "https://api.gumroad.com/v2",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return {
+
+    getProductList: async () => {
+      try {
+        const response = await apiClient.get("/products");
+        return response.data;
+      } catch (error) {
+        console.error("Failed to fetch Gumroad products:", error);
+        throw error;
+      }
+    },
+
+    getProductDetails: async (productId: string) => {
+      try {
+        const response = await apiClient.get(`/products/${productId}`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to fetch Gumroad product ${productId}:`, error);
+        throw error;
+      }
+    },
   };
 }

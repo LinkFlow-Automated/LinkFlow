@@ -1,3 +1,5 @@
+import { GumroadApiClient } from "./gumroad";
+
 export interface OAuthTokens {
   accessToken: string;
   refreshToken?: string;
@@ -15,4 +17,5 @@ export interface OAuthProvider {
   getUser?: (
     accessToken: string
   ) => Promise<{ id: string; email?: string; displayName?: string }>;
+  getData?: (accessToken: string) => GumroadApiClient;
 }
