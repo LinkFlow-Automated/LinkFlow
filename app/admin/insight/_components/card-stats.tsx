@@ -1,7 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { Area, AreaChart } from "recharts";
 import { FaArrowTrendUp } from "react-icons/fa6";
@@ -32,7 +32,7 @@ export default function CardStats({
             ? `${totalSales}%`
             : title === "Total Clicks" || title === "Products Sold"
               ? totalSales
-              : `$${totalSales.toFixed(2)}`}
+              : `${totalSales}`}
         </CardDescription>
         <div className="text-sm flex items-center text-gray-500">
           <Badge className="bg-green-200 mr-1 p-1">

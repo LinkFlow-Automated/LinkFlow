@@ -2,7 +2,7 @@ import LinkManagement from "@/components/shared/link-management";
 import ProfileViewCard from "@/components/shared/profile-view-card";
 import { auth } from "@/lib/auth";
 import { Link, User } from "@/lib/generated/prisma";
-import { getUserData } from "@/lib/services/user-actions";
+import { getUserData } from "@/lib/actions/user-actions";
 import { headers } from "next/headers";
 
 export default async function page() {

@@ -81,7 +81,7 @@ export async function getGumroadUser(accessToken: string) {
   };
 }
 
-export function gumroadHandler(accessToken: string) {
+export async function gumroadHandler(accessToken: string) {
   // Create a reusable axios instance with the base URL and auth headers
   const apiClient = axios.create({
     baseURL: "https://api.gumroad.com/v2",

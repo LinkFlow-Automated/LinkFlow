@@ -17,5 +17,5 @@ export interface OAuthProvider {
   getUser?: (
     accessToken: string
   ) => Promise<{ id: string; email?: string; displayName?: string }>;
-  getData?: (accessToken: string) => GumroadApiClient;
+  getData?: (accessToken: string) => Promise<GumroadApiClient>;
 }

@@ -9,7 +9,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import {
   FaDiscord,
   FaGithub,
@@ -364,14 +363,7 @@ interface ConnectionDialogProps {
   onBack?: () => void;
 }
 
-export function ConnectionDialog({
-  platform,
-  step = 1,
-  totalSteps = 3,
-  onConnect,
-  onSkip,
-  onBack,
-}: ConnectionDialogProps) {
+export function ConnectionDialog({ platform }: ConnectionDialogProps) {
   const config = platformConfigs[platform];
   const [open, setOpen] = useState(false);
 
@@ -379,14 +371,6 @@ export function ConnectionDialog({
     const url = await providers[platform].authUrl("");
     window.location.href = url;
     setOpen(false);
-  };
-
-  const handleSkip = () => {
-    onSkip?.();
-  };
-
-  const handleBack = () => {
-    onBack?.();
   };
 
   return (
@@ -413,30 +397,7 @@ export function ConnectionDialog({
           </div>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-7xl min-w-xl w-full p-0 gap-0 bg-background border-border">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleBack}
-            className="h-8 w-8"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <span className="text-sm font-medium text-foreground">
-            Connection — {step} of {totalSteps}
-          </span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleSkip}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Skip
-          </Button>
-        </div>
-
+      <DialogContent className="max-w-7xl min-w-xl w-full p-0 gap-0 bg-background">
         {/* Content */}
         <div className="p-0 space-y-6 relative">
           <div className="z-10 absolute left-0 top-0 text-start space-y-2 p-6 bg-gradient-to-b from-background from-[70%] to-transparent">
@@ -472,12 +433,6 @@ export function ConnectionDialog({
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  {/* <motion.p
-                    className="font-semibold text-[13px] cursor-default whitespace-nowrap px-2 py-1 text-muted-foreground"
-                    whileHover={{ scale: 1.1, zIndex: 10, color: config.color }}
-                  >
-                    {card.title}
-                  </motion.p> */}
                   <NewSongCard
                     songName={card.title}
                     artistImage="/test/3.png"
@@ -487,14 +442,7 @@ export function ConnectionDialog({
             </motion.div>
           </div>
 
-          {/* <Button
-            onClick={handleConnect}
-            className="text-base font-medium text-white self-center"
-            style={{ backgroundColor: config.color }}
-          >
-            <config.icon className="mr-2 text-lg" />
-            Connect {config.name}
-          </Button> */}
+          {/* Footer */}
           <DialogFooter className="p-6 z-10 absolute left-0 bottom-0 w-full text-start sm:justify-center items-center space-y-2 bg-gradient-to-t from-background from-[10%] to-transparent">
             <Button
               onClick={handleConnect}

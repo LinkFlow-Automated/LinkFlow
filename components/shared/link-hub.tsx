@@ -406,6 +406,7 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
                         onClick={() =>
                           handleCreateLink({ provider: platform.name })
                         }
+                        disabled={isCreating}
                         variant="outline"
                         className="h-auto p-4 flex flex-col items-start gap-2 hover:bg-muted/50 cursor-pointer bg-transparent"
                       >
