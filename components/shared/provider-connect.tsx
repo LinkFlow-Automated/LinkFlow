@@ -19,11 +19,14 @@ import {
   FaTwitch,
   FaYoutube,
 } from "react-icons/fa6";
-import { TbBrandGumroad } from "react-icons/tb";
+import { TbBrandGumroad, TbDashboard, TbSettings } from "react-icons/tb";
 import { getCardStyle } from "@/lib/utils";
 import { NewSongCard } from "./bio/card/spotify/new-song-card";
 import { useState } from "react";
 import { providers } from "@/lib/connect/registry";
+import ConnectProviderPrompt from "./connect-provider-prompt";
+import ProviderDashboard from "./provider-dashboard";
+import { navBarProviders } from "@/lib/const/conts";
 
 // Platform configurations
 export const platformConfigs = {
@@ -361,9 +364,17 @@ interface ConnectionDialogProps {
   onConnect?: () => void;
   onSkip?: () => void;
   onBack?: () => void;
+  connectedProviders?: {
+    id: string;
+    provider: string;
+    expiresAt: Date | null;
+  }[];
 }
 
-export function ConnectionDialog({ platform }: ConnectionDialogProps) {
+export function ConnectionDialog({
+  platform,
+  connectedProviders,
+}: ConnectionDialogProps) {
   const config = platformConfigs[platform];
   const [open, setOpen] = useState(false);
 
@@ -372,6 +383,10 @@ export function ConnectionDialog({ platform }: ConnectionDialogProps) {
     window.location.href = url;
     setOpen(false);
   };
+
+  const isConnected = connectedProviders?.some(
+    (provider) => provider.provider === platform
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -397,52 +412,20 @@ export function ConnectionDialog({ platform }: ConnectionDialogProps) {
           </div>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-7xl min-w-xl w-full p-0 gap-0 bg-background">
-        {/* Content */}
-        <div className="p-0 space-y-6 relative">
-          <div className="z-10 absolute left-0 top-0 text-start space-y-2 p-6 bg-gradient-to-b from-background from-[70%] to-transparent">
-            <h2 className="text-2xl font-bold text-foreground text-balance">
-              Connect Your{" "}
-              <span
-                style={{ color: config.color }}
-                className="inline-flex items-center gap-2"
-              >
-                <config.icon className="text-2xl" />
-                {config.name}
-              </span>
-            </h2>
-            <p className="text-muted-foreground text-pretty leading-relaxed">
-              {config.description}
-            </p>
-          </div>
-
-          {/* Animated Radial Layout */}
-          <div className="relative flex items-center justify-center h-full overflow-hidden">
-            <motion.div
-              className="relative w-[500px] h-[500px] left-[-90%]"
-              animate={{ rotate: -360 }}
-              transition={{ ease: "linear", duration: 100, repeat: Infinity }}
-            >
-              <div className="absolute top-1/2 left-1/2 w-48 h-48 -translate-x-1/2 -translate-y-1/2 bg-background rounded-full shadow-inner" />
-              {config.cards.map((card, index) => (
-                <motion.div
-                  key={card.id}
-                  className="absolute w-3/6"
-                  style={getCardStyle(index, config.cards.length)}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <NewSongCard
-                    songName={card.title}
-                    artistImage="/test/3.png"
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Footer */}
+      <DialogContent
+        className={`${
+          isConnected ? "min-w-3xl min-h-fit p-6" : "min-w-xl p-0"
+        } max-w-7xl w-full gap-0 bg-background`}
+      >
+        {isConnected ? (
+          <ProviderDashboard
+            providerName={config.name}
+            linkNav={navBarProviders[platform]}
+          />
+        ) : (
+          <ConnectProviderPrompt config={config} />
+        )}
+        {!isConnected && (
           <DialogFooter className="p-6 z-10 absolute left-0 bottom-0 w-full text-start sm:justify-center items-center space-y-2 bg-gradient-to-t from-background from-[10%] to-transparent">
             <Button
               onClick={handleConnect}
@@ -453,7 +436,7 @@ export function ConnectionDialog({ platform }: ConnectionDialogProps) {
               Connect {config.name}
             </Button>
           </DialogFooter>
-        </div>
+        )}
       </DialogContent>
     </Dialog>
   );

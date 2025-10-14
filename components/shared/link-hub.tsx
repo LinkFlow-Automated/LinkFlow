@@ -48,6 +48,7 @@ import { toast } from "sonner";
 import { useManageLink } from "@/hooks/use-manage-link";
 import { Link } from "@/lib/generated/prisma";
 import { SiGumroad } from "react-icons/si";
+import { useManageProvider } from "@/hooks/use-manage-provider";
 
 interface HubLinkProps {
   userId: string;
@@ -279,6 +280,8 @@ const platformData = {
 
 export default function LinkHub({ userId, items }: HubLinkProps) {
   const { createLink, isCreating, isLoading } = useManageLink(userId);
+  const { providers } = useManageProvider(userId);
+  console.log(providers);
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("suggested");
 
@@ -397,6 +400,7 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
                         platform={
                           platform.name.toLowerCase() as keyof typeof platformConfigs
                         }
+                        connectedProviders={providers}
                       />
                     );
                   } else {

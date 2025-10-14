@@ -1,3 +1,4 @@
+"use server"
 import { prisma } from "../prisma";
 
 export async function getProviderData(userId: string) {
@@ -5,7 +6,11 @@ export async function getProviderData(userId: string) {
     where: {
       userId,
     },
+    select:{
+      id: true,
+      provider: true,
+      expiresAt: true,
+    }
   });
-  if (!result) return null;
   return result;
 }

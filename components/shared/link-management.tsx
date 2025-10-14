@@ -92,19 +92,6 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
     <div className="w-full max-w-md mx-auto space-y-4">
       {/* Add Link Button */}
       <div className="w-full flex justify-center md:justify-end">
-        {/* <Button
-          onClick={handleCreateLink}
-          disabled={isCreating}
-          // size="lg"
-          className="flex items-center gap-2 justify-center cursor-pointer w-fit "
-        >
-          <Plus className="size-4" />
-          {isCreating ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            "Add Link"
-          )}
-        </Button> */}
         <LinkHub userId={userId} items={items} />
       </div>
 
