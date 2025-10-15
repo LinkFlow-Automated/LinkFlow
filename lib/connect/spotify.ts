@@ -82,3 +82,29 @@ export async function getSpotifyUser(accessToken: string) {
     displayName: resp.data.display_name,
   };
 }
+
+async function createSpotifyClient(accessToken: string) {
+  return axios.create({
+    baseURL: "https://api.spotify.com/v1",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+}
+
+export async function getSpotifyData(
+  accessToken: string,
+  endpoint: string,
+  id?: string
+) {
+  const client = await createSpotifyClient(accessToken);
+  try {
+    const resp = await client.get(endpoint, {
+      params: id ? { id } : {},
+    });
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

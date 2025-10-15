@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -19,14 +18,13 @@ import {
   FaTwitch,
   FaYoutube,
 } from "react-icons/fa6";
-import { TbBrandGumroad, TbDashboard, TbSettings } from "react-icons/tb";
-import { getCardStyle } from "@/lib/utils";
-import { NewSongCard } from "./bio/card/spotify/new-song-card";
+import { TbBrandGumroad } from "react-icons/tb";
 import { useState } from "react";
 import { providers } from "@/lib/connect/registry";
 import ConnectProviderPrompt from "./connect-provider-prompt";
 import ProviderDashboard from "./provider-dashboard";
 import { navBarProviders } from "@/lib/const/conts";
+import { IconType } from "react-icons/lib";
 
 // Platform configurations
 export const platformConfigs = {
@@ -369,11 +367,13 @@ interface ConnectionDialogProps {
     provider: string;
     expiresAt: Date | null;
   }[];
+  icon: IconType
 }
 
 export function ConnectionDialog({
   platform,
   connectedProviders,
+  icon
 }: ConnectionDialogProps) {
   const config = platformConfigs[platform];
   const [open, setOpen] = useState(false);
@@ -421,6 +421,7 @@ export function ConnectionDialog({
           <ProviderDashboard
             providerName={config.name}
             linkNav={navBarProviders[platform]}
+            icon={icon}
           />
         ) : (
           <ConnectProviderPrompt config={config} />

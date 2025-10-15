@@ -4,7 +4,7 @@ import {
   exchangeGumroadCode,
   refreshGumroadToken,
   getGumroadUser,
-  gumroadHandler,
+  getGumroadData,
 } from "./gumraod";
 
 export const gumroadProvider: OAuthProvider = {
@@ -21,5 +21,5 @@ export const gumroadProvider: OAuthProvider = {
   exchangeCode: exchangeGumroadCode,
   refreshToken: refreshGumroadToken,
   getUser: getGumroadUser,
-  getData: gumroadHandler,
+  getData: getGumroadData,
 };

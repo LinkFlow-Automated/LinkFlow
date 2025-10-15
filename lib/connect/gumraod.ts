@@ -81,35 +81,28 @@ export async function getGumroadUser(accessToken: string) {
   };
 }
 
-export async function gumroadHandler(accessToken: string) {
-  // Create a reusable axios instance with the base URL and auth headers
-  const apiClient = axios.create({
+async function createGumroadClient(accessToken: string) {
+  return axios.create({
     baseURL: "https://api.gumroad.com/v2",
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+}
 
-  return {
-
-    getProductList: async () => {
-      try {
-        const response = await apiClient.get("/products");
-        return response.data;
-      } catch (error) {
-        console.error("Failed to fetch Gumroad products:", error);
-        throw error;
-      }
-    },
-
-    getProductDetails: async (productId: string) => {
-      try {
-        const response = await apiClient.get(`/products/${productId}`);
-        return response.data;
-      } catch (error) {
-        console.error(`Failed to fetch Gumroad product ${productId}:`, error);
-        throw error;
-      }
-    },
-  };
+export async function getGumroadData(
+  accessToken: string,
+  endpoint: string,
+  id?: string
+) {
+  try {
+    const apiClient = await createGumroadClient(accessToken);
+    const response = await apiClient.get(endpoint, {
+      params: id ? { product_id: id } : undefined,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch Gumroad products:", error);
+    throw error;
+  }
 }

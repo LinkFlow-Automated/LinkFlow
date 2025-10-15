@@ -400,6 +400,7 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
                         platform={
                           platform.name.toLowerCase() as keyof typeof platformConfigs
                         }
+                        icon={platform.icon}
                         connectedProviders={providers}
                       />
                     );

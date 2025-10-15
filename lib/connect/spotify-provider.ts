@@ -1,5 +1,11 @@
 import { OAuthProvider } from "@/types/oauth";
-import { getSpotifyAuthUrl, exchangeSpotifyCode, refreshSpotifyToken, getSpotifyUser } from "./spotify";
+import {
+  getSpotifyAuthUrl,
+  exchangeSpotifyCode,
+  refreshSpotifyToken,
+  getSpotifyUser,
+  getSpotifyData,
+} from "./spotify";
 
 export const spotifyProvider: OAuthProvider = {
   name: "spotify",
@@ -8,4 +14,5 @@ export const spotifyProvider: OAuthProvider = {
   exchangeCode: exchangeSpotifyCode,
   refreshToken: refreshSpotifyToken,
   getUser: getSpotifyUser,
+  getData: getSpotifyData,
 };
