@@ -43,7 +43,7 @@ import { SiNotion, SiCalendly, SiFormspree } from "react-icons/si";
 import { useState } from "react";
 import { RiLightbulbFill } from "react-icons/ri";
 import { HiViewGridAdd } from "react-icons/hi";
-import { ConnectionDialog, platformConfigs } from "./provider-connect";
+import { ConnectionDialog, platformConfigs } from "./provider-dashboard/provider-connect";
 import { toast } from "sonner";
 import { useManageLink } from "@/hooks/use-manage-link";
 import { Link } from "@/lib/generated/prisma";
@@ -402,6 +402,7 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
                         }
                         icon={platform.icon}
                         connectedProviders={providers}
+                        userId={userId}
                       />
                     );
                   } else {

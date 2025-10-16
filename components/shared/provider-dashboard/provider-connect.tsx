@@ -21,10 +21,10 @@ import {
 import { TbBrandGumroad } from "react-icons/tb";
 import { useState } from "react";
 import { providers } from "@/lib/connect/registry";
-import ConnectProviderPrompt from "./connect-provider-prompt";
-import ProviderDashboard from "./provider-dashboard";
+import ConnectProviderPrompt from "../connect-provider-prompt";
 import { navBarProviders } from "@/lib/const/conts";
 import { IconType } from "react-icons/lib";
+import ProviderDashboard from "./provider-dashboard";
 
 // Platform configurations
 export const platformConfigs = {
@@ -368,12 +368,14 @@ interface ConnectionDialogProps {
     expiresAt: Date | null;
   }[];
   icon: IconType
+  userId: string
 }
 
 export function ConnectionDialog({
   platform,
   connectedProviders,
-  icon
+  icon,
+  userId
 }: ConnectionDialogProps) {
   const config = platformConfigs[platform];
   const [open, setOpen] = useState(false);
@@ -422,6 +424,7 @@ export function ConnectionDialog({
             providerName={config.name}
             linkNav={navBarProviders[platform]}
             icon={icon}
+            userId={userId}
           />
         ) : (
           <ConnectProviderPrompt config={config} />
