@@ -358,14 +358,16 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
             <Plus className="size-5" />
             <DialogTitle> Add Link</DialogTitle>
           </div>
-          <DialogDescription>
-            <div className="relative flex items-center rounded-md border focus-within:ring-1 focus-within:ring-ring pl-2">
-              <IoIosSearch className="h-5 w-5 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search a link"
-                className="border-0 focus-visible:ring-0 shadow-none"
-              />
+          <DialogDescription asChild>
+            <div>
+              <div className="relative flex items-center rounded-md border focus-within:ring-1 focus-within:ring-ring pl-2">
+                <IoIosSearch className="h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search a link"
+                  className="border-0 focus-visible:ring-0 shadow-none"
+                />
+              </div>
             </div>
           </DialogDescription>
         </DialogHeader>
