@@ -6,6 +6,9 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { providers } from "@/lib/connect/registry";
 import SkeletonContent from "./skeleton-content";
+import { useManageLink } from "@/hooks/use-manage-link";
+import { toast } from "sonner";
+import Image from "next/image";
 
 interface ProviderDashboard {
   providerName: string;
@@ -20,9 +23,16 @@ export default function ProviderDashboard({
   providerName,
   linkNav,
   icon: IconT,
-  userId
+  userId,
 }: ProviderDashboard) {
   const [selectedCategory, setSelectedCategory] = useState(linkNav[0]);
+
+  const {
+    createLink,
+    isCreating,
+    isLoading: isCreatingLoading,
+  } = useManageLink(userId);
+
   const { isLoading, data, error } = useQuery({
     queryKey: ["provider-dashboard", selectedCategory, userId],
     queryFn: async () => {
@@ -35,6 +45,46 @@ export default function ProviderDashboard({
     },
     enabled: !!selectedCategory && !!providerName,
   });
+
+  const handleCreateLink = ({
+    provider,
+    data
+  }: {
+    provider?: string | undefined;
+    data?: any
+  }) => {
+    createLink({
+      userId: userId, // Use the passed userId or user?.id from auth
+      title: data.name,
+      description: data.description,
+      url: data.url,
+      category: null,
+      order: 0,
+      isHadRedirectLink: false,
+      layout: "",
+      animation: "none",
+      themeOverrides: {},
+      redirectTo: "",
+      clicks: 0,
+      featured: false,
+      autoSyncId: null,
+      platform: provider?.toLowerCase() as string | null,
+      thumbnail: "",
+      type: "image",
+      isArchived: false,
+      visibility: "PUBLIC",
+      scheduledAt: null,
+      expiresAt: null,
+      rules: {}, // Adjust based on your rulesSchema structure
+      // createdAt: new Date(),
+      metadata: {
+        provider: provider?.toLowerCase(),
+      },
+    });
+    // setOpen(false);
+    toast.success("Link created");
+  };
+
   console.log(data, error);
   return (
     <>
@@ -90,6 +140,27 @@ export default function ProviderDashboard({
                       : "products"}{" "}
                     on your {providerName} account.
                   </p>
+                </div>
+              )}
+              {!isLoading && data?.products?.length > 0 && (
+                <div className="col-span-4 text-center text-muted-foreground h-full flex justify-between items-start flex-col p-2">
+                  {data.products.map((product: any) => (
+                    <div
+                      key={product.id}
+                      className="flex flex-col gap-2 items-center"
+                    >
+                      <Image
+                        height={1000}
+                        width={1000}
+                        src={product.images?.[0]?.url || "/1.jpg"}
+                        alt={product.title || ""}
+                        className="size-16 rounded-md"
+                      />
+                      <p className="text-sm font-medium self-start">
+                        {product.name || ""}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

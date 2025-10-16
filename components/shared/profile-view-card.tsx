@@ -19,11 +19,6 @@ export default function ProfileViewCard({
 }: {
   user: User & { links: Link[] };
 }) {
-  // const user = {
-  //   name: "Anshul",
-  //   bio: "Software Developer",
-  //   avatar: "https://github.com/anshul-01.png",
-  // };
   const icons = [
     {
       icon: FaGithub,

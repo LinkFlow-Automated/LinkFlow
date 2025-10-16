@@ -2,93 +2,14 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
 import HeroSection from "./bio/hero/hero-section";
 import { ArtistInfoCard } from "./bio/card/spotify/artist-info-card";
 import LinkCard from "./bio/card/link/link-card";
 import { NewSongCard } from "./bio/card/spotify/new-song-card";
 import { NewAlbumCard } from "./bio/card/spotify/new-album-card";
 
-// Helper component for SVG icons to keep the main component clean
-const WifiIcon = ({ className }: { className: string }) => (
-  <svg
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M5 12.55a11 11 0 0 1 14.08 0" />
-    <path d="M1.42 9a16 16 0 0 1 21.16 0" />
-    <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
-    <line x1="12" y1="20" x2="12.01" y2="20" />
-  </svg>
-);
-
-const SignalIcon = ({ className }: { className: string }) => (
-  <svg
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M2 20h.01" />
-    <path d="M7 20v-4" />
-    <path d="M12 20v-8" />
-    <path d="M17 20V8" />
-    <path d="M22 20V4" />
-  </svg>
-);
-
-const BatteryIcon = ({ className }: { className: string }) => (
-  <svg
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect x="1" y="6" width="18" height="12" rx="2" ry="2" />
-    <line x1="23" y1="13" x2="23" y2="11" />
-  </svg>
-);
-
 // Main Pixel Preview Component
 export const PixelPreview = () => {
-  // State to hold the current time, initialized to a default value
-  const [time, setTime] = useState("11:40");
-
-  // Effect to update the time every minute
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      setTime(`${hours}:${minutes}`);
-    };
-
-    updateClock(); // Set initial time
-    const timerId = setInterval(updateClock, 60000); // Update every minute
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(timerId);
-  }, []);
 
   return (
     <div className="relative mx-auto w-full max-w-[380px] p-6 overflow-auto">
