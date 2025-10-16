@@ -1,17 +1,37 @@
 /** biome-ignore-all lint/a11y/useKeyWithClickEvents: <> */
 "use client";
 
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { updateUserProfile } from "@/lib/actions/user-actions";
 import { Link, User } from "@/lib/generated/prisma";
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
 const profileFormSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
+  username: z.string().min(1, { message: "Name is required" }),
   bio: z.string().min(1, { message: "Bio is required" }),
   //   image: z.string().min(1, { message: "Image is required" }),
 });
@@ -29,42 +49,56 @@ export default function ProfileForm({
   placeHolder,
   className,
 }: ProfileFormProps) {
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const form = useForm<ProfileForm>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      name: userData?.username || "",
+      username: userData?.username || "",
       bio: userData?.bio || "",
     },
   });
 
   const handleSubmit = async (data: ProfileForm) => {
+    setIsUpdating(true);
     try {
       console.log("Form submitted:", data);
-      // TODO: Implement your form submission logic here
+      await updateUserProfile(userData.id, data);
     } catch (error) {
       console.error("Error submitting form:", error);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <span className={cn("", className)}>{placeHolder}</span>
+      <DialogTrigger className="grid flex-1 text-left text-sm leading-tight">
+        <span className="truncate font-medium">{userData.username}</span>
+        <span className="text-muted-foreground truncate text-md line-clamp-1">
+          {userData.bio}
+        </span>
       </DialogTrigger>
-      <DialogContent className="max-w-7xl min-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className=" overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Edit Profile</DialogTitle>
+          <DialogDescription>
+            Update your profile information.
+          </DialogDescription>
+        </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className="flex flex-row">
-              <div></div>
-              <div className="flex flex-col">
+            <div className="flex flex-row ">
+              <div className="grid gap-4">
                 <FormField
-                  name="name"
+                  name="username"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input
-                          className="dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
+                          // className="dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
                           placeholder="Name"
                           {...field}
                         />
@@ -77,9 +111,10 @@ export default function ProfileForm({
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
+                      <FormLabel>Bio</FormLabel>
                       <FormControl>
-                        <Input
-                          className="dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
+                        <Textarea
+                          // className="dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
                           placeholder="Bio"
                           {...field}
                         />
@@ -89,6 +124,25 @@ export default function ProfileForm({
                 />
               </div>
             </div>
+            <DialogFooter className="flex justify-end gap-3 pt-4">
+              <DialogClose>
+                <Button
+                  // onClick={handleCancel}
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer"
+                >
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button type="submit" className="cursor-pointer">
+                {isUpdating ? (
+                  <Loader2 className="animate-spin size-4" />
+                ) : (
+                  "Update profile"
+                )}
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

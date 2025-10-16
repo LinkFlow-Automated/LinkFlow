@@ -12,6 +12,7 @@ import { Link, User } from "@/lib/generated/prisma";
 import AddSocialIcon from "./forms/add-social-icon";
 import { cn } from "@/lib/utils";
 import { RiTwitterXFill } from "react-icons/ri";
+import ProfileForm from "./forms/profile-form";
 
 export default function ProfileViewCard({
   user,
@@ -70,10 +71,7 @@ export default function ProfileViewCard({
       >
         <ImageUploadForm user={user as User} />
         <div className="grid flex-1 text-left text-sm leading-tight">
-          <span className="truncate font-medium">{user.username}</span>
-          <span className="text-muted-foreground truncate text-md line-clamp-1">
-            {user.bio}
-          </span>
+         <ProfileForm userData={user} placeHolder="Test"/>
           <div className="flex flex-row gap-1.5 items-center">
             {icons.map((icon) => (
               // <div key={icon.label}>
