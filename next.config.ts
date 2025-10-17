@@ -28,6 +28,10 @@ const nextConfig: NextConfig = {
         protocol:"https",
         hostname: "6ay8a7s9vf.ufs.sh",
         pathname: "/**",
+      },{
+        protocol:"https",
+        hostname: "public-files.gumroad.com",
+        pathname: "/**",
       }
     ],
   },

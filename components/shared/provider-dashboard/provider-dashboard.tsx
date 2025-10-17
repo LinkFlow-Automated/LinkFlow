@@ -152,7 +152,7 @@ export default function ProviderDashboard({
                       <Image
                         height={1000}
                         width={1000}
-                        src={product.images?.[0]?.url || "/1.jpg"}
+                        src={product.preview_url || "/1.jpg"}
                         alt={product.title || ""}
                         className="size-16 rounded-md"
                       />
