@@ -9,6 +9,8 @@ import SkeletonContent from "./skeleton-content";
 import { useManageLink } from "@/hooks/use-manage-link";
 import { toast } from "sonner";
 import Image from "next/image";
+import { transformProviderData } from "@/lib/utils/transform-provider-data";
+import { platformConfigs } from "./provider-connect";
 
 interface ProviderDashboard {
   providerName: string;
@@ -50,37 +52,11 @@ export default function ProviderDashboard({
     provider,
     data
   }: {
-    provider?: string | undefined;
+    provider: keyof typeof platformConfigs;
     data?: any
   }) => {
-    createLink({
-      userId: userId, // Use the passed userId or user?.id from auth
-      title: data.name,
-      description: data.description,
-      url: data.url,
-      category: null,
-      order: 0,
-      isHadRedirectLink: false,
-      layout: "",
-      animation: "none",
-      themeOverrides: {},
-      redirectTo: "",
-      clicks: 0,
-      featured: false,
-      autoSyncId: null,
-      platform: provider?.toLowerCase() as string | null,
-      thumbnail: "",
-      type: "image",
-      isArchived: false,
-      visibility: "PUBLIC",
-      scheduledAt: null,
-      expiresAt: null,
-      rules: {}, // Adjust based on your rulesSchema structure
-      // createdAt: new Date(),
-      metadata: {
-        provider: provider?.toLowerCase(),
-      },
-    });
+    const transformedData = transformProviderData({provider, type: "product", data})
+    createLink(transformedData);
     // setOpen(false);
     toast.success("Link created");
   };
