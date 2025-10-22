@@ -8,7 +8,7 @@ import { headers } from "next/headers";
 export default async function page() {
   const session = await auth.api.getSession({ headers: await headers() });
   const user = session?.user;
-  // const userData = await getUserData(user?.id as string)
+  const userData = await getUserData(user?.id as string);
   return (
     <div className="w-full h-full py-4 flex flex-col gap-4 items-center">
       {/* <ProfileViewCard user={userData as User & {links: Link[]}} /> */}

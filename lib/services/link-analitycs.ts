@@ -22,7 +22,11 @@ export async function getLinkStats(
 
   // Base where clause
   const baseWhere = {
-    link: { userId },
+    link: {
+      profile: {
+        userId,
+      },
+    },
     ...(linkId && { linkId }),
     timestamp: {
       gte: fromDate,
@@ -303,7 +307,11 @@ export async function getRealTimeStats(userId: string, linkId?: string) {
 
   const recentClicks = await prisma.clickEvent.findMany({
     where: {
-      link: { userId },
+      link: {
+        profile: {
+          userId,
+        },
+      },
       ...(linkId && { linkId }),
       timestamp: { gte: lastHour },
     },

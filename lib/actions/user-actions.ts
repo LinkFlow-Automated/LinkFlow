@@ -1,21 +1,21 @@
-"use server"
+"use server";
 
 import { prisma } from "../prisma";
 
 export const getUserData = async (userId: string) => {
-  const user = await prisma.user.findUnique({
+  const data = await prisma.user.findUnique({
     where: {
       id: userId,
     },
     include: {
-      profiles:{
-        include:{
-          links: true
-        }
-      }
+      profiles: {
+        include: {
+          links: true,
+        },
+      },
     },
   });
-  return user;
+  return data;
 };
 
 export const updateUserProfile = async (
