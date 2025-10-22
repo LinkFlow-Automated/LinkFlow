@@ -8,7 +8,11 @@ export const getUserData = async (userId: string) => {
       id: userId,
     },
     include: {
-      links: true,
+      profiles:{
+        include:{
+          links: true
+        }
+      }
     },
   });
   return user;

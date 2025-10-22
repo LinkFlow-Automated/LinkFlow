@@ -10,7 +10,7 @@ export default async function page() {
   if (!session) {
     redirect("/login");
   }
-  const linkStat = await getLinkStats(session.user.id);
+  // const linkStat = await getLinkStats(session.user.id);
   return (
     <div className="pt-8 flex flex-col gap-8 md:px-4 h-full">
       {/* Stat card */}

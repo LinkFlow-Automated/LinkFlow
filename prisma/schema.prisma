@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Multi-tenant Prisma schema with Profile support
+// Users can now have multiple profiles (like Linktree)
 
 generator client {
   provider = "prisma-client-js"
@@ -23,6 +20,81 @@ model Waitlist {
   @@map("waitlist")
 }
 
+model User {
+  id               String    @id
+  name             String
+  email            String    @unique
+  emailVerified    Boolean
+  image            String?
+  createdAt        DateTime
+  updatedAt        DateTime
+  stripeCustomerId String?
+  stripeAccountId  String?
+  role             String?
+  banned           Boolean?
+  banReason        String?
+  banExpires       DateTime?
+  
+  sessions         Session[]
+  accounts         Account[]
+  profiles         Profile[]  // 🆕 User can have multiple profiles
+  apikeys          Apikey[]
+  members          Member[]
+  invitations      Invitation[]
+  providerAccounts ProviderAcc[]
+
+  @@map("user")
+}
+
+// 🆕 Profile model - the core of multi-tenancy
+model Profile {
+  id          String    @id @default(cuid())
+  userId      String
+  username    String    @unique  // Each profile has unique username/slug
+  displayName String?              // Display name for the profile
+  bio         String?
+  image       String?              // Profile-specific avatar
+  slug String @unique
+  
+  // Profile customization
+  isPrimary   Boolean   @default(false)  // User's main/default profile
+  isPublic    Boolean   @default(true)   // Profile visibility
+  customDomain String?  @unique          // Optional custom domain
+  
+  // Branding
+  backgroundColor String?
+  textColor       String?
+  buttonStyle     String?
+  fontFamily      String?
+  
+  // SEO & Meta
+  metaTitle       String?
+  metaDescription String?
+  metaImage       String?
+  
+  // Social links (optional, separate from Link items)
+  socialLinks     Json?
+  
+  // Analytics
+  views           Int       @default(0)
+  totalClicks     Int       @default(0)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  links           Link[]
+  themes          Theme[]
+  avatarBorders   ProfileAvatarBorder[]
+  clickEvents     ClickEvent[]
+  
+  @@index([userId])
+  @@index([username])
+  @@index([customDomain])
+  @@map("profile")
+}
+
 model AvatarBorder {
   id         String   @id @default(cuid())
   name       String
@@ -35,18 +107,24 @@ model AvatarBorder {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  users UserAvatarBorder[]
+  profiles ProfileAvatarBorder[]
+  
+  @@map("avatar_border")
 }
 
-model UserAvatarBorder {
-  id       String  @id @default(cuid())
-  userId   String
-  borderId String
-  owned    Boolean @default(false) // if purchased/unlocked
-  equipped Boolean @default(false) // if currently active
+// 🔄 Changed from UserAvatarBorder to ProfileAvatarBorder
+model ProfileAvatarBorder {
+  id        String  @id @default(cuid())
+  profileId String
+  borderId  String
+  owned     Boolean @default(false)
+  equipped  Boolean @default(false)
 
-  user   User         @relation(fields: [userId], references: [id])
-  border AvatarBorder @relation(fields: [borderId], references: [id])
+  profile Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  border  AvatarBorder @relation(fields: [borderId], references: [id])
+  
+  @@unique([profileId, borderId])
+  @@map("profile_avatar_border")
 }
 
 model Theme {
@@ -59,36 +137,19 @@ model Theme {
   isPublic  Boolean   @default(false)
   isDefault Boolean   @default(false)
 
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id])
+  // 🔄 Changed from userId to profileId
+  profileId String?
+  profile   Profile?   @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model ClickEvent {
-  id        String  @id @default(cuid())
-  linkId    String
-  userAgent String
-  geo       Json?
-  device    String?
-  browser   String?
-  os        String?
-
-  timestamp DateTime @default(now())
-
-  // Tracking info
-  utmSource   String? // utm_source
-  utmMedium   String? // utm_medium
-  utmCampaign String? // utm_campaign
-  referrer    String? // Domaine référent (ex: google.com)
-
-  link Link @relation(fields: [linkId], references: [id])
+  
+  @@map("theme")
 }
 
 model Link {
   id                String         @id @default(cuid())
-  userId            String
+  profileId         String  // 🔄 Changed from userId to profileId
   title             String
   description       String?
   url               String
@@ -108,52 +169,47 @@ model Link {
   expiresAt         DateTime?
   rules             Json?
 
-  // 🆕 Presentation layer
-  layout         String? // e.g. "default" | "minimal" | "highlighted"
-  animation      String? // e.g. "none" | "hover-rise" | "pulse" | "fade-in"
-  themeOverrides Json? // optional per-link theme (bg, border, textColor...)
-
-  // provider-specific payload
-  metadata Json? // 🆕 structured info (album, artist, track…)
+  // Presentation layer
+  layout         String?
+  animation      String?
+  themeOverrides Json?
+  metadata       Json?
 
   createdAt   DateTime     @default(now())
-  user        User         @relation(fields: [userId], references: [id])
+  updatedAt   DateTime     @updatedAt
+  
+  profile     Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
   clickEvents ClickEvent[]
 
-  @@index([userId, order])
-  @@index([userId, autoSyncId])
+  @@index([profileId, order])
+  @@index([profileId, autoSyncId])
+  @@map("link")
 }
 
-model User {
-  id               String    @id
-  name             String
-  email            String
-  username         String?   @unique
-  bio              String?
-  emailVerified    Boolean
-  image            String?
-  createdAt        DateTime
-  updatedAt        DateTime
-  stripeCustomerId String?
-  stripeAccountId  String?
-  role             String?
-  banned           Boolean?
-  banReason        String?
-  banExpires       DateTime?
-  sessions         Session[]
-  accounts         Account[]
-  links            Link[]
+model ClickEvent {
+  id        String  @id @default(cuid())
+  linkId    String
+  profileId String?  // 🆕 Optional: track which profile received the click
+  userAgent String
+  geo       Json?
+  device    String?
+  browser   String?
+  os        String?
 
-  apikeys Apikey[]
+  timestamp DateTime @default(now())
 
-  members          Member[]
-  invitations      Invitation[]
-  Theme            Theme[]
-  UserAvatarBorder UserAvatarBorder[]
-  ProviderAcc      ProviderAcc[]
+  // Tracking info
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  referrer    String?
 
-  @@unique([email])
-  @@map("user")
+  link    Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  profile Profile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
+  
+  @@index([linkId])
+  @@index([profileId])
+  @@map("click_event")
 }
 
 model ProviderAcc {
@@ -169,12 +225,13 @@ model ProviderAcc {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, userId])
+  @@map("provider_account")
 }
 
 model Session {
   id             String   @id
   expiresAt      DateTime
-  token          String
+  token          String   @unique
   createdAt      DateTime
   updatedAt      DateTime
   ipAddress      String?
@@ -185,7 +242,6 @@ model Session {
 
   activeOrganizationId String?
 
-  @@unique([token])
   @@map("session")
 }
 
@@ -251,7 +307,7 @@ model OauthApplication {
   name         String?
   icon         String?
   metadata     String?
-  clientId     String?
+  clientId     String?   @unique
   clientSecret String?
   redirectURLs String?
   type         String?
@@ -260,14 +316,13 @@ model OauthApplication {
   createdAt    DateTime?
   updatedAt    DateTime?
 
-  @@unique([clientId])
   @@map("oauthApplication")
 }
 
 model OauthAccessToken {
   id                    String    @id
-  accessToken           String?
-  refreshToken          String?
+  accessToken           String?   @unique
+  refreshToken          String?   @unique
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
   clientId              String?
@@ -276,8 +331,6 @@ model OauthAccessToken {
   createdAt             DateTime?
   updatedAt             DateTime?
 
-  @@unique([accessToken])
-  @@unique([refreshToken])
   @@map("oauthAccessToken")
 }
 
@@ -293,23 +346,16 @@ model OauthConsent {
   @@map("oauthConsent")
 }
 
-enum Visibility {
-  PUBLIC
-  PRIVATE
-  SCHEDULED
-}
-
 model Organization {
   id          String       @id
   name        String
-  slug        String?
+  slug        String?      @unique
   logo        String?
   createdAt   DateTime
   metadata    String?
   members     Member[]
   invitations Invitation[]
 
-  @@unique([slug])
   @@map("organization")
 }
 
@@ -337,6 +383,12 @@ model Invitation {
   user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
 
   @@map("invitation")
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+  SCHEDULED
 }
 
 enum ThemeType {

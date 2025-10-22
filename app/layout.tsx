@@ -32,11 +32,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const date = new Date();
-  const links = await getLinkStats("113jd4jd", "1084ndn", {
-    from: date,
-    to: date,
-  });
+  // const date = new Date();
+  // const links = await getLinkStats("113jd4jd", "1084ndn", {
+  //   from: date,
+  //   to: date,
+  // });
   // console.log(links);
   return (
     <html lang="en" suppressHydrationWarning>
