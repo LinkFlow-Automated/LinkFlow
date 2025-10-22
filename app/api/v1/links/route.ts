@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const links = await prisma.link.findMany({
-      where: { userId },
+      where: { profileId: userId },
       orderBy: { order: "asc" },
     });
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    console.log(body)
+    console.log(body);
     // Validate the request body
     const validatedData = createLinkSchema.parse(body);
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(link, { status: 201 });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.errors }, { status: 400 });
     }

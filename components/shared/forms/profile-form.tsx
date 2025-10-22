@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { updateUserProfile } from "@/lib/actions/user-actions";
-import { Link, User } from "@/lib/generated/prisma";
+import { Link, Profile, User } from "@/lib/generated/prisma";
 // import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -39,7 +39,7 @@ const profileFormSchema = z.object({
 type ProfileForm = z.infer<typeof profileFormSchema>;
 
 interface ProfileFormProps {
-  userData: User & { links: Link[] };
+  userData: Profile & { links: Link[] };
   placeHolder: string;
   className?: string;
 }
@@ -50,6 +50,7 @@ export default function ProfileForm({
   className,
 }: ProfileFormProps) {
   const [isUpdating, setIsUpdating] = useState(false);
+  console.log(userData)
 
   const form = useForm<ProfileForm>({
     resolver: zodResolver(profileFormSchema),
@@ -74,9 +75,9 @@ export default function ProfileForm({
   return (
     <Dialog>
       <DialogTrigger className="grid flex-1 text-left text-sm leading-tight">
-        <span className="truncate font-medium">{userData.username}</span>
+        <span className="truncate font-medium">{userData?.username }</span>
         <span className="text-muted-foreground truncate text-md line-clamp-1">
-          {userData.bio}
+          {userData?.bio}
         </span>
       </DialogTrigger>
       <DialogContent className=" overflow-y-auto">

@@ -34,10 +34,10 @@ model User {
   banned           Boolean?
   banReason        String?
   banExpires       DateTime?
-  
+
   sessions         Session[]
   accounts         Account[]
-  profiles         Profile[]  // 🆕 User can have multiple profiles
+  profiles         Profile[] // 🆕 User can have multiple profiles
   apikeys          Apikey[]
   members          Member[]
   invitations      Invitation[]
@@ -48,47 +48,47 @@ model User {
 
 // 🆕 Profile model - the core of multi-tenancy
 model Profile {
-  id          String    @id @default(cuid())
+  id          String  @id @default(cuid())
   userId      String
-  username    String    @unique  // Each profile has unique username/slug
-  displayName String?              // Display name for the profile
+  username    String  @unique // Each profile has unique username/slug
+  displayName String? // Display name for the profile
   bio         String?
-  image       String?              // Profile-specific avatar
-  slug String @unique
-  
+  image       String? // Profile-specific avatar
+  slug        String  @unique
+
   // Profile customization
-  isPrimary   Boolean   @default(false)  // User's main/default profile
-  isPublic    Boolean   @default(true)   // Profile visibility
-  customDomain String?  @unique          // Optional custom domain
-  
+  isPrimary    Boolean @default(false) // User's main/default profile
+  isPublic     Boolean @default(true) // Profile visibility
+  customDomain String? @unique // Optional custom domain
+
   // Branding
   backgroundColor String?
   textColor       String?
   buttonStyle     String?
   fontFamily      String?
-  
+
   // SEO & Meta
   metaTitle       String?
   metaDescription String?
   metaImage       String?
-  
+
   // Social links (optional, separate from Link items)
-  socialLinks     Json?
-  
+  socialLinks Json?
+
   // Analytics
-  views           Int       @default(0)
-  totalClicks     Int       @default(0)
-  
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  
+  views       Int @default(0)
+  totalClicks Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relations
-  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  links           Link[]
-  themes          Theme[]
-  avatarBorders   ProfileAvatarBorder[]
-  clickEvents     ClickEvent[]
-  
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  links         Link[]
+  themes        Theme[]
+  avatarBorders ProfileAvatarBorder[]
+  clickEvents   ClickEvent[]
+
   @@index([userId])
   @@index([username])
   @@index([customDomain])
@@ -108,7 +108,7 @@ model AvatarBorder {
   updatedAt  DateTime @updatedAt
 
   profiles ProfileAvatarBorder[]
-  
+
   @@map("avatar_border")
 }
 
@@ -122,7 +122,7 @@ model ProfileAvatarBorder {
 
   profile Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
   border  AvatarBorder @relation(fields: [borderId], references: [id])
-  
+
   @@unique([profileId, borderId])
   @@map("profile_avatar_border")
 }
@@ -139,17 +139,17 @@ model Theme {
 
   // 🔄 Changed from userId to profileId
   profileId String?
-  profile   Profile?   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profile   Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("theme")
 }
 
 model Link {
   id                String         @id @default(cuid())
-  profileId         String  // 🔄 Changed from userId to profileId
+  profileId         String // 🔄 Changed from userId to profileId
   title             String
   description       String?
   url               String
@@ -175,9 +175,9 @@ model Link {
   themeOverrides Json?
   metadata       Json?
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   profile     Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
   clickEvents ClickEvent[]
 
@@ -189,7 +189,7 @@ model Link {
 model ClickEvent {
   id        String  @id @default(cuid())
   linkId    String
-  profileId String?  // 🆕 Optional: track which profile received the click
+  profileId String? // 🆕 Optional: track which profile received the click
   userAgent String
   geo       Json?
   device    String?
@@ -206,7 +206,7 @@ model ClickEvent {
 
   link    Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
   profile Profile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
-  
+
   @@index([linkId])
   @@index([profileId])
   @@map("click_event")

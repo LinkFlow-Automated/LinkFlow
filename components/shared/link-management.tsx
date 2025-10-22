@@ -28,11 +28,12 @@ import LinkHub from "./link-hub";
 // import { useAuth } from "@/hooks/use-auth";
 
 interface LinkManagementProps {
-  userId: string; // Pass userId as prop or get from auth context
+  profileId: string; // Pass userId as prop or get from auth context
 }
 
-export default function LinkManagement({ userId }: LinkManagementProps) {
-  const { updateLink, links, isLoading } = useManageLink(userId);
+export default function LinkManagement({ profileId }: LinkManagementProps) {
+  console.log(profileId);
+  const { updateLink, links, isLoading } = useManageLink(profileId);
 
   const items = links || [];
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
@@ -92,7 +93,7 @@ export default function LinkManagement({ userId }: LinkManagementProps) {
     <div className="w-full max-w-md mx-auto space-y-4">
       {/* Add Link Button */}
       <div className="w-full flex justify-center md:justify-end">
-        <LinkHub userId={userId} items={items} />
+        <LinkHub userId={profileId} items={items} />
       </div>
 
       <DndContext

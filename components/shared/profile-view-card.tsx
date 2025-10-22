@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa6";
 // import { SiLeetcode, SiWakatime } from "react-icons/si";
 import ImageUploadForm from "./forms/image-upload-form";
-import { Link, User } from "@/lib/generated/prisma";
+import { Link, Profile, User } from "@/lib/generated/prisma";
 import AddSocialIcon from "./forms/add-social-icon";
 import { cn } from "@/lib/utils";
 import { RiTwitterXFill } from "react-icons/ri";
@@ -17,7 +17,7 @@ import ProfileForm from "./forms/profile-form";
 export default function ProfileViewCard({
   user,
 }: {
-  user: User & { links: Link[] };
+  user: Profile & {links : Link[]};
 }) {
   const icons = [
     {
@@ -64,7 +64,7 @@ export default function ProfileViewCard({
         // size="lg"
         className=" flex flex-row gap-1.5 max-w-md md:min-w-md"
       >
-        <ImageUploadForm user={user as User} />
+        <ImageUploadForm user={user as Profile }/>
         <div className="grid flex-1 text-left text-sm leading-tight">
          <ProfileForm userData={user} placeHolder="Test"/>
           <div className="flex flex-row gap-1.5 items-center">

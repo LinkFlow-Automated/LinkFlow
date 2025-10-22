@@ -89,7 +89,7 @@ export const rulesSchema = z.object({
 
 // Validation schema for GET request query parameters
 export const getLinkQuerySchema = z.object({
-  userId: z.string().optional(),
+  profileId: z.string().optional(),
   search: z.string().optional(),
   category: z.string().optional(),
   visibility: z.nativeEnum(Visibility).optional(),
@@ -100,14 +100,9 @@ export const getLinkQuerySchema = z.object({
 });
 
 export const metadataSchema = z.object({
-  provider: z.enum([
-    "spotify",
-    "youtube",
-    "instagram",
-    "soundcloud",
-    "gumroad",
-    "link",
-  ]).optional(),
+  provider: z
+    .enum(["spotify", "youtube", "instagram", "soundcloud", "gumroad", "link"])
+    .optional(),
   type: z.string().optional(), // e.g. "NEW_ALBUM", "NOW_PLAYING", "CHANNEL", "FEED", "PRODUCTS"
   id: z.string().optional(), // external ID (albumId, channelId, etc.)
   data: z.record(z.any()).optional(), // provider-specific payload
@@ -128,7 +123,7 @@ export const ThumbnailType = z.enum(["image", "icon"]);
 // Validation schema for POST request (creating links)
 export const createLinkSchema = z.object({
   id: z.string().optional(),
-  userId: z.string().min(1, "User ID is required"),
+  profileId: z.string().min(1, "User ID is required"),
   title: z.string().min(1, "Title is required").max(200, "Title too long"),
   description: z.string().max(500, "Description too long").nullable(),
   url: z.string().url("Invalid URL format"),
@@ -157,13 +152,13 @@ export const createLinkSchema = z.object({
 
 export const updateLinkSchema = z.object({
   id: z.string().min(1, "Id is required"),
-  userId: z.string().min(1, "User ID is required"),
+  profileId: z.string().min(1, "User ID is required"),
   title: z.string().min(1, "Title is required").max(200, "Title too long"),
   description: z.string().max(500, "Description too long").nullable(),
   url: z.string().url("Invalid URL format"),
   category: z.string().max(50, "Category too long").nullable(),
   type: ThumbnailType.nullable().default(null),
-  thumbnail:z.string().nullable().default(null),
+  thumbnail: z.string().nullable().default(null),
   order: z.number().int().min(0),
   clicks: z.number().int().min(0).default(0),
   featured: z.boolean().default(false),
