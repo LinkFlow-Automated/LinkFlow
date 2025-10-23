@@ -308,7 +308,7 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
         : 1;
 
     createLink({
-      userId: userId, // Use the passed userId or user?.id from auth
+      profileId: userId, // Use the passed userId or user?.id from auth
       title: `New Link`,
       description: null,
       url: "https://example.com",

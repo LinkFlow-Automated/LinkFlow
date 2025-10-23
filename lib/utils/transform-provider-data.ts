@@ -44,7 +44,7 @@ export const transformProviderData = ({
   switch (provider) {
     case "gumroad":
       return {
-        userId,
+        profileId: userId,
         title: data.name,
         description: data.description,
         url: data.short_url,
@@ -82,7 +82,7 @@ export const transformProviderData = ({
       };
     case "instagram":
       return {
-        userId,
+        profileId: userId,
         title: data.name,
         description: data.description,
         url: "",
@@ -114,7 +114,7 @@ export const transformProviderData = ({
       switch (type) {
         case "track":
           return {
-            userId,
+            profileId: userId,
             title: data.name,
             description: null,
             category: null,
@@ -152,7 +152,7 @@ export const transformProviderData = ({
           };
         case "album":
           return {
-            userId,
+            profileId: userId,
             title: data.name,
             url: data.uri,
             thumbnail: data.images[0].url,
@@ -193,7 +193,7 @@ export const transformProviderData = ({
       switch (type) {
         case "video":
           return {
-            userId,
+            profileId: userId,
             title: data.localizations?.[0]?.title ?? "",
             description: data.localizations?.[0]?.description ?? "",
             url: data.id,
@@ -225,7 +225,7 @@ export const transformProviderData = ({
           };
         case "playlist":
           return {
-            userId,
+            profileId: userId,
             title: data.snippet.channelTitle,
             description: data.snippet.description,
             autoSyncId: data.id,
@@ -255,7 +255,7 @@ export const transformProviderData = ({
           };
         case "channel":
           return {
-            userId,
+            profileId: userId,
             title: data.snippet.title,
             description: data.snippet.description,
             autoSyncId: data.id,

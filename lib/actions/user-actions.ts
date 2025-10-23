@@ -22,7 +22,7 @@ export const updateUserProfile = async (
   userId: string,
   data: { name?: string; image?: string; username?: string; bio?: string }
 ) => {
-  const user = await prisma.user.update({
+  const user = await prisma.profile.update({
     where: {
       id: userId,
     },
