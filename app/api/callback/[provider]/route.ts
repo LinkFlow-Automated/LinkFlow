@@ -59,5 +59,5 @@ export async function GET(req: NextRequest, context: RouteContext) {
     },
   });
 
-  return NextResponse.redirect(new URL("/app", req.url));
+  return NextResponse.redirect(new URL("/admin/aurora/breezies", req.url));
 }

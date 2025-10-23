@@ -38,8 +38,11 @@ export default async function page({
 
   return (
     <div className="w-full h-full py-4 flex flex-col gap-4 items-center">
-      <ProfileViewCard user={currentProfile as Profile & {links : Link[]}} />
-      <LinkManagement profileId={currentProfile.id as string} />
+      <ProfileViewCard user={currentProfile as Profile & { links: Link[] }} />
+      <LinkManagement
+        profileId={currentProfile.id as string}
+        userId={user?.id as string}
+      />
     </div>
   );
 }

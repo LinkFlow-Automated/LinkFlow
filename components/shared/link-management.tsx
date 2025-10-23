@@ -29,9 +29,13 @@ import LinkHub from "./link-hub";
 
 interface LinkManagementProps {
   profileId: string; // Pass userId as prop or get from auth context
+  userId: string;
 }
 
-export default function LinkManagement({ profileId }: LinkManagementProps) {
+export default function LinkManagement({
+  profileId,
+  userId,
+}: LinkManagementProps) {
   console.log(profileId);
   const { updateLink, links, isLoading } = useManageLink(profileId);
 
@@ -93,7 +97,7 @@ export default function LinkManagement({ profileId }: LinkManagementProps) {
     <div className="w-full max-w-md mx-auto space-y-4">
       {/* Add Link Button */}
       <div className="w-full flex justify-center md:justify-end">
-        <LinkHub userId={profileId} items={items} />
+        <LinkHub profileId={profileId} userId={userId} items={items} />
       </div>
 
       <DndContext

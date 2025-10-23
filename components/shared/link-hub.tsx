@@ -43,7 +43,10 @@ import { SiNotion, SiCalendly, SiFormspree } from "react-icons/si";
 import { useState } from "react";
 import { RiLightbulbFill } from "react-icons/ri";
 import { HiViewGridAdd } from "react-icons/hi";
-import { ConnectionDialog, platformConfigs } from "./provider-dashboard/provider-connect";
+import {
+  ConnectionDialog,
+  platformConfigs,
+} from "./provider-dashboard/provider-connect";
 import { toast } from "sonner";
 import { useManageLink } from "@/hooks/use-manage-link";
 import { Link } from "@/lib/generated/prisma";
@@ -51,6 +54,7 @@ import { SiGumroad } from "react-icons/si";
 import { useManageProvider } from "@/hooks/use-manage-provider";
 
 interface HubLinkProps {
+  profileId: string;
   userId: string;
   items: Link[];
 }
@@ -278,8 +282,8 @@ const platformData = {
   ],
 };
 
-export default function LinkHub({ userId, items }: HubLinkProps) {
-  const { createLink, isCreating, isLoading } = useManageLink(userId);
+export default function LinkHub({ profileId, userId, items }: HubLinkProps) {
+  const { createLink, isCreating, isLoading } = useManageLink(profileId);
   const { providers } = useManageProvider(userId);
   console.log(providers);
   const [open, setOpen] = useState(false);
@@ -308,7 +312,7 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
         : 1;
 
     createLink({
-      profileId: userId, // Use the passed userId or user?.id from auth
+      profileId, // Use the passed userId or user?.id from auth
       title: `New Link`,
       description: null,
       url: "https://example.com",
@@ -404,7 +408,7 @@ export default function LinkHub({ userId, items }: HubLinkProps) {
                         }
                         icon={platform.icon}
                         connectedProviders={providers}
-                        userId={userId}
+                        userId={profileId}
                       />
                     );
                   } else {
