@@ -117,6 +117,7 @@ async function createInstagramClient(accessToken: string) {
 export async function getInstagramData(
   accessToken: string,
   endpoint: string,
+  id?: string,
   params?: Record<string, any>
 ) {
   const client = await createInstagramClient(accessToken);
@@ -134,32 +135,32 @@ export async function getInstagramData(
 
 // Bonus: Common helper functions
 
-export async function getInstagramMedia(
-  accessToken: string,
-  limit: number = 25
-) {
-  return getInstagramData(accessToken, "/me/media", {
-    fields:
-      "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,username",
-    limit,
-  });
-}
+// export async function getInstagramMedia(
+//   accessToken: string,
+//   limit: number = 25
+// ) {
+//   return getInstagramData(accessToken, "/me/media", {
+//     fields:
+//       "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,username",
+//     limit,
+//   });
+// }
 
-export async function getInstagramMediaById(
-  accessToken: string,
-  mediaId: string
-) {
-  return getInstagramData(accessToken, `/${mediaId}`, {
-    fields:
-      "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count",
-  });
-}
+// export async function getInstagramMediaById(
+//   accessToken: string,
+//   mediaId: string
+// ) {
+//   return getInstagramData(accessToken, `/${mediaId}`, {
+//     fields:
+//       "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count",
+//   });
+// }
 
-export async function getInstagramInsights(
-  accessToken: string,
-  mediaId: string
-) {
-  return getInstagramData(accessToken, `/${mediaId}/insights`, {
-    metric: "engagement,impressions,reach,saved",
-  });
-}
+// export async function getInstagramInsights(
+//   accessToken: string,
+//   mediaId: string
+// ) {
+//   return getInstagramData(accessToken, `/${mediaId}/insights`, {
+//     metric: "engagement,impressions,reach,saved",
+//   });
+// }

@@ -28,6 +28,21 @@ const PROVIDER_ENV_MAPPING = {
     clientSecret: "INSTAGRAM_CLIENT_SECRET",
     redirectUri: "INSTAGRAM_REDIRECT_URI",
   },
+  twitter: {
+    clientId: "TWITTER_CLIENT_ID",
+    clientSecret: "TWITTER_CLIENT_SECRET",
+    redirectUri: "TWITTER_REDIRECT_URI",
+  },
+  twitch: {
+    clientId: "TWITCH_CLIENT_ID",
+    clientSecret: "TWITCH_CLIENT_SECRET",
+    redirectUri: "TWITCH_REDIRECT_URI",
+  },
+  tiktok: {
+    clientId: "TIKTOK_CLIENT_ID",
+    clientSecret: "TIKTOK_CLIENT_SECRET",
+    redirectUri: "TIKTOK_REDIRECT_URI",
+  },
 } as const;
 
 export async function getProviderCredentials(

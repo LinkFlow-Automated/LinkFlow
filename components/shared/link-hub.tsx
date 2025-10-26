@@ -154,7 +154,7 @@ const platformData = {
       icon: FaInstagram,
       color: "bg-gradient-to-r from-purple-500 to-pink-500",
       description: "Share your photos",
-      needsConnection: false,
+      needsConnection: true,
     },
     {
       name: "Twitter",
@@ -175,7 +175,7 @@ const platformData = {
       icon: FaTiktok,
       color: "bg-black",
       description: "Short form videos",
-      needsConnection: false,
+      needsConnection: true,
     },
     {
       name: "YouTube",

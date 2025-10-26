@@ -1,5 +1,4 @@
 "use server";
-
 import axios from "axios";
 import { getProviderCredentials } from "./credentials-server";
 
@@ -8,7 +7,12 @@ export async function getSpotifyAuthUrl(
   extraScopes: string[] = []
 ) {
   const { clientId, redirectUri } = await getProviderCredentials("spotify");
-  const defaultScopes = ["user-read-email", "user-read-private"];
+  const defaultScopes = [
+    "user-read-email",
+    "user-read-private",
+    "user-top-read", // Optional: for top artists/tracks
+    "user-read-recently-played", // Optional: for listening history
+  ];
   const scopes = [...defaultScopes, ...extraScopes].join(" ");
 
   const q = new URLSearchParams({
@@ -17,7 +21,9 @@ export async function getSpotifyAuthUrl(
     redirect_uri: redirectUri,
     scope: scopes,
     state,
+    show_dialog: "false", // Optional: set to "true" to force approval screen
   });
+
   return `https://accounts.spotify.com/authorize?${q.toString()}`;
 }
 
@@ -25,6 +31,7 @@ export async function exchangeSpotifyCode(code: string) {
   const { clientId, clientSecret, redirectUri } = await getProviderCredentials(
     "spotify"
   );
+
   const resp = await axios.post(
     "https://accounts.spotify.com/api/token",
     new URLSearchParams({
@@ -41,16 +48,19 @@ export async function exchangeSpotifyCode(code: string) {
       },
     }
   );
+
   return {
     accessToken: resp.data.access_token,
     refreshToken: resp.data.refresh_token,
     expiresIn: resp.data.expires_in,
     scope: resp.data.scope,
+    tokenType: resp.data.token_type, // Added for completeness
   };
 }
 
 export async function refreshSpotifyToken(refreshToken: string) {
   const { clientId, clientSecret } = await getProviderCredentials("spotify");
+
   const resp = await axios.post(
     "https://accounts.spotify.com/api/token",
     new URLSearchParams({
@@ -66,9 +76,12 @@ export async function refreshSpotifyToken(refreshToken: string) {
       },
     }
   );
+
   return {
     accessToken: resp.data.access_token,
+    refreshToken: resp.data.refresh_token, // Sometimes Spotify returns a new refresh token
     expiresIn: resp.data.expires_in,
+    scope: resp.data.scope, // Added
   };
 }
 
@@ -76,10 +89,15 @@ export async function getSpotifyUser(accessToken: string) {
   const resp = await axios.get("https://api.spotify.com/v1/me", {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
+
   return {
     id: resp.data.id,
     email: resp.data.email,
     displayName: resp.data.display_name,
+    country: resp.data.country, // Added
+    product: resp.data.product, // "free" or "premium"
+    images: resp.data.images, // Profile pictures
+    followers: resp.data.followers?.total, // Follower count
   };
 }
 
@@ -92,19 +110,22 @@ async function createSpotifyClient(accessToken: string) {
   });
 }
 
+// Improved: More flexible params handling
 export async function getSpotifyData(
   accessToken: string,
   endpoint: string,
-  id?: string
+  id?: string,
+  params?: Record<string, any> // Changed from just 'id'
 ) {
   const client = await createSpotifyClient(accessToken);
+
   try {
     const resp = await client.get(endpoint, {
-      params: id ? { id } : {},
+      params: params || {},
     });
     return resp.data;
   } catch (error) {
-    console.error(error);
+    console.error("Spotify API Error:", error);
     throw error;
   }
 }
