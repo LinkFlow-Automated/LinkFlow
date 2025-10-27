@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -19,13 +18,10 @@ interface SpotifyCardProps {
 
 export function ArtistInfoCard({
   className,
-  isExpanded = false,
   artistImage,
   artistName,
   onToggle,
 }: SpotifyCardProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-
   const { backgroundColor, textColor, imgRef } = useImageColor(artistImage);
 
   const animation = getCardAnimation("enter-in");
@@ -65,16 +61,9 @@ export function ArtistInfoCard({
           </div>
           <div className="flex flex-col justify-between p-2">
             <div className="flex flex-col justify-around">
-              {/* <Badge
-                variant="secondary"
-                className={cn(
-                  "bg-white/20 backdrop-blur-sm border-0 text-xs font-medium",
-                  textColor === "text-white" ? "text-white" : "text-gray-800"
-                )}
-              >
-                New Release
-              </Badge> */}
-              <span className="text-xs font-medium text-gray-400">PLATINUM</span>
+              <span className="text-xs font-medium text-gray-400">
+                PLATINUM
+              </span>
               <h3
                 className={cn(
                   "text-3xl font-semibold leading-tight drop-shadow-sm",

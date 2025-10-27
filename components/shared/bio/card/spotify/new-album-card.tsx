@@ -168,47 +168,28 @@ export function NewAlbumCard({
                     </span>
                     <div className="grid grid-cols-4 gap-2">
                       {[...Array(4)].map((_, idx) => (
-                        <Image
-                          key={idx}
-                          src="/test/aurora.jpg"
-                          alt="Track"
-                          width={80}
-                          height={80}
-                          className="rounded-md shadow-md"
-                        />
+                        <div key={idx}>
+                          <Image
+                            key={idx}
+                            src="/test/aurora.jpg"
+                            alt="Track"
+                            width={80}
+                            height={80}
+                            className="rounded-md shadow-md"
+                          />
+                          <span
+                            className={cn(
+                              "text-xs font-semibold self-start",
+                              textColor
+                            )}
+                          >
+                            Aurora
+                          </span>
+                        </div>
                       ))}
                     </div>
                   </CardFooter>
                 </motion.div>
-
-                {/* <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.6 }}
-                  className="mt-auto"
-                >
-                  <motion.button
-                    className="mt-auto bg-accent hover:bg-accent/90 text-accent-foreground w-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsPlaying(!isPlaying);
-                    }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <motion.div
-                      animate={{ rotate: isPlaying ? 360 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {isPlaying ? (
-                        <Pause className="w-4 h-4 mr-2" />
-                      ) : (
-                        <Play className="w-4 h-4 mr-2" />
-                      )}
-                    </motion.div>
-                    {isPlaying ? "Pause" : "Play"}
-                  </motion.button>
-                </motion.div> */}
               </motion.div>
             ) : (
               <motion.div
