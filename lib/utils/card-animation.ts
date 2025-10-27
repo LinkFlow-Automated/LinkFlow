@@ -1,4 +1,3 @@
-// utils/cardAnimations.ts
 import { Variants, TargetAndTransition } from "framer-motion";
 
 export type AnimationType =

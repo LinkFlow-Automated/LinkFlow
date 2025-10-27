@@ -1,4 +1,3 @@
-// utils/cardTheme.ts
 import { cn } from "@/lib/utils";
 import { CardTheme } from "@/types/theme";
 
@@ -42,9 +41,11 @@ export function getCardThemeStyles(theme?: CardTheme) {
     theme.borderStyle === "solid" ? "border border-white/10" : "border-0",
 
     // padding
-    theme.layout === "compact" ? paddingClasses.sm :
-    theme.layout === "minimal" ? paddingClasses.none :
-    paddingClasses.md
+    theme.layout === "compact"
+      ? paddingClasses.sm
+      : theme.layout === "minimal"
+      ? paddingClasses.none
+      : paddingClasses.md
   );
 
   const style: React.CSSProperties = {};
