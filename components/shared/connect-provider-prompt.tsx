@@ -1,9 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { getCardStyle } from "@/lib/utils";
-import { NewSongCard } from "./bio/card/spotify/new-song-card";
+// import NewSongCard from "./bio/card/spotify/new-song-card";
 import { IconType } from "react-icons/lib";
 import { DialogDescription, DialogTitle } from "../ui/dialog";
+import { NewSongCard } from "./bio/card/spotify/new-song-card";
 
 interface ProviderConnectContentProps {
   name: string;
@@ -58,7 +59,11 @@ export default function ConnectProviderPrompt({
               animate={{ opacity: 1 }}
               transition={{ delay: index * 0.1 }}
             >
-              <NewSongCard songName={card.title} artistImage="/test/3.png" />
+              <NewSongCard
+                songName={card.title}
+                artistName="Aurora"
+                artistImage="/test/3.png"
+              />
             </motion.div>
           ))}
         </motion.div>

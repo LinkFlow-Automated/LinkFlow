@@ -4,8 +4,6 @@ export type LayoutType =
   | "compact"
   | "detailed"
   | "minimal"
-  | "media"
-  | "statistic";
 
 export const getLayoutConfig = (
   layout: LayoutType = "compact"

@@ -10,7 +10,6 @@ import { NewAlbumCard } from "./bio/card/spotify/new-album-card";
 
 // Main Pixel Preview Component
 export const PixelPreview = () => {
-
   return (
     <div className="relative mx-auto w-full max-w-[380px] p-6 overflow-auto">
       {/* Main phone container with metallic border */}
@@ -55,14 +54,23 @@ export const PixelPreview = () => {
                 <HeroSection />
               </div>
               <div className="flex flex-col gap-2 px-4">
-                <ArtistInfoCard isExpanded artistImage="/test/aurora1.jpg" artistName="Aurora"/>
-                <LinkCard />
+                <ArtistInfoCard
+                  isExpanded
+                  artistImage="/test/aurora1.jpg"
+                  artistName="Aurora"
+                />
+                <LinkCard
+                  name="Portfolio"
+                  icon={<></>}
+                  href="XXXXXXXXXXXXXXXXXXXX"
+                />
                 <NewSongCard
                   songName="Counting Star"
                   artistImage="/test/2.png"
                   isNewRelease
+                  artistName="Aurora"
                 />
-                <NewAlbumCard artistImage="/test/3.png" isNewRelease isExpanded={true} />
+                <NewAlbumCard artistImage="/test/3.png" isNewRelease />
               </div>
             </div>
 
