@@ -51,7 +51,7 @@ export function NewSongCard({
     },
     minimal: {
       padding: "p-3",
-      imageSize: "h-16 w-16",
+      imageSize: "h-18 w-18",
       imageSizeNum: 64,
       titleSize: "text-base",
       subtitleSize: "text-sm",

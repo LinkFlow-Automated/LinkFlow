@@ -108,7 +108,7 @@ export function NewAlbumCard({
                     >
                       <h3
                         className={cn(
-                          "text-md font-semibold leading-tight drop-shadow-sm",
+                          "text-md font-semibold leading-tight drop-shadow-sm line-clamp-1",
                           textColor
                         )}
                       >
