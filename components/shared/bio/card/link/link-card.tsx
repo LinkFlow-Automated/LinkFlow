@@ -24,7 +24,8 @@ export default function LinkCard({
   category,
   bgColor = "bg-card",
 }: LinkCardProps) {
-  const layoutConfig = {
+
+    const layoutConfig = {
     compact: {
       padding: "p-2",
       iconSize: "size-6",
@@ -65,7 +66,7 @@ export default function LinkCard({
           <div className={`flex flex-row ${config.gap} items-center`}>
             <div className={config.iconSize}>{icon}</div>
             <div className="flex flex-col gap-0.5">
-              <span className={`leading-tight ${config.textSize} font-medium`}>
+              <span className={`leading-tight line-clamp-1 ${config.textSize} font-medium`}>
                 {name}
               </span>
               {config.showCategory && category && (
@@ -74,7 +75,7 @@ export default function LinkCard({
                 </span>
               )}
               {config.showDescription && description && (
-                <span className="text-sm text-muted-foreground mt-1">
+                <span className="text-sm text-muted-foreground line-clamp-1 mt-1">
                   {description}
                 </span>
               )}

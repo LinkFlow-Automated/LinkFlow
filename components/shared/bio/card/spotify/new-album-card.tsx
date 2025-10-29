@@ -1,7 +1,6 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <> */
 "use client";
 
-import { useState } from "react";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -11,12 +10,15 @@ import { FaSpotify } from "react-icons/fa6";
 import { getCardAnimation } from "@/lib/utils/card-animation";
 import { useImageColor } from "@/hooks/use-image-color";
 
+type Layout = "compact" | "minimal" | "detailed";
+
 interface SpotifyCardProps {
   className?: string;
   isExpanded?: boolean;
   artistImage: string;
   isNewRelease: boolean;
   onToggle?: () => void;
+  layout: Layout
 }
 
 export function NewAlbumCard({
@@ -25,8 +27,49 @@ export function NewAlbumCard({
   artistImage,
   isNewRelease,
   onToggle,
+  layout = "detailed"
 }: SpotifyCardProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
+
+   const layoutConfig = {
+    compact: {
+      padding: "p-2",
+      imageSize: "h-12 w-12",
+      imageSizeNum: 48,
+      titleSize: "text-sm",
+      subtitleSize: "text-xs",
+      iconSize: "size-5",
+      gap: "gap-2",
+      showBadge: false,
+      showDetails: false,
+    },
+    minimal: {
+      padding: "p-2",
+      imageSize: "h-18 w-18",
+      imageSizeNum: 64,
+      titleSize: "text-base",
+      subtitleSize: "text-sm",
+      iconSize: "size-6",
+      gap: "gap-3",
+      showBadge: true,
+      showDetails: false,
+    },
+    detailed: {
+      padding: "p-4",
+      imageSize: "h-20 w-20",
+      imageSizeNum: 80,
+      titleSize: "text-lg",
+      subtitleSize: "text-base",
+      iconSize: "size-8",
+      gap: "gap-4",
+      showBadge: true,
+      showDetails: true,
+    },
+  };
+
+
+
+ const config = layoutConfig[layout]
+
   const { backgroundColor, textColor, imgRef } = useImageColor(artistImage);
 
   const animation = getCardAnimation("pulse");
@@ -43,8 +86,9 @@ export function NewAlbumCard({
     >
       <Card
         className={cn(
-          "group cursor-pointer transition-all duration-300 hover:shadow-xl p-0 m-0 overflow-hidden",
+          `line-clamp-1 group cursor-pointer transition-all duration-300 hover:shadow-xl p-0 m-0 overflow-hidden`,
           "border-0 backdrop-blur-sm",
+          config.padding,
           className
         )}
         style={{
@@ -52,7 +96,7 @@ export function NewAlbumCard({
         }}
         onClick={onToggle}
       >
-        <div className="p-2 flex items-center gap-4 relative">
+        <div className={`p-2 flex items-center gap-4 relative ${config.gap}`}>
           <AnimatePresence mode="wait">
             {isExpanded ? (
               <motion.div
@@ -76,7 +120,7 @@ export function NewAlbumCard({
                       alt="Artist"
                       width={80}
                       height={80}
-                      className="w-full h-full object-cover rounded-2xl shadow-lg"
+                      className={`w-full h-full object-cover rounded-2xl shadow-lg ${config.imageSize}`}
                       crossOrigin="anonymous"
                     />
                   </div>
