@@ -17,7 +17,12 @@ import { useSession } from "@/lib/auth-client";
 import { HiTrendingUp } from "react-icons/hi";
 import { NavTools } from "./nav-tool";
 import { NavSecondary } from "./nav-secondary";
-import { AudioWaveform, Command, GalleryVerticalEnd, LucideIcon } from "lucide-react";
+import {
+  AudioWaveform,
+  Command,
+  GalleryVerticalEnd,
+  LucideIcon,
+} from "lucide-react";
 import { TeamSwitcher } from "./team-switcher";
 import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 import { GiScissors } from "react-icons/gi";
@@ -85,15 +90,15 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
  */
 const prefixUrlWithTenant = (url: string, slug?: string): string => {
   if (!slug) return url;
-  
+
   // Don't prefix external links or anchors
-  if (url.startsWith('http') || url.startsWith('#')) {
+  if (url.startsWith("http") || url.startsWith("#")) {
     return url;
   }
-  
+
   // Remove leading slash if present
-  const cleanUrl = url.startsWith('/') ? url.slice(1) : url;
-  
+  const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
+
   return `/${slug}/${cleanUrl}`;
 };
 
@@ -216,14 +221,15 @@ const convertTenantsToTeams = (tenants?: Profile[]): Team[] => {
     logo: GalleryVerticalEnd, // You can customize based on tenant type
     plan: tenant.isPrimary ? "Primary" : "Profile",
     slug: tenant.username,
+    image: tenant.image,
   }));
 };
 
-export function AppSidebar({ 
-  tenants, 
-  session, 
-  tenantSlug, 
-  ...props 
+export function AppSidebar({
+  tenants,
+  session,
+  tenantSlug,
+  ...props
 }: AppSidebarProps) {
   const sessionData = useSession();
 
@@ -258,9 +264,9 @@ export function AppSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <TeamSwitcher 
-          teams={sidebarData.teams} 
-          activeTenant={tenantSlug || ''}
+        <TeamSwitcher
+          teams={sidebarData.teams}
+          activeTenant={tenantSlug || ""}
         />
       </SidebarHeader>
       <SidebarContent>

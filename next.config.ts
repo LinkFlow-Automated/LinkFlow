@@ -25,14 +25,20 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        protocol:"https",
+        protocol: "https",
         hostname: "6ay8a7s9vf.ufs.sh",
         pathname: "/**",
-      },{
-        protocol:"https",
+      },
+      {
+        protocol: "https",
         hostname: "public-files.gumroad.com",
         pathname: "/**",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "jca7xz6ir5.ufs.sh",
+        pathname: "/**",
+      },
     ],
   },
   eslint: {

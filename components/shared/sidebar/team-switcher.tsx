@@ -17,12 +17,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 type Team = {
   name: string;
   logo: React.ElementType;
   plan: string;
   slug?: string;
+  image?: string;
 };
 
 type TeamSwitcherProps = {
@@ -82,7 +84,13 @@ export function TeamSwitcher({ activeTenant, teams }: TeamSwitcherProps) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <activeTeam.logo className="size-4" />
+                <Image
+                  alt="worskspace image"
+                  width={1000}
+                  height={1000}
+                  src={activeTeam.image as string}
+                  className="size-fit rounded-lg"
+                />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{activeTeam.name}</span>
@@ -107,7 +115,13 @@ export function TeamSwitcher({ activeTenant, teams }: TeamSwitcherProps) {
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-md border">
-                  <team.logo className="size-3.5 shrink-0" />
+                  <Image
+                    width={1000}
+                    height={1000}
+                    alt="workspace logo"
+                    src={team.image as string}
+                    className="size-fit shrink-0 rounded-sm"
+                  />
                 </div>
                 <div className="flex flex-1 items-center justify-between">
                   <span>{team.name}</span>
@@ -119,10 +133,7 @@ export function TeamSwitcher({ activeTenant, teams }: TeamSwitcherProps) {
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem 
-              className="gap-2 p-2"
-              onClick={handleAddProfile}
-            >
+            <DropdownMenuItem className="gap-2 p-2" onClick={handleAddProfile}>
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                 <Plus className="size-4" />
               </div>
