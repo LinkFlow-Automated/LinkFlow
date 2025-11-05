@@ -11,31 +11,27 @@ export default function NewPostCard({
 }: {
   user: {
     name: string;
-    email: string;
     avatar: string;
   },
   postUrl: string
 }) {
   return (
-    <Card className="m-0 p-0">
-      <CardHeader className="flex flex-row justify-between">
-        <div className="">
-          <Avatar className="h-8 w-8 rounded-lg grayscale">
+    <Card className="m-0 p-0 gap-0">
+      <CardHeader className="flex flex-row justify-between p-0 m-0 h-fit">
+        <div className="flex-row flex items-center p-2 gap-2">
+          <Avatar className="h-10 w-10 rounded-full grayscale">
             <AvatarImage src={user.avatar} alt={user.name} />
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-medium">{user.name}</span>
-            <span className="text-muted-foreground truncate text-xs">
-              {user.email}
-            </span>
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className=" h-full p-0 m-0">
         <Image src={postUrl} width={1000} height={1000} alt="photo of" className="object-cover w-full h-full" />
       </CardContent>
-      <CardFooter className="flex flex-row justify-between">
+      <CardFooter className="flex flex-row justify-between m-0 p-2">
         <div className="flex flex-row gap-2 w-fit max-w-fit">
           <HiHeart />
           <FiMessageCircle />

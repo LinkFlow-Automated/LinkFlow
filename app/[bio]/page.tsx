@@ -1,3 +1,5 @@
+import NewPostCard from "@/components/shared/bio/card/intagram/new-post";
+import ProfileInstaCard from "@/components/shared/bio/card/intagram/profile-card";
 import LinkCard from "@/components/shared/bio/card/link/link-card";
 import { ArtistInfoCard } from "@/components/shared/bio/card/spotify/artist-info-card";
 import { CurrentlyPlayingCard } from "@/components/shared/bio/card/spotify/currently-playing-card";
@@ -12,15 +14,18 @@ export default function page() {
         <HeroSection />
       </div>
       <div className="flex flex-col gap-2 px-4">
-        <ArtistInfoCard isExpanded artistImage="/test/aurora1.jpg" artistName="Aurora"/>
+        <ArtistInfoCard isExpanded artistImage="/test/aurora1.jpg" artistName="Aurora" />
         {/* <LinkCard /> */}
         <NewSongCard
           songName="The Seed"
+          artistName="Aurora"
           artistImage="/test/aurora.jpg"
           isNewRelease
         />
-        <NewAlbumCard artistImage="/test/heart.jpg" isNewRelease isExpanded={true} />
-        <CurrentlyPlayingCard artistImage="/test/aurora.jpg" isExpanded/>
+        <NewAlbumCard artistImage="/test/heart.jpg" artistName="Aurora" albumName="Aurora 123" trackCount={10} duration="100" />
+        <CurrentlyPlayingCard artistImage="/test/aurora.jpg" isExpanded />
+        <NewPostCard user={{ avatar: "/test/heart.jpg", name: "Aurora", }} postUrl="/test/heart.jpg" />
+        <ProfileInstaCard user={{ avatar: "/test/heart.jpg", name: "Aurora" }} />
       </div>
     </div>
   );
