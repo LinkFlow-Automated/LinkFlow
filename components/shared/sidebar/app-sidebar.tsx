@@ -97,9 +97,17 @@ const prefixUrlWithTenant = (url: string, slug?: string): string => {
   }
 
   // Remove leading slash if present
-  const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
+  let cleanUrl = url.startsWith("/") ? url.slice(1) : url;
 
-  return `/${slug}/${cleanUrl}`;
+  // Strip existing "admin/" or "admin" prefix to normalize
+  if (cleanUrl.startsWith("admin/")) {
+    cleanUrl = cleanUrl.slice("admin/".length);
+  } else if (cleanUrl === "admin") {
+    cleanUrl = "";
+  }
+
+  // Always build as /admin/{slug}/...
+  return cleanUrl ? `/admin/${slug}/${cleanUrl}` : `/admin/${slug}`;
 };
 
 /**
@@ -266,7 +274,7 @@ export function AppSidebar({
       <SidebarHeader>
         <TeamSwitcher
           teams={sidebarData.teams}
-          activeTenant={tenantSlug || ""}
+          activeTenant={activeTenant?.username || ""}
         />
       </SidebarHeader>
       <SidebarContent>
