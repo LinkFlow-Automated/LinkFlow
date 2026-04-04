@@ -6,7 +6,8 @@ RUN apk add --no-cache \
     curl \
     libc6-compat
 # Enable pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN npm install -g pnpm@latest
 
 # Dependencies stage
 FROM base AS deps
