@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, context: RouteContext) {
   let returnUrl = "/admin";
   if (state) {
     const storedState = req.cookies.get("oauth_state")?.value;
-    const parsed = parseOAuthState(state);
+    const parsed = await parseOAuthState(state);
 
     if (storedState && storedState !== parsed.csrfToken) {
       return NextResponse.json(

@@ -97,7 +97,7 @@ export function GeographicTargetingForm({
   link,
   isEditing = false,
 }: GeographicTargetingFormProps) {
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   const [open, setOpen] = useState(false);
   const initialData = link?.rules
     ? ((link.rules as any).geographicTargeting as GeoTargetingData)

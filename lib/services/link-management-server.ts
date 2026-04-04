@@ -24,7 +24,7 @@ export const getLinks = async ({
   limit?: number;
 }) => {
   const where: Prisma.LinkWhereInput = {
-    userId,
+    profileId: userId,
     isArchived: false,
     ...(category && { category }),
     ...(visibility && { visibility }),
@@ -69,7 +69,7 @@ export const getLinksAdvanced = async (filters: {
 }) => {
   return prisma.link.findMany({
     where: {
-      userId: filters.userId,
+      profileId: filters.userId,
       isArchived: false,
       ...(filters.search && {
         OR: [
@@ -121,7 +121,7 @@ export const createLink = async ({ data }: { data: CreateLinkInput }) => {
         visibility: data.visibility,
         isArchived: data.isArchived,
         platform: data.platform,
-        userId: data.userId,
+        profileId: data.profileId,
       },
     });
     return response;
@@ -156,7 +156,7 @@ export const updateLink = async (data: Link) => {
         visibility: data.visibility,
         isArchived: data.isArchived,
         platform: data.platform,
-        userId: data.userId,
+        profileId: data.profileId,
       },
     });
     return response;

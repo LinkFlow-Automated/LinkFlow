@@ -43,7 +43,7 @@ export default function AnimationSelector({
   onAnimationSelect,
   link,
 }: AnimationSelectorProps) {
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   const [open, setOpen] = useState(false);
   const [selectedAnimation, setSelectedAnimation] =
     useState<AnimationType>("none");
@@ -115,11 +115,10 @@ export default function AnimationSelector({
                       {animationOptions.map((option) => (
                         <Card
                           key={option.value}
-                          className={`cursor-pointer transition-all duration-200 hover:shadow-md p-0 ${
-                            selectedAnimation === option.value
+                          className={`cursor-pointer transition-all duration-200 hover:shadow-md p-0 ${selectedAnimation === option.value
                               ? "ring-2 ring-primary border-primary"
                               : "hover:border-primary/50"
-                          }`}
+                            }`}
                           onClick={() =>
                             handleAnimationSelect(option.value as AnimationType)
                           }

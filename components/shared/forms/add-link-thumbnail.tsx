@@ -43,7 +43,7 @@ const AddLinkThumbnailSchema = z.object({
 type AddLinkThumbnailProp = z.infer<typeof AddLinkThumbnailSchema>;
 
 export default function AddLinkThumbnail({ link }: { link: Link }) {
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   const [thumbnailType, setThumbnailType] = useState<"image" | "icon">("image");
   const [open, setOpen] = useState<boolean>(false);
 

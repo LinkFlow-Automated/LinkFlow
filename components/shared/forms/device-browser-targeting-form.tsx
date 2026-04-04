@@ -84,7 +84,7 @@ export function DeviceBrowserTargetingForm({
   link,
   isEditing = false,
 }: DeviceBrowserTargetingFormProps) {
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   const [open, setOpen] = useState(false);
 
   const initialData = link?.rules

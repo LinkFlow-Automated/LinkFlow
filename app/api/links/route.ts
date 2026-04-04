@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const links = await prisma.link.findMany({
-      where: { userId },
+      where: { profileId: userId },
       orderBy: { order: "asc" },
     });
 

@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ provide
     }
 
     const returnUrl = req.nextUrl.searchParams.get("returnUrl") || "/admin";
-    const state = generateOAuthState(returnUrl);
+    const state = await generateOAuthState(returnUrl);
     const authUrl = await provider.authUrl(state);
 
     const response = NextResponse.redirect(authUrl);

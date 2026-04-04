@@ -90,7 +90,7 @@ export function ClickLimitsSchedulingForm({
   link,
   isEditing = false,
 }: ClickLimitsSchedulingFormProps) {
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   const [open, setOpen] = useState(false);
 
   const initialData = link?.rules

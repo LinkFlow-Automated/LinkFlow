@@ -15,7 +15,7 @@ import { HiTrash } from "react-icons/hi2";
 import TooltipWrapper from "../tooltip-wrapper";
 
 export default function DeleteDlogButton({ link }: { link: Link }) {
-  const { deleteLink, isDeleting } = useManageLink(link.userId);
+  const { deleteLink, isDeleting } = useManageLink(link.profileId);
   return (
     <Dialog>
       <TooltipWrapper content="Delete Link">

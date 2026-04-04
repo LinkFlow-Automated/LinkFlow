@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import z from "zod";
 import PopoverWrapper from "../popover-wrapper";
-import { User } from "better-auth";
+// import { User } from "better-auth";
 import UploadFile from "../upload-file";
 import { Profile } from "@/lib/generated/prisma";
 
@@ -33,7 +33,7 @@ export default async function ImageUploadForm({ user }: { user: Profile }) {
         <DialogHeader>
           <DialogTitle>Upload Image</DialogTitle>
         </DialogHeader>
-        <PopoverWrapper title="Upload a photo or a gif"><UploadFile userId={user.id}/></PopoverWrapper>
+        <PopoverWrapper title="Upload a photo or a gif"><UploadFile userId={user.id} /></PopoverWrapper>
         <PopoverWrapper title="Upload a video">test</PopoverWrapper>
       </DialogContent>
     </Dialog>

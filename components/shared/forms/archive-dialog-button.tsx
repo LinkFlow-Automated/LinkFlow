@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useManageLink } from "@/hooks/use-manage-link";
 
 export default function ArchiveDialogButton({ link }: { link: Link }) {
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   return (
     <Dialog>
       {!link.isArchived ? (

@@ -65,7 +65,7 @@ interface ABTestingFormProps {
 export function ABTestingForm({ link, isEditing = false }: ABTestingFormProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   const [open, setOpen] = useState(false);
 
   const initialData = link?.rules

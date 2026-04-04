@@ -37,7 +37,7 @@ type LayoutFormData = z.infer<typeof layoutSchema>;
 // }
 
 export default function LayoutSelector({ link }: { link: Link }) {
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   const [selectedLayout, setSelectedLayout] = useState<LayoutType>(
     link.layout as LayoutType
   );
@@ -108,11 +108,10 @@ export default function LayoutSelector({ link }: { link: Link }) {
                         {layoutOptions.map((option) => (
                           <Card
                             key={option.value}
-                            className={`cursor-pointer transition-all duration-200 hover:shadow-md p-0 ${
-                              selectedLayout === option.value
+                            className={`cursor-pointer transition-all duration-200 hover:shadow-md p-0 ${selectedLayout === option.value
                                 ? "ring-2 ring-primary border-primary"
                                 : "hover:border-primary/50"
-                            }`}
+                              }`}
                             onClick={() =>
                               handleLayoutSelect(option.value as LayoutType)
                             }

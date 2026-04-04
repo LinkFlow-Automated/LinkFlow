@@ -177,6 +177,7 @@ export const updateLinkSchema = z.object({
   metadata: metadataSchema,
   rules: rulesSchema,
   createdAt: z.coerce.date().default(() => new Date()),
+  updatedAt: z.coerce.date().default(() => new Date()),
 });
 
 export type GetLinkQuery = z.infer<typeof getLinkQuerySchema>;

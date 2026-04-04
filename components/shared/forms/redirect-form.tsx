@@ -38,7 +38,7 @@ type redirectProp = z.infer<typeof redirectSchema>;
 export default function RedirectForm({ link }: { link: Link }) {
   const initialData = link.redirectTo;
   const [open, setOpen] = useState(false);
-  const { updateLink, isUpdating } = useManageLink(link.userId);
+  const { updateLink, isUpdating } = useManageLink(link.profileId);
   const form = useForm({
     resolver: zodResolver(redirectSchema),
     defaultValues: {
