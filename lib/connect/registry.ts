@@ -4,6 +4,7 @@ import { gumroadProvider } from "./gumroad-provider";
 import { youtubeProvider } from "./youtube-provider";
 import { instagramProvider } from "./instagram-provider";
 import { tiktokProvider } from "./tiktok-provider";
+import { twitchProvider } from "./twitch-provider";
 
 export const providers: Record<string, OAuthProvider> = {
   spotify: spotifyProvider,
@@ -11,4 +12,5 @@ export const providers: Record<string, OAuthProvider> = {
   youtube: youtubeProvider,
   instagram: instagramProvider,
   tiktok: tiktokProvider,
+  twitch: twitchProvider,
 };

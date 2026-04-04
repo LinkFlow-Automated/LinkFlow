@@ -1,5 +1,4 @@
 import { OAuthProvider } from "@/types/oauth";
-import { getUserData } from "../actions/user-actions";
 import {
   exchangeTiktokCode,
   getTiktokAuthUrl,
@@ -9,8 +8,8 @@ import {
 } from "./tiktok";
 
 export const tiktokProvider: OAuthProvider = {
-  name: "instagram",
-  defaultScopes: ["user-read-email", "user-read-private"],
+  name: "tiktok",
+  defaultScopes: ["user.info.basic", "video.list"],
   authUrl: getTiktokAuthUrl,
   exchangeCode: exchangeTiktokCode,
   refreshToken: refreshTiktokToken,

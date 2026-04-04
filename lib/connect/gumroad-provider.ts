@@ -5,7 +5,7 @@ import {
   refreshGumroadToken,
   getGumroadUser,
   getGumroadData,
-} from "./gumraod";
+} from "./gumroad";
 
 export const gumroadProvider: OAuthProvider = {
   name: "gumroad",

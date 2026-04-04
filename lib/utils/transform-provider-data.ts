@@ -10,27 +10,27 @@ import {
 type ProviderData =
   | { provider: "gumroad"; type: "product"; data: GumroadProduct }
   | {
-      provider: "instagram";
-      type: "feed";
-      data: { name: string; description: string; id: string };
-    }
+    provider: "instagram";
+    type: "feed";
+    data: { name: string; description: string; id: string };
+  }
   | { provider: "spotify"; type: "album"; data: SpotifyAlbum }
   | { provider: "spotify"; type: "track"; data: SpotifyTrack }
   | {
-      provider: "youtube";
-      type: "video";
-      data: YouTubeVideo;
-    }
+    provider: "youtube";
+    type: "video";
+    data: YouTubeVideo;
+  }
   | {
-      provider: "youtube";
-      type: "playlist";
-      data: YouTubePlaylistItem;
-    }
+    provider: "youtube";
+    type: "playlist";
+    data: YouTubePlaylistItem;
+  }
   | {
-      provider: "youtube";
-      type: "channel";
-      data: YouTubeChannel;
-    };
+    provider: "youtube";
+    type: "channel";
+    data: YouTubeChannel;
+  };
 
 export const transformProviderData = ({
   provider,

@@ -129,11 +129,11 @@ export async function getTiktokData(
 }
 
 // Get user's videos
-// export async function getTiktokVideos(
-//   accessToken: string,
-//   maxCount: number = 20
-// ) {
-//   return getTiktokData(accessToken, "/video/list/", {
-//     max_count: maxCount,
-//   });
-// }
+export async function getTiktokVideos(
+  accessToken: string,
+  maxCount: number = 20
+) {
+  return getTiktokData(accessToken, "/video/list/", undefined, {
+    max_count: maxCount,
+  });
+}

@@ -7,76 +7,80 @@ import { AiOutlineLike } from "react-icons/ai";
 import { CiPlay1 } from "react-icons/ci";
 import { TbEye } from "react-icons/tb";
 
-export default function NewVideoCard() {
+export default function NewVideoCard({
+  title,
+  description,
+  thumbnail,
+  url,
+  statistics,
+  duration
+}: {
+  title?: string;
+  description?: string;
+  thumbnail?: string;
+  url?: string;
+  statistics?: string | any;
+  duration?: number; // durationMs
+}) {
+  let statsObj: any = {};
+  if (typeof statistics === "string") {
+    try {
+      statsObj = JSON.parse(statistics);
+    } catch (e) { }
+  } else if (statistics) {
+    statsObj = statistics;
+  }
+
+  const formatCount = (count: string) => {
+    if (!count) return "0";
+    const num = parseInt(count, 10);
+    if (Number.isNaN(num)) return count;
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+    return num.toString();
+  };
+
+  const fmtDuration = (ms: number) => {
+    if (!ms) return "00:00";
+    const totalSeconds = Math.floor(ms / 1000);
+    const m = Math.floor(totalSeconds / 60);
+    const s = Math.floor(totalSeconds % 60);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
   const video = {
-    image: "/test/heart.jpg",
-    title: "Bubble sort for the noob",
-    views: "36k",
-    likes: "6k",
-    description: "The Check-Out Process: When the guest checks out, they see this complete list on your Booking Page. The Pay Final Bill button here will be your most complex payment screen, as it must handle a large bill being paid by multiple methods (e.t., part in USD cash, the rest on a credit card)."
+    image: thumbnail || "/test/heart.jpg",
+    title: title || "Bubble sort for the noob",
+    views: formatCount(statsObj.viewCount) || "36k",
+    likes: formatCount(statsObj.likeCount) || "6k",
+    description: description || "The Check-Out Process: When the guest checks out, they see this complete list on your Booking Page...",
+    url: url ? `https://youtube.com/watch?v=${url}` : "#",
+    formattedDuration: fmtDuration(duration || 0)
   }
 
   const { backgroundColor, textColor, imgRef } = useImageColor(video.image);
 
-  const layoutConfig = {
-    compact: {
-      padding: "p-2",
-      imageSize: "h-12 w-12",
-      imageSizeNum: 48,
-      titleSize: "text-sm",
-      subtitleSize: "text-xs",
-      iconSize: "size-5",
-      gap: "gap-2",
-      showBadge: false,
-      showDetails: false,
-    },
-    minimal: {
-      padding: "p-3",
-      imageSize: "h-18 w-18",
-      imageSizeNum: 64,
-      titleSize: "text-base",
-      subtitleSize: "text-sm",
-      iconSize: "size-6",
-      gap: "gap-3",
-      showBadge: true,
-      showDetails: false,
-    },
-    detailed: {
-      padding: "p-4",
-      imageSize: "h-20 w-20",
-      imageSizeNum: 80,
-      titleSize: "text-lg",
-      subtitleSize: "text-base",
-      iconSize: "size-8",
-      gap: "gap-4",
-      showBadge: true,
-      showDetails: true,
-    },
-  };
-
-  // const config = layoutConfig[layout];
-
   return (
-    <Card className="m-0 p-2 gap-4">
+    <Card className="m-0 p-2 gap-4 cursor-pointer hover:opacity-90 transition-opacity" onClick={() => window.open(video.url, '_blank')}>
       <CardContent className="m-0 p-0 relative">
-        <Image className="w-full h-full object-cover rounded-xl" src={video.image} width={1000} height={1000} alt={`image of ${video.title}`} />
+        <Image className="w-full h-full object-cover rounded-xl max-h-48" src={video.image} width={1000} height={1000} alt={`image of ${video.title}`} />
         <CiPlay1
-          className="absolute left-2 bottom-2 flex items-center justify-center text-white text-sm opacity-80 hover:opacity-100 cursor-pointer"
+          className="absolute left-2 bottom-2 flex items-center justify-center text-white text-3xl opacity-80"
         />
         <span
-          className="absolute right-2 bottom-2 flex items-center justify-center text-white text-sm opacity-80 hover:opacity-100 cursor-pointer"
-        >24:00</span>
+          className="absolute right-2 bottom-2 flex items-center justify-center text-white text-xs bg-black/60 px-1 py-0.5 rounded shadow-sm opacity-80"
+        >{video.formattedDuration}</span>
       </CardContent>
-      <CardFooter className="m-0 p-0 flex flex-col items-start gap-2">
-        <CardTitle>{video.title}</CardTitle>
-        <CardDescription className=" line-clamp-2">{video.description}</CardDescription>
-        <div className="flex flex-row gap-2">
+      <CardFooter className="m-0 p-0 pt-3 flex flex-col items-start gap-1">
+        <CardTitle className="text-base">{video.title}</CardTitle>
+        <CardDescription className="text-xs line-clamp-2">{video.description}</CardDescription>
+        <div className="flex flex-row gap-3 mt-1 text-muted-foreground">
           <div className="flex flex-row text-xs gap-1 items-center">
-            <TbEye />
+            <TbEye className="size-4" />
             <span>{video.views} views</span>
           </div>
           <div className="flex flex-row text-xs gap-1 items-center">
-            <AiOutlineLike />
+            <AiOutlineLike className="size-4" />
             <span>{video.likes} likes</span>
           </div>
         </div>
@@ -84,4 +88,3 @@ export default function NewVideoCard() {
     </Card>
   )
 }
-

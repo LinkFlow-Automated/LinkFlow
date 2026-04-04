@@ -9,7 +9,7 @@ import {
 
 export const instagramProvider: OAuthProvider = {
   name: "instagram",
-  defaultScopes: ["user-read-email", "user-read-private"],
+  defaultScopes: ["instagram_business_basic", "instagram_business_manage_messages"],
   authUrl: getInstagramAuthUrl,
   exchangeCode: exchangeInstagramCode,
   refreshToken: refreshInstagramToken,

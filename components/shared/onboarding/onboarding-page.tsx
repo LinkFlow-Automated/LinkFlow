@@ -20,8 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { User, Paintbrush, Link2, ArrowRight, ArrowLeft, Loader2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-// import { StepIndicator } from "./step-indicator";
 import { StepProfile } from "./step-profile";
 import { StepAppearance } from "./step-appearance";
 import { StepLinks } from "./step-links";

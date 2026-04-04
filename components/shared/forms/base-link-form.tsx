@@ -25,7 +25,7 @@ export default function BaseLinkForm({ link }: BaseLinkFormProps) {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [isEditingUrl, setIsEditingUrl] = useState(false);
 
-  const { updateLink } = useManageLink(link.userId);
+  const { updateLink } = useManageLink(link.id);
 
   const form = useForm<BaseLinkForm>({
     resolver: zodResolver(baseLinkFormSchema),

@@ -7,6 +7,15 @@ import {
   fetchLinks,
 } from "@/lib/services/link-management";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { usePreviewStore } from "@/stores/preview-store";
+
+/** Sync TanStack Query link cache to Zustand preview store */
+const syncLinksToPreview = (queryClient: ReturnType<typeof useQueryClient>, userId: string) => {
+  const cached = queryClient.getQueryData<Link[]>(["links", userId]) ?? [];
+  usePreviewStore.getState().setLinks(
+    cached.map((l) => ({ id: l.id, title: l.title, url: l.url, order: l.order ?? 0 }))
+  );
+};
 
 export const useManageLink = (userId: string) => {
   const queryClient = useQueryClient();
@@ -38,16 +47,19 @@ export const useManageLink = (userId: string) => {
         optimisticLink,
       ]);
 
+      syncLinksToPreview(queryClient, userId);
       return { prevLinks, tempId };
     },
     onSuccess: (data, variables, context) => {
       queryClient.setQueryData<Link[]>(["links", userId], (old = []) =>
         old.map((link) => (link.id === context?.tempId ? data : link))
       );
+      syncLinksToPreview(queryClient, userId);
     },
     onError: (err, newLink, context) => {
       console.log(err, newLink);
       queryClient.setQueryData(["links", userId], context?.prevLinks);
+      syncLinksToPreview(queryClient, userId);
     },
   });
 
@@ -65,6 +77,7 @@ export const useManageLink = (userId: string) => {
         )
       );
 
+      syncLinksToPreview(queryClient, userId);
       return { prevLinks };
     },
     onSuccess: (data) => {
@@ -73,10 +86,12 @@ export const useManageLink = (userId: string) => {
           old.map((link) => (link.id === data.id ? data : link))
         );
       }
+      syncLinksToPreview(queryClient, userId);
     },
     onError: (err, updatedLink, context) => {
       console.log(err, updatedLink);
       queryClient.setQueryData(["links", userId], context?.prevLinks);
+      syncLinksToPreview(queryClient, userId);
     },
   });
 
@@ -97,15 +112,18 @@ export const useManageLink = (userId: string) => {
         })
       );
 
+      syncLinksToPreview(queryClient, userId);
       return { prevLinks };
     },
     onSuccess: (data) => {
       // Optionally refetch or use returned data
       queryClient.invalidateQueries({ queryKey: ["links", userId] });
+      syncLinksToPreview(queryClient, userId);
     },
     onError: (err, updates, context) => {
       console.log(err, updates);
       queryClient.setQueryData(["links", userId], context?.prevLinks);
+      syncLinksToPreview(queryClient, userId);
     },
   });
 
@@ -121,6 +139,7 @@ export const useManageLink = (userId: string) => {
         old.filter((link) => link.id !== id)
       );
 
+      syncLinksToPreview(queryClient, userId);
       return { prevLinks };
     },
     onSuccess: (data, id) => {
@@ -128,10 +147,12 @@ export const useManageLink = (userId: string) => {
       queryClient.setQueryData<Link[]>(["links", userId], (old = []) =>
         old.filter((link) => link.id !== id)
       );
+      syncLinksToPreview(queryClient, userId);
     },
     onError: (err, id, context) => {
       console.log(err, id);
       queryClient.setQueryData(["links", userId], context?.prevLinks);
+      syncLinksToPreview(queryClient, userId);
     },
   });
 

@@ -7,7 +7,7 @@ import {
   refreshTwitchToken,
 } from "./twitch";
 
-export const tiktokProvider: OAuthProvider = {
+export const twitchProvider: OAuthProvider = {
   name: "twitch",
   defaultScopes: ["user:read:email", "channel:read:subscriptions"],
   authUrl: getTwitchAuthUrl,

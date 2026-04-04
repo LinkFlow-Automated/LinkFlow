@@ -22,7 +22,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { updateUserProfile } from "@/lib/actions/user-actions";
-import { Link, Profile, User } from "@/lib/generated/prisma";
+import { usePreviewStore } from "@/stores/preview-store";
+import { Link, Profile } from "@/lib/generated/prisma";
 // import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -65,6 +66,11 @@ export default function ProfileForm({
     try {
       console.log("Form submitted:", data);
       await updateUserProfile(userData.id, data);
+      // Sync to preview store for live update
+      usePreviewStore.getState().setProfile({
+        displayName: data.username,
+        bio: data.bio,
+      });
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -75,7 +81,7 @@ export default function ProfileForm({
   return (
     <Dialog>
       <DialogTrigger className="grid flex-1 text-left text-sm leading-tight">
-        <span className="truncate font-medium">{userData?.username }</span>
+        <span className="truncate font-medium">{userData?.username}</span>
         <span className="text-muted-foreground truncate text-md line-clamp-1">
           {userData?.bio}
         </span>

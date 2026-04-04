@@ -107,3 +107,53 @@ export async function getYoutubeUser(accessToken: string) {
     displayName: channel.snippet?.title ?? undefined,
   };
 }
+
+/**
+ * Generic YouTube data fetcher for the provider interface.
+ * @param accessToken - The user's active access token.
+ * @param endpoint - The type of data to fetch: "videos", "playlists", or "channels".
+ * @param id - Optional resource ID (unused for "mine" queries, kept for interface compat).
+ * @param params - Optional extra parameters forwarded to the API call.
+ * @returns The YouTube API response data.
+ */
+export async function getYoutubeData(
+  accessToken: string,
+  endpoint: string,
+  id?: string,
+  params?: Record<string, unknown>
+) {
+  oauth2Client.setCredentials({ access_token: accessToken });
+
+  const youtube = getYoutubeClient({ version: "v3", auth: oauth2Client });
+
+  switch (endpoint) {
+    case "videos": {
+      // Search for the user's own uploaded videos
+      const searchResp = await youtube.search.list({
+        part: ["snippet"],
+        forMine: true,
+        type: ["video"],
+        maxResults: 20,
+        order: "date",
+      });
+      return searchResp.data;
+    }
+    case "playlists": {
+      const resp = await youtube.playlists.list({
+        part: ["snippet"],
+        mine: true,
+        maxResults: 20,
+      });
+      return resp.data;
+    }
+    case "channels": {
+      const resp = await youtube.channels.list({
+        part: ["snippet", "statistics"],
+        mine: true,
+      });
+      return resp.data;
+    }
+    default:
+      throw new Error(`Unknown YouTube endpoint: ${endpoint}`);
+  }
+}

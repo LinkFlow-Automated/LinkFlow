@@ -36,13 +36,21 @@ export default function ProviderDashboard({
   } = useManageLink(userId);
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ["provider-dashboard", selectedCategory, userId],
+    queryKey: ["provider-dashboard", selectedCategory, userId, providerName],
     queryFn: async () => {
-      const provider = providers[providerName.toLocaleLowerCase()];
+      // 1. Get a fresh access token from the refresh endpoint
+      const tokenRes = await fetch(
+        `/api/provider/${providerName.toLowerCase()}/refresh`
+      );
+      if (!tokenRes.ok) throw new Error("Failed to get access token");
+      const { accessToken } = await tokenRes.json();
+
+      // 2. Fetch data from the provider using the fresh token
+      const provider = providers[providerName.toLowerCase()];
       if (!provider) throw new Error("Provider not found");
-      return await provider?.getData(
-        "LFxZHQKRZOsoJ1D9BtolENsrl38ocoSVRd9nTEZBRoA",
-        "products"
+      return await provider.getData(
+        accessToken,
+        selectedCategory.label.toLowerCase()
       );
     },
     enabled: !!selectedCategory && !!providerName,
@@ -50,18 +58,23 @@ export default function ProviderDashboard({
 
   const handleCreateLink = ({
     provider,
-    data
+    type,
+    data,
   }: {
-    provider: keyof typeof platformConfigs;
-    data?: any
+    provider: keyof typeof platformConfigs | string;
+    type: string;
+    data?: any;
   }) => {
-    const transformedData = transformProviderData({provider, type: "product", data})
+    const transformedData = transformProviderData({
+      provider: provider as any,
+      type: type as any,
+      data,
+      userId,
+    });
     createLink(transformedData);
-    // setOpen(false);
     toast.success("Link created");
   };
 
-  console.log(data, error);
   return (
     <>
       <DialogHeader>
