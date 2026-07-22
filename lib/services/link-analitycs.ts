@@ -12,21 +12,42 @@ import { LinkStats } from "@/types/links";
 import { geoSchema } from "../validations/link";
 import { geoReaderPromise } from "../georeader";
 
+type LinkScope = { userId: string } | { profileId: string };
+
+/** Analytics across every profile owned by a user. */
 export async function getLinkStats(
   userId: string,
+  linkId?: string,
+  dateRange?: { from: Date; to: Date }
+): Promise<LinkStats> {
+  return computeLinkStats({ userId }, linkId, dateRange);
+}
+
+/** Analytics scoped to a single profile (tenant). */
+export async function getProfileLinkStats(
+  profileId: string,
+  linkId?: string,
+  dateRange?: { from: Date; to: Date }
+): Promise<LinkStats> {
+  return computeLinkStats({ profileId }, linkId, dateRange);
+}
+
+async function computeLinkStats(
+  scope: LinkScope,
   linkId?: string,
   dateRange?: { from: Date; to: Date }
 ): Promise<LinkStats> {
   const fromDate = dateRange?.from || subMonths(new Date(), 1);
   const toDate = dateRange?.to || new Date();
 
+  const linkWhere =
+    "userId" in scope
+      ? { profile: { userId: scope.userId } }
+      : { profileId: scope.profileId };
+
   // Base where clause
   const baseWhere = {
-    link: {
-      profile: {
-        userId,
-      },
-    },
+    link: linkWhere,
     ...(linkId && { linkId }),
     timestamp: {
       gte: fromDate,
@@ -381,6 +402,17 @@ export const createClickEvents = async ({
       throw new Error("User agent is required");
     }
 
+    // Resolve the owning profile so we can denormalize it onto the click event.
+    // This both validates the link exists and lets analytics filter/index by
+    // profileId directly instead of joining through the link relation.
+    const link = await prisma.link.findUnique({
+      where: { id: linkId },
+      select: { profileId: true },
+    });
+    if (!link) {
+      throw new Error("Invalid link ID - link does not exist");
+    }
+
     let deviceInfo;
     try {
       deviceInfo = getDeviceInfo(userAgent);
@@ -432,6 +464,7 @@ export const createClickEvents = async ({
     const data = await prisma.clickEvent.create({
       data: {
         linkId,
+        profileId: link.profileId,
         userAgent,
         device: deviceInfo.device || "unknown",
         geo: validatedGeoData, // Don't stringify - Prisma handles Json type

@@ -113,7 +113,28 @@ export default function ProviderDashboard({
                   // biome-ignore lint/suspicious/noArrayIndexKey: <>
                   <SkeletonContent key={index} />
                 ))}
-              {!isLoading && data?.products?.length === 0 && (
+              {!isLoading && error && (
+                <div className="col-span-4 text-center text-muted-foreground h-full flex justify-center items-center flex-col gap-3 p-4">
+                  <IconT className="size-10 opacity-60" />
+                  <div>
+                    <h1 className="text-xl font-bold text-foreground">
+                      Couldn&apos;t load your {providerName} content
+                    </h1>
+                    <p className="text-sm">
+                      Your connection may have expired. Reconnect {providerName}{" "}
+                      to continue.
+                    </p>
+                  </div>
+                  <Button asChild className="cursor-pointer">
+                    <a
+                      href={`/api/provider/${providerName.toLowerCase()}/connect`}
+                    >
+                      Reconnect {providerName}
+                    </a>
+                  </Button>
+                </div>
+              )}
+              {!isLoading && !error && !(data?.products?.length > 0) && (
                 <div className="col-span-4 text-center text-muted-foreground h-full flex justify-center items-center flex-col p-2">
                   <h1 className="text-2xl font-bold">
                     No{" "}
@@ -131,7 +152,7 @@ export default function ProviderDashboard({
                   </p>
                 </div>
               )}
-              {!isLoading && data?.products?.length > 0 && (
+              {!isLoading && !error && data?.products?.length > 0 && (
                 <div className="col-span-4 text-center text-muted-foreground h-full flex justify-between items-start flex-col p-2">
                   {data.products.map((product: any) => (
                     <div

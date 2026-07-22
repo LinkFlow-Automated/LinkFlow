@@ -9,7 +9,11 @@ interface HeroSectionProps {
   bio?: string;
   avatar?: string | null;
   coverImage?: string;
-  socialIcons?: { label: string; icon: React.ComponentType<{ className?: string }> }[];
+  socialIcons?: {
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    href?: string;
+  }[];
 }
 
 const defaultIcons = [
@@ -63,15 +67,31 @@ export default function HeroSection({
             )}
           </div>
           <div className="flex flex-row gap-2 items-center">
-            {socialIcons.map((icon) => (
-              <div key={icon.label}>
-                <icon.icon
-                  className={cn(
-                    "size-5 text-muted-foreground hover:text-primary cursor-pointer"
-                  )}
-                />
-              </div>
-            ))}
+            {socialIcons.map((icon) =>
+              icon.href ? (
+                <a
+                  key={icon.label}
+                  href={icon.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={icon.label}
+                >
+                  <icon.icon
+                    className={cn(
+                      "size-5 text-muted-foreground hover:text-primary cursor-pointer"
+                    )}
+                  />
+                </a>
+              ) : (
+                <div key={icon.label}>
+                  <icon.icon
+                    className={cn(
+                      "size-5 text-muted-foreground hover:text-primary cursor-pointer"
+                    )}
+                  />
+                </div>
+              )
+            )}
           </div>
         </div>
       </div>

@@ -207,8 +207,10 @@ model ClickEvent {
   link    Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
   profile Profile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
 
-  @@index([linkId])
-  @@index([profileId])
+  // Composite indexes cover the analytics access pattern (scope + time range,
+  // ordered by timestamp) and also serve the leading-column-only lookups.
+  @@index([linkId, timestamp])
+  @@index([profileId, timestamp])
   @@map("click_event")
 }
 

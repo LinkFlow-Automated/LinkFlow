@@ -1,19 +1,35 @@
-import {
-  deleteLink,
-  getLinkById,
-  updateLink,
-} from "@/lib/services/link-management-server";
+import { deleteLink, updateLink } from "@/lib/services/link-management-server";
 import { updateLinkSchema } from "@/lib/validations/link";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
+import {
+  getOwnedLink,
+  getPrincipal,
+  forbidden,
+  unauthorized,
+  userOwnsProfile,
+} from "@/lib/api/guard";
+import { enforceRateLimit } from "@/lib/api/rate-limit";
+
+const API_RATE_LIMIT = { limit: 120, windowSec: 60 };
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const principal = await getPrincipal(request);
+    if (!principal) return unauthorized();
+
+    const limited = await enforceRateLimit(
+      `v1:links:${principal.userId}`,
+      API_RATE_LIMIT
+    );
+    if (limited) return limited;
+
     const { id } = await params;
-    const link = await getLinkById(id);
+    // Ownership check doubles as existence check; 404 avoids leaking IDs.
+    const link = await getOwnedLink(principal.userId, id);
     if (!link) {
       return NextResponse.json({ error: "Link not found" }, { status: 404 });
     }
@@ -32,13 +48,34 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const principal = await getPrincipal(req);
+    if (!principal) return unauthorized();
+
+    const limited = await enforceRateLimit(
+      `v1:links:${principal.userId}`,
+      API_RATE_LIMIT
+    );
+    if (limited) return limited;
+
     const { id } = await params;
+
+    if (!(await getOwnedLink(principal.userId, id))) {
+      return forbidden();
+    }
 
     const body = await req.json();
 
     // omit id from validatedData
     const validatedData = updateLinkSchema.parse(body);
     const { id: _, ...rest } = validatedData;
+
+    // Never allow reassigning the link to a profile the caller doesn't own.
+    if (
+      rest.profileId &&
+      !(await userOwnsProfile(principal.userId, rest.profileId))
+    ) {
+      return forbidden();
+    }
 
     // Update the link
     const updatedLink = await updateLink({ id, ...rest });
@@ -64,12 +101,25 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-
   try {
+    const principal = await getPrincipal(request);
+    if (!principal) return unauthorized();
+
+    const limited = await enforceRateLimit(
+      `v1:links:${principal.userId}`,
+      API_RATE_LIMIT
+    );
+    if (limited) return limited;
+
+    const { id } = await params;
+
+    if (!(await getOwnedLink(principal.userId, id))) {
+      return forbidden();
+    }
+
     const deletedLink = await deleteLink(id);
     return NextResponse.json(deletedLink, { status: 200 });
   } catch (error) {

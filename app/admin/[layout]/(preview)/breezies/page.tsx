@@ -4,7 +4,9 @@ import { PreviewHydrator } from "@/components/shared/preview-hydrator";
 import { auth } from "@/lib/auth";
 import { Link, Profile } from "@/lib/generated/prisma";
 import { getUserData } from "@/lib/actions/user-actions";
+import { parseSocialLinks } from "@/lib/social-platforms";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function page({
   params,
@@ -13,11 +15,14 @@ export default async function page({
 }) {
   const session = await auth.api.getSession({ headers: await headers() });
   const user = session?.user;
+  if (!user) {
+    redirect("/login");
+  }
   const paramsName = await params;
   const tenantName = paramsName.layout;
 
   // Get user data with profiles
-  const userData = await getUserData(user?.id as string);
+  const userData = await getUserData(user.id);
 
   // Find the current profile/tenant
   const currentProfile = userData?.profiles.find(
@@ -61,6 +66,7 @@ export default async function page({
             }
          };
       }),
+    socials: parseSocialLinks(currentProfile.socialLinks),
   };
 
   return (

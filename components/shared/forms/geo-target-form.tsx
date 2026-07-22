@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import { useManageLink } from "@/hooks/use-manage-link";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { withGeoRules } from "@/lib/utils/rules-normalizer";
 
 const COUNTRIES = [
   { label: "United States", value: "US" },
@@ -49,17 +50,19 @@ const COUNTRIES = [
   { label: "Netherlands", value: "NL" },
 ];
 
+// ISO 3166-2 subdivision codes — must match the `country-subdivision` region
+// value the bio page derives from MaxMind (see app/[bio]/page.tsx).
 const REGIONS = [
-  { label: "California", value: "california" },
-  { label: "New York", value: "new-york" },
-  { label: "Texas", value: "texas" },
-  { label: "Florida", value: "florida" },
-  { label: "Ontario", value: "ontario" },
-  { label: "Quebec", value: "quebec" },
-  { label: "England", value: "england" },
-  { label: "Scotland", value: "scotland" },
-  { label: "Bavaria", value: "bavaria" },
-  { label: "Île-de-France", value: "ile-de-france" },
+  { label: "California", value: "US-CA" },
+  { label: "New York", value: "US-NY" },
+  { label: "Texas", value: "US-TX" },
+  { label: "Florida", value: "US-FL" },
+  { label: "Ontario", value: "CA-ON" },
+  { label: "Quebec", value: "CA-QC" },
+  { label: "England", value: "GB-ENG" },
+  { label: "Scotland", value: "GB-SCT" },
+  { label: "Bavaria", value: "DE-BY" },
+  { label: "Île-de-France", value: "FR-IDF" },
 ];
 
 const CITIES = [
@@ -118,10 +121,7 @@ export function GeographicTargetingForm({
     try {
       await updateLink({
         id: link.id,
-        rules: {
-          ...((link.rules as object) || {}),
-          geographicTargeting: data,
-        },
+        rules: withGeoRules(link.rules as Record<string, unknown>, data),
       });
       toast.success("Geographic Targeting has been updated");
       setOpen(false);

@@ -16,6 +16,7 @@ import LayoutSelector from "./forms/layout-selector";
 import AnimationSelector from "./forms/animation-selector";
 import RedirectForm from "./forms/redirect-form";
 import AddLinkThumbnail from "./forms/add-link-thumbnail";
+import LinkRulesSummary from "./forms/link-rules-summary";
 
 export default function SortableItems({
   id,
@@ -56,6 +57,7 @@ export default function SortableItems({
         <div className="flex-1">
           <BaseLinkForm link={link} />
         </div>
+        <LinkRulesSummary rules={link.rules} />
         <div className="flex items-center gap-1.5 md:gap-4">
           <LayoutSelector link={link} />
           <RedirectForm link={link} />

@@ -1,86 +1,92 @@
-import { auth } from "@/lib/auth";
-import { getLinkStats } from "@/lib/services/link-analitycs";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { getProfileLinkStats } from "@/lib/services/link-analitycs";
+import {
+  getActiveProfile,
+  weekOverWeekChange,
+  formatCompact,
+} from "@/lib/analytics/dashboard";
 import CardStats from "./_components/card-stats";
-import CardProduct from "./_components/top-card-product";
+import TopLinksCard from "@/components/shared/analytics/top-links-card";
+import BreakdownCard from "@/components/shared/analytics/breakdown-card";
+import NoData from "@/components/shared/analytics/no-data";
 
-export default async function page() {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) {
+export default async function InsightPage({
+  params,
+}: {
+  params: Promise<{ layout: string }>;
+}) {
+  const { layout } = await params;
+  const profile = await getActiveProfile(layout);
+  if (!profile) {
     redirect("/login");
   }
-  // const linkStat = await getLinkStats(session.user.id);
+
+  const stats = await getProfileLinkStats(profile.id);
+  const spark = stats.dailyStats.map((d) => ({
+    label: d.date,
+    value: d.clicks,
+  }));
+  const clicksChange = weekOverWeekChange(stats.dailyStats);
+
+  const cards = [
+    {
+      title: "Total Clicks",
+      value: formatCompact(stats.totalClicks),
+      change: clicksChange,
+    },
+    {
+      title: "Unique Clicks",
+      value: formatCompact(stats.uniqueClicks),
+    },
+    {
+      title: "Clicks Today",
+      value: formatCompact(stats.clicksToday),
+    },
+    {
+      title: "This Week",
+      value: formatCompact(stats.clicksThisWeek),
+      change: clicksChange,
+    },
+    {
+      title: "This Month",
+      value: formatCompact(stats.clicksThisMonth),
+    },
+  ];
+
   return (
     <div className="pt-8 flex flex-col gap-8 md:px-4 h-full">
-      {/* Stat card */}
-      <div className=" grid grid-cols-1 md:grid-cols-5 gap-4">
-        {Array.from({ length: 5 }).map((_, index) => (
+      {/* Stat cards */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {cards.map((card) => (
           <CardStats
-            key={index}
-            title={
-              [
-                "Total Click",
-                "Total Visit",
-                "Total Conversion",
-                "Total Revenue",
-                "Conversion Rate",
-              ][index]
-            }
-            //dummy data
-            totalSales={1000}
-            chartData={[
-              { month: "Jan", desktop: 10 },
-              { month: "Feb", desktop: 200 },
-              { month: "Mar", desktop: 100 },
-              { month: "Apr", desktop: 400 },
-              { month: "May", desktop: 350 },
-              { month: "Jun", desktop: 600 },
-            ]}
-            chartConfig={{
-              desktop: {
-                label: [
-                  "Total Click",
-                  "Total Visit",
-                  "Total Conversion",
-                  "Total Revenue",
-                ][index],
-                color: "var(--chart-1)",
-              },
-            }}
-            pourcentageChange={12.5}
+            key={card.title}
+            title={card.title}
+            value={card.value}
+            change={card.change}
+            data={spark}
           />
         ))}
       </div>
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="p-4 bg-secondary/90 rounded-2xl w-full md:w-1/2 flex flex-col gap-6">
-          <h2 className="text-2xl font-bold text-foreground">Most clicked</h2>
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-            <CardProduct
-              productName="Product 1"
-              postedAt="2023-01-01"
-              commissions={100}
-              sold={100}
-              totalClicks={1000}
-            />
-          </div>
+
+      {stats.totalClicks === 0 ? (
+        <NoData
+          ctaLabel="View your public page"
+          ctaHref={`/${profile.username}`}
+        />
+      ) : (
+        <div className="flex flex-col md:flex-row gap-4">
+          <TopLinksCard className="w-full md:w-1/2" links={stats.topLinks} />
+          <BreakdownCard
+            className="w-full md:w-1/2"
+            title="Top referrers"
+            rows={stats.referrerStats.map((r) => ({
+              label: r.referrer,
+              count: r.count,
+              percentage: r.percentage,
+            }))}
+          />
         </div>
-        {/* utm referrer stats */}
-        <div className="p-4 bg-secondary/90 rounded-2xl w-full md:w-1/2 flex flex-col gap-6">
-          <h2 className="text-2xl font-bold text-foreground">
-            UTM Referrer
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-            <CardProduct
-              productName="Product 1"
-              postedAt="2023-01-01"
-              commissions={100}
-              sold={100}
-              totalClicks={1000}
-            />
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

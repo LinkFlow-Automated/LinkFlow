@@ -285,7 +285,6 @@ const platformData = {
 export default function LinkHub({ profileId, userId, items }: HubLinkProps) {
   const { createLink, isCreating, isLoading } = useManageLink(profileId);
   const { providers } = useManageProvider(userId);
-  console.log(providers);
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("suggested");
 

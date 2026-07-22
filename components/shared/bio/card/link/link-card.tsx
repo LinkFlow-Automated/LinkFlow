@@ -13,6 +13,7 @@ interface LinkCardProps {
   description?: string;
   category?: string;
   bgColor?: string;
+  onClick?: () => void;
 }
 
 export default function LinkCard({
@@ -23,6 +24,7 @@ export default function LinkCard({
   description,
   category,
   bgColor = "bg-card",
+  onClick,
 }: LinkCardProps) {
 
     const layoutConfig = {
@@ -58,7 +60,7 @@ export default function LinkCard({
   const config = layoutConfig[layout];
 
   return (
-    <Link href={href} target="_blank" rel="noopener noreferrer">
+    <Link href={href} target="_blank" rel="noopener noreferrer" onClick={onClick}>
       <Card
         className={`${config.padding} ${bgColor} hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer border-border/50`}
       >

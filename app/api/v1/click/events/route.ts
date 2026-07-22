@@ -1,25 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClickEvents } from "@/lib/services/link-analitycs";
+import { enforceRateLimit, getClientIp } from "@/lib/api/rate-limit";
 
 const bodySchema = z.object({
   linkId: z.string().min(1),
-  utmSource: z.string().optional(),
-  utmMedium: z.string().optional(),
-  utmCampaign: z.string().optional(),
+  utmSource: z.string().max(200).optional(),
+  utmMedium: z.string().max(200).optional(),
+  utmCampaign: z.string().max(200).optional(),
 });
 
+// Public endpoint (called from bio pages by visitors). No auth, but IP + link
+// rate limited to curb click-spam / inflation.
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+
     const json = await req.json();
     const { linkId, utmCampaign, utmMedium, utmSource } = bodySchema.parse(json);
 
+    const limited = await enforceRateLimit(`v1:click:${ip}:${linkId}`, {
+      limit: 30,
+      windowSec: 60,
+    });
+    if (limited) return limited;
+
     const headers = req.headers;
     const userAgent = headers.get("user-agent") || "";
-    // Trust proxy header first, fallback to remote address if available
-    const forwardedFor = headers.get("x-forwarded-for");
-    const ip = (forwardedFor ? forwardedFor.split(",")[0]?.trim() : undefined) ||
-      (headers.get("x-real-ip") || "0.0.0.0");
     const referrer = headers.get("referer") || "";
 
     const created = await createClickEvents({

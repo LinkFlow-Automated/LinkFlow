@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import type { SocialLink } from "@/lib/social-platforms";
 
 // ---- Types ----
 
@@ -43,6 +44,7 @@ export interface ServerProfileData {
     fontFamily?: string | null;
     links?: PreviewLink[];
     widgets?: PreviewWidget[];
+    socials?: SocialLink[];
 }
 
 interface PreviewState {
@@ -64,6 +66,9 @@ interface PreviewState {
     // Widgets
     widgets: PreviewWidget[];
 
+    // Socials
+    socials: SocialLink[];
+
     // Actions — Profile
     setProfile: (data: Partial<PreviewProfileData>) => void;
 
@@ -81,6 +86,9 @@ interface PreviewState {
     addWidget: (widget: PreviewWidget) => void;
     updateWidget: (id: string, data: Partial<PreviewWidget>) => void;
     removeWidget: (id: string) => void;
+
+    // Actions — Socials
+    setSocials: (socials: SocialLink[]) => void;
 
     // Hydration
     hydrateFromServer: (data: ServerProfileData) => void;
@@ -106,6 +114,9 @@ export const usePreviewStore = create<PreviewState>((set) => ({
 
     // Widgets
     widgets: [],
+
+    // Socials
+    socials: [],
 
     // ---- Actions ----
 
@@ -155,6 +166,8 @@ export const usePreviewStore = create<PreviewState>((set) => ({
             widgets: state.widgets.filter((w) => w.id !== id),
         })),
 
+    setSocials: (socials) => set({ socials }),
+
     hydrateFromServer: (data) =>
         set({
             displayName: data.displayName ?? "",
@@ -167,5 +180,6 @@ export const usePreviewStore = create<PreviewState>((set) => ({
             fontFamily: data.fontFamily ?? "inter",
             links: data.links ?? [],
             widgets: data.widgets ?? [],
+            socials: data.socials ?? [],
         }),
 }));

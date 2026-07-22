@@ -30,6 +30,7 @@ import { useManageLink } from "@/hooks/use-manage-link";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { withDeviceRules } from "@/lib/utils/rules-normalizer";
 
 const deviceBrowserTargetingSchema = z.object({
   allowedDevices: z.array(z.enum(["mobile", "desktop", "tablet"])).optional(),
@@ -111,10 +112,7 @@ export function DeviceBrowserTargetingForm({
     try {
       await updateLink({
         id: link.id,
-        rules: {
-          ...((link.rules as object) || {}),
-          deviceBrowserTargeting: data,
-        },
+        rules: withDeviceRules(link.rules as Record<string, unknown>, data),
       });
       toast.success("Device & Browser Targeting has been updated");
       setOpen(false);

@@ -36,7 +36,6 @@ export default function LinkManagement({
   profileId,
   userId,
 }: LinkManagementProps) {
-  console.log(profileId);
   const { updateLink, links, isLoading } = useManageLink(profileId);
 
   const items = links || [];
@@ -111,7 +110,7 @@ export default function LinkManagement({
           strategy={verticalListSortingStrategy}
         >
           <div className="space-y-2">
-            {items
+            {[...items]
               .sort((a, b) => (a.order || 0) - (b.order || 0))
               .map((item) => (
                 <SortableItems
