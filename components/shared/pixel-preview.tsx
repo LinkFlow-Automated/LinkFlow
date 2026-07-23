@@ -3,7 +3,7 @@
 "use client";
 
 import HeroSection from "./bio/hero/hero-section";
-import LinkCard from "./bio/card/link/link-card";
+import BioLinkItem from "./bio/bio-link-item";
 // import BioFooter from "./bio/footer/footer";
 import { Iphone } from "@/components/ui/iphone";
 import { usePreviewStore } from "@/stores/preview-store";
@@ -62,11 +62,15 @@ export const PixelPreview = () => {
                 [...links]
                   .sort((a, b) => a.order - b.order)
                   .map((link) => (
-                    <LinkCard
+                    <BioLinkItem
                       key={link.id}
-                      name={link.title || "Untitled"}
-                      icon={<Link2 className="size-4" />}
-                      href={link.url || "#"}
+                      data={{
+                        title: link.title || "Untitled",
+                        url: link.url || "#",
+                        animation: link.animation,
+                        thumbnail: link.thumbnail,
+                        thumbnailType: link.thumbnailType,
+                      }}
                     />
                   ))
               ) : (

@@ -13,7 +13,15 @@ import { usePreviewStore } from "@/stores/preview-store";
 const syncLinksToPreview = (queryClient: ReturnType<typeof useQueryClient>, userId: string) => {
   const cached = queryClient.getQueryData<Link[]>(["links", userId]) ?? [];
   usePreviewStore.getState().setLinks(
-    cached.map((l) => ({ id: l.id, title: l.title, url: l.url, order: l.order ?? 0 }))
+    cached.map((l) => ({
+      id: l.id,
+      title: l.title,
+      url: l.url,
+      order: l.order ?? 0,
+      animation: l.animation,
+      thumbnail: l.thumbnail,
+      thumbnailType: l.type,
+    }))
   );
 };
 

@@ -1,8 +1,7 @@
 "use client";
 
-import LinkCard from "./card/link/link-card";
+import BioLinkItem from "./bio-link-item";
 import { trackClick } from "@/lib/utils/track-click";
-import { FiLink } from "react-icons/fi";
 
 export type BioLink = {
   id: string;
@@ -11,6 +10,9 @@ export type BioLink = {
   description?: string | null;
   category?: string | null;
   layout?: "compact" | "minimal" | "detailed";
+  animation?: string | null;
+  thumbnail?: string | null;
+  thumbnailType?: string | null;
 };
 
 export default function BioLinks({ links }: { links: BioLink[] }) {
@@ -25,14 +27,9 @@ export default function BioLinks({ links }: { links: BioLink[] }) {
   return (
     <div className="flex flex-col gap-2">
       {links.map((link) => (
-        <LinkCard
+        <BioLinkItem
           key={link.id}
-          name={link.title}
-          href={link.url}
-          description={link.description ?? undefined}
-          category={link.category ?? undefined}
-          layout={link.layout ?? "minimal"}
-          icon={<FiLink className="size-full" />}
+          data={link}
           // Fire-and-forget click tracking before the anchor navigates.
           onClick={() => trackClick({ linkId: link.id })}
         />

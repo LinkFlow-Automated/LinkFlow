@@ -49,6 +49,9 @@ export default async function page({
       title: link.title,
       url: link.url,
       order: link.order ?? 0,
+      animation: link.animation,
+      thumbnail: link.thumbnail,
+      thumbnailType: link.type,
     })),
     widgets: (currentProfile.links || [])
       .filter((l: Link) => !!l.platform) // integrations

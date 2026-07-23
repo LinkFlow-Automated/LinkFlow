@@ -10,6 +10,9 @@ export interface PreviewLink {
     title: string;
     url: string;
     order: number;
+    animation?: string | null;
+    thumbnail?: string | null;
+    thumbnailType?: string | null;
 }
 
 export interface PreviewWidget {

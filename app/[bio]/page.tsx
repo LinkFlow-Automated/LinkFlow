@@ -75,7 +75,7 @@ export default async function BioPage({
   // Record a profile view (best-effort, non-blocking).
   prisma.profile
     .update({ where: { id: profile.id }, data: { views: { increment: 1 } } })
-    .catch(() => {});
+    .catch(() => { });
 
   const context = await buildContext();
 
@@ -104,6 +104,9 @@ export default async function BioPage({
       description: full?.description,
       category: full?.category,
       layout: (full?.layout as BioLink["layout"]) || "minimal",
+      animation: full?.animation,
+      thumbnail: full?.thumbnail,
+      thumbnailType: full?.type,
     };
   });
 
