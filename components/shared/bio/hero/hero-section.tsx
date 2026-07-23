@@ -32,7 +32,7 @@ export default function HeroSection({
 }: HeroSectionProps) {
   return (
     <div>
-      <div className="m-0 p-0 h-24">
+      <div className="relative m-0 p-0 h-24">
         <Image
           className="h-full w-full object-cover"
           width={1000}
@@ -40,7 +40,7 @@ export default function HeroSection({
           alt=""
           src={coverImage}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
       </div>
       <div
         className={cn(
