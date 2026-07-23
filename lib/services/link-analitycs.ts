@@ -377,6 +377,29 @@ export async function exportStatsToCSV(userId: string, linkId?: string) {
   return csvData;
 }
 
+/** Strip the IPv4-mapped IPv6 prefix (e.g. "::ffff:127.0.0.1" -> "127.0.0.1"). */
+function normalizeIp(ip: string): string {
+  return ip.replace(/^::ffff:/i, "").trim();
+}
+
+/** Loopback / private / link-local / unspecified addresses MaxMind can't resolve. */
+function isNonRoutableIp(ip: string): boolean {
+  const v = normalizeIp(ip).toLowerCase();
+  return (
+    v === "" ||
+    v === "127.0.0.1" ||
+    v === "0.0.0.0" ||
+    v === "::1" ||
+    v.startsWith("10.") ||
+    v.startsWith("192.168.") ||
+    v.startsWith("169.254.") ||
+    /^172\.(1[6-9]|2\d|3[01])\./.test(v) ||
+    v.startsWith("fc") ||
+    v.startsWith("fd") ||
+    v.startsWith("fe80")
+  );
+}
+
 export const createClickEvents = async ({
   linkId,
   referrer,
@@ -425,26 +448,46 @@ export const createClickEvents = async ({
       };
     }
 
-    let geoData;
-    try {
-      const geoReader = await geoReaderPromise;
-      const geo = geoReader.city(ip);
-      geoData = {
-        country: geo?.country?.names.en || null,
-        region: geo?.subdivisions?.[0]?.names.en || null,
-        city: geo?.city || null,
-        coordonate: [geo.location?.latitude, geo.location?.longitude],
-        timezone: geo?.location?.timeZone || null,
-      };
-    } catch (error) {
-      console.warn("Failed to lookup geo data for IP:", ip, error);
-      geoData = {
-        country: null,
-        region: null,
-        city: null,
-        coordonate: null,
-        timezone: null,
-      };
+    let geoData: {
+      country: string | null;
+      region: string | null;
+      city: string | null;
+      coordonate: [number, number] | null;
+      timezone: string | null;
+    } = {
+      country: null,
+      region: null,
+      city: null,
+      coordonate: null,
+      timezone: null,
+    };
+
+    // MaxMind can't resolve loopback/private/unroutable IPs (e.g. localhost or
+    // "::ffff:127.0.0.1"), so skip the lookup for those rather than logging noise.
+    const lookupIp = normalizeIp(ip);
+    if (!isNonRoutableIp(lookupIp)) {
+      try {
+        const geoReader = await geoReaderPromise;
+        const geo = geoReader.city(lookupIp);
+        const lat = geo.location?.latitude;
+        const lng = geo.location?.longitude;
+        geoData = {
+          country: geo?.country?.names?.en || null,
+          region: geo?.subdivisions?.[0]?.names?.en || null,
+          city: geo?.city?.names?.en || null,
+          coordonate:
+            typeof lat === "number" && typeof lng === "number"
+              ? [lat, lng]
+              : null,
+          timezone: geo?.location?.timeZone || null,
+        };
+      } catch (error) {
+        // AddressNotFoundError simply means the IP isn't in the DB — expected
+        // for many addresses, so don't treat it as a warning-worthy failure.
+        if ((error as { name?: string })?.name !== "AddressNotFoundError") {
+          console.warn("Failed to lookup geo data for IP:", lookupIp, error);
+        }
+      }
     }
 
     let validatedGeoData;
