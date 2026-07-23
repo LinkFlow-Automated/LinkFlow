@@ -2,6 +2,7 @@
 
 type TrackClickInput = {
   linkId: string;
+  abVariant?: "A" | "B";
   endpoint?: string;
 };
 
@@ -14,7 +15,11 @@ function getUTMFromLocation() {
   return { utmSource, utmMedium, utmCampaign } as Record<string, string | undefined>;
 }
 
-export async function trackClick({ linkId, endpoint = "/api/v1/click/events" }: TrackClickInput) {
+export async function trackClick({
+  linkId,
+  abVariant,
+  endpoint = "/api/v1/click/events",
+}: TrackClickInput) {
   try {
     const utm = getUTMFromLocation();
     await fetch(endpoint, {
@@ -22,7 +27,7 @@ export async function trackClick({ linkId, endpoint = "/api/v1/click/events" }: 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ linkId, ...utm }),
+      body: JSON.stringify({ linkId, ...(abVariant ? { abVariant } : {}), ...utm }),
       keepalive: true,
     });
   } catch (error) {

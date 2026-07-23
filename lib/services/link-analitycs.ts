@@ -11,6 +11,7 @@ import {
 import { LinkStats } from "@/types/links";
 import { geoSchema } from "../validations/link";
 import { geoReaderPromise } from "../georeader";
+import { getAbConfig, type AbTestConfig } from "../utils/ab-testing";
 
 type LinkScope = { userId: string } | { profileId: string };
 
@@ -312,6 +313,66 @@ async function computeLinkStats(
   };
 }
 
+export type AbTestResult = {
+  linkId: string;
+  title: string;
+  trafficSplit: number;
+  total: number;
+  variantA: { name: string; url: string | null; clicks: number; share: number };
+  variantB: { name: string; url: string | null; clicks: number; share: number };
+};
+
+/** Per-variant click counts for every link in a profile that has an A/B test. */
+export async function getAbResults(profileId: string): Promise<AbTestResult[]> {
+  const links = await prisma.link.findMany({
+    where: { profileId, isArchived: false },
+    select: { id: true, title: true, rules: true },
+  });
+
+  const abLinks = links
+    .map((link) => ({ link, config: getAbConfig(link.rules) }))
+    .filter(
+      (x): x is { link: (typeof links)[number]; config: AbTestConfig } =>
+        x.config !== null
+    );
+
+  if (abLinks.length === 0) return [];
+
+  const grouped = await prisma.clickEvent.groupBy({
+    by: ["linkId", "abVariant"],
+    where: { linkId: { in: abLinks.map((x) => x.link.id) } },
+    _count: { _all: true },
+  });
+
+  const countFor = (linkId: string, variant: "A" | "B") =>
+    grouped.find((g) => g.linkId === linkId && g.abVariant === variant)?._count
+      ._all ?? 0;
+
+  return abLinks.map(({ link, config }) => {
+    const a = countFor(link.id, "A");
+    const b = countFor(link.id, "B");
+    const total = a + b;
+    return {
+      linkId: link.id,
+      title: link.title,
+      trafficSplit: config.trafficSplit,
+      total,
+      variantA: {
+        name: config.variantAName,
+        url: config.variantAUrl ?? null,
+        clicks: a,
+        share: total ? Math.round((a / total) * 100) : 0,
+      },
+      variantB: {
+        name: config.variantBName,
+        url: config.variantBUrl ?? null,
+        clicks: b,
+        share: total ? Math.round((b / total) * 100) : 0,
+      },
+    };
+  });
+}
+
 // Get stats for a specific link
 export async function getSingleLinkStats(linkId: string, userId: string) {
   return getLinkStats(userId, linkId);
@@ -408,6 +469,7 @@ export const createClickEvents = async ({
   utmCampaign,
   utmMedium,
   utmSource,
+  abVariant,
 }: {
   linkId: string;
   referrer: string;
@@ -416,6 +478,7 @@ export const createClickEvents = async ({
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
+  abVariant?: "A" | "B";
 }) => {
   try {
     if (!linkId) {
@@ -517,6 +580,7 @@ export const createClickEvents = async ({
         utmCampaign,
         utmMedium,
         utmSource,
+        abVariant: abVariant || null,
       },
     });
 

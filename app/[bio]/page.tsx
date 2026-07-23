@@ -9,6 +9,7 @@ import type { EvaluationContext, LinkWithRules, Rule } from "@/types/smart-rules
 import HeroSection from "@/components/shared/bio/hero/hero-section";
 import BioLinks, { type BioLink } from "@/components/shared/bio/bio-links";
 import { parseSocialLinks, socialPlatform } from "@/lib/social-platforms";
+import { getAbConfig } from "@/lib/utils/ab-testing";
 
 // Uses MaxMind (Node) + per-request headers, so render dynamically.
 export const dynamic = "force-dynamic";
@@ -107,6 +108,7 @@ export default async function BioPage({
       animation: full?.animation,
       thumbnail: full?.thumbnail,
       thumbnailType: full?.type,
+      abTest: getAbConfig(full?.rules),
     };
   });
 

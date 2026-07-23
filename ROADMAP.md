@@ -122,10 +122,11 @@ _Now that the core loop is trustworthy, lean into what makes LinkFlow distinct._
       from MaxMind, so region rules actually match.
     - **Verified rules execute end-to-end**: a `mobile`-only link is hidden for a
       desktop visitor and shown for a mobile UA on the live bio page.
-    - _Known follow-up:_ **A/B testing** still persists config but doesn't
-      execute. The single-link A/B form (variant A/B URLs) needs sticky
-      per-visitor assignment, which an RSC page render can't set — it wants
-      middleware or a click-time redirect route. Left as a Phase 3 item.
+    - ✅ **A/B testing now executes.** Single-link A/B: visitors get a sticky
+      per-visitor variant (localStorage, weighted by `trafficSplit`) and land on
+      the matching variant URL; each click records which variant it served
+      (`ClickEvent.abVariant`), surfaced as an A/B results card on the insight
+      page. (`lib/utils/ab-testing.ts`, `bio-link-item.tsx`, `getAbResults()`.)
 
 11. ⏸️ **Billing / plan gating** — deferred (not started, by request).
 

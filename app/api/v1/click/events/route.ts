@@ -8,6 +8,7 @@ const bodySchema = z.object({
   utmSource: z.string().max(200).optional(),
   utmMedium: z.string().max(200).optional(),
   utmCampaign: z.string().max(200).optional(),
+  abVariant: z.enum(["A", "B"]).optional(),
 });
 
 // Public endpoint (called from bio pages by visitors). No auth, but IP + link
@@ -17,7 +18,8 @@ export async function POST(req: NextRequest) {
     const ip = getClientIp(req);
 
     const json = await req.json();
-    const { linkId, utmCampaign, utmMedium, utmSource } = bodySchema.parse(json);
+    const { linkId, utmCampaign, utmMedium, utmSource, abVariant } =
+      bodySchema.parse(json);
 
     const limited = await enforceRateLimit(`v1:click:${ip}:${linkId}`, {
       limit: 30,
@@ -37,6 +39,7 @@ export async function POST(req: NextRequest) {
       utmCampaign,
       utmMedium,
       utmSource,
+      abVariant,
     });
 
     return NextResponse.json({ id: created.id }, { status: 201 });

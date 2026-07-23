@@ -1,5 +1,8 @@
 import { redirect } from "next/navigation";
-import { getProfileLinkStats } from "@/lib/services/link-analitycs";
+import {
+  getProfileLinkStats,
+  getAbResults,
+} from "@/lib/services/link-analitycs";
 import {
   getActiveProfile,
   weekOverWeekChange,
@@ -8,6 +11,7 @@ import {
 import CardStats from "./_components/card-stats";
 import TopLinksCard from "@/components/shared/analytics/top-links-card";
 import BreakdownCard from "@/components/shared/analytics/breakdown-card";
+import AbResultsCard from "@/components/shared/analytics/ab-results-card";
 import NoData from "@/components/shared/analytics/no-data";
 
 export default async function InsightPage({
@@ -21,7 +25,10 @@ export default async function InsightPage({
     redirect("/login");
   }
 
-  const stats = await getProfileLinkStats(profile.id);
+  const [stats, abResults] = await Promise.all([
+    getProfileLinkStats(profile.id),
+    getAbResults(profile.id),
+  ]);
   const spark = stats.dailyStats.map((d) => ({
     label: d.date,
     value: d.clicks,
@@ -87,6 +94,8 @@ export default async function InsightPage({
           />
         </div>
       )}
+
+      <AbResultsCard results={abResults} />
     </div>
   );
 }
