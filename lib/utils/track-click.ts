@@ -35,4 +35,24 @@ export async function trackClick({
   }
 }
 
+/** Record that a visitor was bucketed into an A/B variant (the exposure). */
+export async function trackExposure({
+  linkId,
+  variant,
+}: {
+  linkId: string;
+  variant: "A" | "B";
+}) {
+  try {
+    await fetch("/api/v1/ab/exposure", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ linkId, variant }),
+      keepalive: true,
+    });
+  } catch {
+    // Best-effort; ignore errors on client
+  }
+}
+
 

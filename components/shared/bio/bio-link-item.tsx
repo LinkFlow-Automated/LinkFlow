@@ -7,7 +7,7 @@ import {
   getCardAnimation,
   type AnimationType,
 } from "@/lib/utils/card-animation";
-import { trackClick } from "@/lib/utils/track-click";
+import { trackClick, trackExposure } from "@/lib/utils/track-click";
 import {
   type AbTestConfig,
   type AbVariant,
@@ -84,6 +84,8 @@ function useAbVariant(id: string | undefined, config: AbTestConfig | null) {
       } catch {
         // storage unavailable (private mode) — assignment stays per-render
       }
+      // First time this visitor is bucketed → record the exposure (denominator).
+      trackExposure({ linkId: id, variant: v as AbVariant });
     }
     setVariant(v as AbVariant);
   }, [id, config]);

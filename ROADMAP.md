@@ -122,11 +122,12 @@ _Now that the core loop is trustworthy, lean into what makes LinkFlow distinct._
       from MaxMind, so region rules actually match.
     - **Verified rules execute end-to-end**: a `mobile`-only link is hidden for a
       desktop visitor and shown for a mobile UA on the live bio page.
-    - ✅ **A/B testing now executes.** Single-link A/B: visitors get a sticky
-      per-visitor variant (localStorage, weighted by `trafficSplit`) and land on
-      the matching variant URL; each click records which variant it served
-      (`ClickEvent.abVariant`), surfaced as an A/B results card on the insight
-      page. (`lib/utils/ab-testing.ts`, `bio-link-item.tsx`, `getAbResults()`.)
+    - ✅ **A/B testing now executes + measures.** Single-link A/B: visitors get a
+      sticky per-visitor variant (localStorage, weighted by `trafficSplit`) and
+      land on the matching variant URL. Both **exposures** (`AbExposure`, the
+      denominator) and **clicks** (`ClickEvent.abVariant`, the numerator) are
+      tracked, and a two-proportion z-test (`lib/utils/ab-stats.ts`) reports
+      conversion rate, confidence, and a winner on the insight page's A/B card.
 
 11. ⏸️ **Billing / plan gating** — deferred (not started, by request).
 

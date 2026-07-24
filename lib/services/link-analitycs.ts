@@ -12,6 +12,7 @@ import { LinkStats } from "@/types/links";
 import { geoSchema } from "../validations/link";
 import { geoReaderPromise } from "../georeader";
 import { getAbConfig, type AbTestConfig } from "../utils/ab-testing";
+import { abSignificance, type AbSignificance } from "../utils/ab-stats";
 
 type LinkScope = { userId: string } | { profileId: string };
 
@@ -313,16 +314,30 @@ async function computeLinkStats(
   };
 }
 
+export type AbVariantResult = {
+  name: string;
+  url: string | null;
+  exposures: number;
+  clicks: number;
+  /** Conversion rate (clicks / exposures) in 0–1. */
+  conversionRate: number;
+};
+
 export type AbTestResult = {
   linkId: string;
   title: string;
   trafficSplit: number;
-  total: number;
-  variantA: { name: string; url: string | null; clicks: number; share: number };
-  variantB: { name: string; url: string | null; clicks: number; share: number };
+  totalExposures: number;
+  totalClicks: number;
+  variantA: AbVariantResult;
+  variantB: AbVariantResult;
+  significance: AbSignificance;
 };
 
-/** Per-variant click counts for every link in a profile that has an A/B test. */
+/**
+ * A/B results per link: exposures (visitors bucketed), clicks (conversions),
+ * conversion rate, and a two-proportion significance test between the variants.
+ */
 export async function getAbResults(profileId: string): Promise<AbTestResult[]> {
   const links = await prisma.link.findMany({
     where: { profileId, isArchived: false },
@@ -338,37 +353,55 @@ export async function getAbResults(profileId: string): Promise<AbTestResult[]> {
 
   if (abLinks.length === 0) return [];
 
-  const grouped = await prisma.clickEvent.groupBy({
-    by: ["linkId", "abVariant"],
-    where: { linkId: { in: abLinks.map((x) => x.link.id) } },
-    _count: { _all: true },
-  });
+  const linkIds = abLinks.map((x) => x.link.id);
+  const [clickGroups, exposureGroups] = await Promise.all([
+    prisma.clickEvent.groupBy({
+      by: ["linkId", "abVariant"],
+      where: { linkId: { in: linkIds } },
+      _count: { _all: true },
+    }),
+    prisma.abExposure.groupBy({
+      by: ["linkId", "variant"],
+      where: { linkId: { in: linkIds } },
+      _count: { _all: true },
+    }),
+  ]);
 
-  const countFor = (linkId: string, variant: "A" | "B") =>
-    grouped.find((g) => g.linkId === linkId && g.abVariant === variant)?._count
-      ._all ?? 0;
+  const clicksFor = (linkId: string, variant: "A" | "B") =>
+    clickGroups.find((g) => g.linkId === linkId && g.abVariant === variant)
+      ?._count._all ?? 0;
+  const exposuresFor = (linkId: string, variant: "A" | "B") =>
+    exposureGroups.find((g) => g.linkId === linkId && g.variant === variant)
+      ?._count._all ?? 0;
 
   return abLinks.map(({ link, config }) => {
-    const a = countFor(link.id, "A");
-    const b = countFor(link.id, "B");
-    const total = a + b;
+    const cA = clicksFor(link.id, "A");
+    const cB = clicksFor(link.id, "B");
+    const eA = exposuresFor(link.id, "A");
+    const eB = exposuresFor(link.id, "B");
+    const significance = abSignificance({ eA, cA, eB, cB });
+
     return {
       linkId: link.id,
       title: link.title,
       trafficSplit: config.trafficSplit,
-      total,
+      totalExposures: eA + eB,
+      totalClicks: cA + cB,
       variantA: {
         name: config.variantAName,
         url: config.variantAUrl ?? null,
-        clicks: a,
-        share: total ? Math.round((a / total) * 100) : 0,
+        exposures: eA,
+        clicks: cA,
+        conversionRate: significance.conversionRateA,
       },
       variantB: {
         name: config.variantBName,
         url: config.variantBUrl ?? null,
-        clicks: b,
-        share: total ? Math.round((b / total) * 100) : 0,
+        exposures: eB,
+        clicks: cB,
+        conversionRate: significance.conversionRateB,
       },
+      significance,
     };
   });
 }
