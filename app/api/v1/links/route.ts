@@ -2,22 +2,48 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"; // Your Prisma client
 import { z } from "zod";
 import { createLinkSchema } from "@/lib/validations/link";
+import {
+  filterOwnedLinkIds,
+  getOwnedLink,
+  getPrincipal,
+  forbidden,
+  unauthorized,
+  userOwnsProfile,
+} from "@/lib/api/guard";
+import { enforceRateLimit } from "@/lib/api/rate-limit";
 
-// GET - Fetch all links for a user
+const API_RATE_LIMIT = { limit: 120, windowSec: 60 };
+
+// GET - Fetch all links for one of the caller's profiles
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId");
+    const principal = await getPrincipal(request);
+    if (!principal) return unauthorized();
 
-    if (!userId) {
+    const limited = await enforceRateLimit(
+      `v1:links:${principal.userId}`,
+      API_RATE_LIMIT
+    );
+    if (limited) return limited;
+
+    const { searchParams } = new URL(request.url);
+    // Accept `profileId` (preferred) or legacy `userId` param name.
+    const profileId =
+      searchParams.get("profileId") || searchParams.get("userId");
+
+    if (!profileId) {
       return NextResponse.json(
-        { error: "User ID is required" },
+        { error: "profileId is required" },
         { status: 400 }
       );
     }
 
+    if (!(await userOwnsProfile(principal.userId, profileId))) {
+      return forbidden();
+    }
+
     const links = await prisma.link.findMany({
-      where: { profileId: userId },
+      where: { profileId },
       orderBy: { order: "asc" },
     });
 
@@ -31,14 +57,24 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create a new link
+// POST - Create a new link on a profile the caller owns
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const principal = await getPrincipal(request);
+    if (!principal) return unauthorized();
 
-    console.log(body);
-    // Validate the request body
+    const limited = await enforceRateLimit(
+      `v1:links:${principal.userId}`,
+      API_RATE_LIMIT
+    );
+    if (limited) return limited;
+
+    const body = await request.json();
     const validatedData = createLinkSchema.parse(body);
+
+    if (!(await userOwnsProfile(principal.userId, validatedData.profileId))) {
+      return forbidden();
+    }
 
     const link = await prisma.link.create({
       data: validatedData,
@@ -46,7 +82,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(link, { status: 201 });
   } catch (error) {
-    console.log(error);
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.errors }, { status: 400 });
     }
@@ -59,9 +94,18 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PUT - Update a link
+// PUT - Update a link the caller owns
 export async function PUT(request: NextRequest) {
   try {
+    const principal = await getPrincipal(request);
+    if (!principal) return unauthorized();
+
+    const limited = await enforceRateLimit(
+      `v1:links:${principal.userId}`,
+      API_RATE_LIMIT
+    );
+    if (limited) return limited;
+
     const body = await request.json();
     const { id, ...updateData } = body;
 
@@ -70,6 +114,18 @@ export async function PUT(request: NextRequest) {
         { error: "Link ID is required" },
         { status: 400 }
       );
+    }
+
+    if (!(await getOwnedLink(principal.userId, id))) {
+      return forbidden();
+    }
+
+    // Never allow reassigning a link to a profile the caller doesn't own.
+    if (
+      updateData.profileId &&
+      !(await userOwnsProfile(principal.userId, updateData.profileId))
+    ) {
+      return forbidden();
     }
 
     const link = await prisma.link.update({
@@ -87,9 +143,18 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// DELETE - Delete a link
+// DELETE - Delete a link the caller owns
 export async function DELETE(request: NextRequest) {
   try {
+    const principal = await getPrincipal(request);
+    if (!principal) return unauthorized();
+
+    const limited = await enforceRateLimit(
+      `v1:links:${principal.userId}`,
+      API_RATE_LIMIT
+    );
+    if (limited) return limited;
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
 
@@ -98,6 +163,10 @@ export async function DELETE(request: NextRequest) {
         { error: "Link ID is required" },
         { status: 400 }
       );
+    }
+
+    if (!(await getOwnedLink(principal.userId, id))) {
+      return forbidden();
     }
 
     await prisma.link.delete({
@@ -114,9 +183,18 @@ export async function DELETE(request: NextRequest) {
   }
 }
 
-// PATCH - Batch update links order
+// PATCH - Batch update the order of links the caller owns
 export async function PATCH(request: NextRequest) {
   try {
+    const principal = await getPrincipal(request);
+    if (!principal) return unauthorized();
+
+    const limited = await enforceRateLimit(
+      `v1:links:${principal.userId}`,
+      API_RATE_LIMIT
+    );
+    if (limited) return limited;
+
     const body = await request.json();
     const { updates } = body; // Array of { id, order }
 
@@ -125,6 +203,12 @@ export async function PATCH(request: NextRequest) {
         { error: "Updates must be an array" },
         { status: 400 }
       );
+    }
+
+    const ids = updates.map((u) => u?.id).filter(Boolean);
+    const ownedIds = await filterOwnedLinkIds(principal.userId, ids);
+    if (ownedIds.size !== ids.length) {
+      return forbidden();
     }
 
     const results = await prisma.$transaction(

@@ -178,12 +178,27 @@ model Link {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profile     Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  clickEvents ClickEvent[]
+  profile      Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  clickEvents  ClickEvent[]
+  abExposures  AbExposure[]
 
   @@index([profileId, order])
   @@index([profileId, autoSyncId])
   @@map("link")
+}
+
+// One row per visitor bucketed into an A/B variant (the denominator for the
+// conversion rate that ClickEvent.abVariant provides the numerator for).
+model AbExposure {
+  id        String   @id @default(cuid())
+  linkId    String
+  variant   String // "A" | "B"
+  createdAt DateTime @default(now())
+
+  link Link @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@index([linkId, variant])
+  @@map("ab_exposure")
 }
 
 model ClickEvent {
@@ -204,11 +219,16 @@ model ClickEvent {
   utmCampaign String?
   referrer    String?
 
+  // A/B testing: which variant ("A" | "B") this click was served, if any.
+  abVariant String?
+
   link    Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
   profile Profile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
 
-  @@index([linkId])
-  @@index([profileId])
+  // Composite indexes cover the analytics access pattern (scope + time range,
+  // ordered by timestamp) and also serve the leading-column-only lookups.
+  @@index([linkId, timestamp])
+  @@index([profileId, timestamp])
   @@map("click_event")
 }
 

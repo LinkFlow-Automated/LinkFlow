@@ -45,8 +45,9 @@ export default function AnimationSelector({
 }: AnimationSelectorProps) {
   const { updateLink, isUpdating } = useManageLink(link.profileId);
   const [open, setOpen] = useState(false);
-  const [selectedAnimation, setSelectedAnimation] =
-    useState<AnimationType>("none");
+  const [selectedAnimation, setSelectedAnimation] = useState<AnimationType>(
+    (link.animation as AnimationType) || "none"
+  );
 
   const form = useForm<AnimationFormData>({
     resolver: zodResolver(animationSchema),
@@ -77,7 +78,7 @@ export default function AnimationSelector({
 
   const handleCancel = () => {
     form.reset();
-    setSelectedAnimation("none");
+    setSelectedAnimation((link.animation as AnimationType) || "none");
   };
 
   return (

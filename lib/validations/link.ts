@@ -100,9 +100,9 @@ export const getLinkQuerySchema = z.object({
 });
 
 export const metadataSchema = z.object({
-  provider: z
-    .enum(["spotify", "youtube", "instagram", "soundcloud", "gumroad", "link"])
-    .optional(),
+  // Open-ended: covers integration widgets (spotify, youtube, …) as well as
+  // generic link platforms picked in the Add-Link hub (twitter, shopify, form…).
+  provider: z.string().optional(),
   type: z.string().optional(), // e.g. "NEW_ALBUM", "NOW_PLAYING", "CHANNEL", "FEED", "PRODUCTS"
   id: z.string().optional(), // external ID (albumId, channelId, etc.)
   data: z.record(z.any()).optional(), // provider-specific payload

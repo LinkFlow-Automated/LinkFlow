@@ -39,6 +39,7 @@ import { Link } from "@/lib/generated/prisma";
 import { useManageLink } from "@/hooks/use-manage-link";
 import { toast } from "sonner";
 import { safeToDate } from "@/lib/utils";
+import { withClickRules } from "@/lib/utils/rules-normalizer";
 
 // Updated schema with better date handling
 const clickLimitsSchedulingSchema = z.object({
@@ -125,10 +126,7 @@ export function ClickLimitsSchedulingForm({
 
       await updateLink({
         id: link.id,
-        rules: {
-          ...((link.rules as object) || {}),
-          clickLimitsScheduling: processedData,
-        },
+        rules: withClickRules(link.rules as Record<string, unknown>, processedData),
       });
       toast.success("Click Limits & Scheduling has been updated");
       setOpen(false);

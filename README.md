@@ -37,6 +37,10 @@
 - **Click Analytics**: Comprehensive analytics API
 - **Rate Limiting**: Built-in rate limiting and quota management
 
+## MCP Server
+
+-
+
 ## 🏗️ Architecture
 
 ### Tech Stack

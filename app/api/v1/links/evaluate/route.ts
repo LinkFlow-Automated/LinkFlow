@@ -1,10 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { EvaluationContext, LinkWithRules } from "@/types/smart-rules";
+import { EvaluationContext } from "@/types/smart-rules";
 import { DeviceDetector } from "@/lib/services/device-detection";
 import { SmartRulesEngine } from "@/lib/services/smart-rules-engine";
+import { enforceRateLimit, getClientIp } from "@/lib/api/rate-limit";
 
+// Public, stateless rule evaluation (operates only on links in the request
+// body). IP rate limited to prevent abuse of the compute.
 export async function POST(request: NextRequest) {
   try {
+    const limited = await enforceRateLimit(
+      `v1:evaluate:${getClientIp(request)}`,
+      { limit: 60, windowSec: 60 }
+    );
+    if (limited) return limited;
+
     const body = await request.json();
     const { links, context: providedContext } = body;
 

@@ -2,6 +2,7 @@
 
 type TrackClickInput = {
   linkId: string;
+  abVariant?: "A" | "B";
   endpoint?: string;
 };
 
@@ -14,7 +15,11 @@ function getUTMFromLocation() {
   return { utmSource, utmMedium, utmCampaign } as Record<string, string | undefined>;
 }
 
-export async function trackClick({ linkId, endpoint = "/api/v1/click/events" }: TrackClickInput) {
+export async function trackClick({
+  linkId,
+  abVariant,
+  endpoint = "/api/v1/click/events",
+}: TrackClickInput) {
   try {
     const utm = getUTMFromLocation();
     await fetch(endpoint, {
@@ -22,11 +27,31 @@ export async function trackClick({ linkId, endpoint = "/api/v1/click/events" }: 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ linkId, ...utm }),
+      body: JSON.stringify({ linkId, ...(abVariant ? { abVariant } : {}), ...utm }),
       keepalive: true,
     });
   } catch (error) {
     // Best-effort tracking; ignore errors on client
+  }
+}
+
+/** Record that a visitor was bucketed into an A/B variant (the exposure). */
+export async function trackExposure({
+  linkId,
+  variant,
+}: {
+  linkId: string;
+  variant: "A" | "B";
+}) {
+  try {
+    await fetch("/api/v1/ab/exposure", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ linkId, variant }),
+      keepalive: true,
+    });
+  } catch {
+    // Best-effort; ignore errors on client
   }
 }
 

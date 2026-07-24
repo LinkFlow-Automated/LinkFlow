@@ -11,22 +11,45 @@ import {
 import { LinkStats } from "@/types/links";
 import { geoSchema } from "../validations/link";
 import { geoReaderPromise } from "../georeader";
+import { getAbConfig, type AbTestConfig } from "../utils/ab-testing";
+import { abSignificance, type AbSignificance } from "../utils/ab-stats";
 
+type LinkScope = { userId: string } | { profileId: string };
+
+/** Analytics across every profile owned by a user. */
 export async function getLinkStats(
   userId: string,
+  linkId?: string,
+  dateRange?: { from: Date; to: Date }
+): Promise<LinkStats> {
+  return computeLinkStats({ userId }, linkId, dateRange);
+}
+
+/** Analytics scoped to a single profile (tenant). */
+export async function getProfileLinkStats(
+  profileId: string,
+  linkId?: string,
+  dateRange?: { from: Date; to: Date }
+): Promise<LinkStats> {
+  return computeLinkStats({ profileId }, linkId, dateRange);
+}
+
+async function computeLinkStats(
+  scope: LinkScope,
   linkId?: string,
   dateRange?: { from: Date; to: Date }
 ): Promise<LinkStats> {
   const fromDate = dateRange?.from || subMonths(new Date(), 1);
   const toDate = dateRange?.to || new Date();
 
+  const linkWhere =
+    "userId" in scope
+      ? { profile: { userId: scope.userId } }
+      : { profileId: scope.profileId };
+
   // Base where clause
   const baseWhere = {
-    link: {
-      profile: {
-        userId,
-      },
-    },
+    link: linkWhere,
     ...(linkId && { linkId }),
     timestamp: {
       gte: fromDate,
@@ -291,6 +314,98 @@ export async function getLinkStats(
   };
 }
 
+export type AbVariantResult = {
+  name: string;
+  url: string | null;
+  exposures: number;
+  clicks: number;
+  /** Conversion rate (clicks / exposures) in 0–1. */
+  conversionRate: number;
+};
+
+export type AbTestResult = {
+  linkId: string;
+  title: string;
+  trafficSplit: number;
+  totalExposures: number;
+  totalClicks: number;
+  variantA: AbVariantResult;
+  variantB: AbVariantResult;
+  significance: AbSignificance;
+};
+
+/**
+ * A/B results per link: exposures (visitors bucketed), clicks (conversions),
+ * conversion rate, and a two-proportion significance test between the variants.
+ */
+export async function getAbResults(profileId: string): Promise<AbTestResult[]> {
+  const links = await prisma.link.findMany({
+    where: { profileId, isArchived: false },
+    select: { id: true, title: true, rules: true },
+  });
+
+  const abLinks = links
+    .map((link) => ({ link, config: getAbConfig(link.rules) }))
+    .filter(
+      (x): x is { link: (typeof links)[number]; config: AbTestConfig } =>
+        x.config !== null
+    );
+
+  if (abLinks.length === 0) return [];
+
+  const linkIds = abLinks.map((x) => x.link.id);
+  const [clickGroups, exposureGroups] = await Promise.all([
+    prisma.clickEvent.groupBy({
+      by: ["linkId", "abVariant"],
+      where: { linkId: { in: linkIds } },
+      _count: { _all: true },
+    }),
+    prisma.abExposure.groupBy({
+      by: ["linkId", "variant"],
+      where: { linkId: { in: linkIds } },
+      _count: { _all: true },
+    }),
+  ]);
+
+  const clicksFor = (linkId: string, variant: "A" | "B") =>
+    clickGroups.find((g) => g.linkId === linkId && g.abVariant === variant)
+      ?._count._all ?? 0;
+  const exposuresFor = (linkId: string, variant: "A" | "B") =>
+    exposureGroups.find((g) => g.linkId === linkId && g.variant === variant)
+      ?._count._all ?? 0;
+
+  return abLinks.map(({ link, config }) => {
+    const cA = clicksFor(link.id, "A");
+    const cB = clicksFor(link.id, "B");
+    const eA = exposuresFor(link.id, "A");
+    const eB = exposuresFor(link.id, "B");
+    const significance = abSignificance({ eA, cA, eB, cB });
+
+    return {
+      linkId: link.id,
+      title: link.title,
+      trafficSplit: config.trafficSplit,
+      totalExposures: eA + eB,
+      totalClicks: cA + cB,
+      variantA: {
+        name: config.variantAName,
+        url: config.variantAUrl ?? null,
+        exposures: eA,
+        clicks: cA,
+        conversionRate: significance.conversionRateA,
+      },
+      variantB: {
+        name: config.variantBName,
+        url: config.variantBUrl ?? null,
+        exposures: eB,
+        clicks: cB,
+        conversionRate: significance.conversionRateB,
+      },
+      significance,
+    };
+  });
+}
+
 // Get stats for a specific link
 export async function getSingleLinkStats(linkId: string, userId: string) {
   return getLinkStats(userId, linkId);
@@ -356,6 +471,29 @@ export async function exportStatsToCSV(userId: string, linkId?: string) {
   return csvData;
 }
 
+/** Strip the IPv4-mapped IPv6 prefix (e.g. "::ffff:127.0.0.1" -> "127.0.0.1"). */
+function normalizeIp(ip: string): string {
+  return ip.replace(/^::ffff:/i, "").trim();
+}
+
+/** Loopback / private / link-local / unspecified addresses MaxMind can't resolve. */
+function isNonRoutableIp(ip: string): boolean {
+  const v = normalizeIp(ip).toLowerCase();
+  return (
+    v === "" ||
+    v === "127.0.0.1" ||
+    v === "0.0.0.0" ||
+    v === "::1" ||
+    v.startsWith("10.") ||
+    v.startsWith("192.168.") ||
+    v.startsWith("169.254.") ||
+    /^172\.(1[6-9]|2\d|3[01])\./.test(v) ||
+    v.startsWith("fc") ||
+    v.startsWith("fd") ||
+    v.startsWith("fe80")
+  );
+}
+
 export const createClickEvents = async ({
   linkId,
   referrer,
@@ -364,6 +502,7 @@ export const createClickEvents = async ({
   utmCampaign,
   utmMedium,
   utmSource,
+  abVariant,
 }: {
   linkId: string;
   referrer: string;
@@ -372,6 +511,7 @@ export const createClickEvents = async ({
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
+  abVariant?: "A" | "B";
 }) => {
   try {
     if (!linkId) {
@@ -379,6 +519,17 @@ export const createClickEvents = async ({
     }
     if (!userAgent) {
       throw new Error("User agent is required");
+    }
+
+    // Resolve the owning profile so we can denormalize it onto the click event.
+    // This both validates the link exists and lets analytics filter/index by
+    // profileId directly instead of joining through the link relation.
+    const link = await prisma.link.findUnique({
+      where: { id: linkId },
+      select: { profileId: true },
+    });
+    if (!link) {
+      throw new Error("Invalid link ID - link does not exist");
     }
 
     let deviceInfo;
@@ -393,26 +544,46 @@ export const createClickEvents = async ({
       };
     }
 
-    let geoData;
-    try {
-      const geoReader = await geoReaderPromise;
-      const geo = geoReader.city(ip);
-      geoData = {
-        country: geo?.country?.names.en || null,
-        region: geo?.subdivisions?.[0]?.names.en || null,
-        city: geo?.city || null,
-        coordonate: [geo.location?.latitude, geo.location?.longitude],
-        timezone: geo?.location?.timeZone || null,
-      };
-    } catch (error) {
-      console.warn("Failed to lookup geo data for IP:", ip, error);
-      geoData = {
-        country: null,
-        region: null,
-        city: null,
-        coordonate: null,
-        timezone: null,
-      };
+    let geoData: {
+      country: string | null;
+      region: string | null;
+      city: string | null;
+      coordonate: [number, number] | null;
+      timezone: string | null;
+    } = {
+      country: null,
+      region: null,
+      city: null,
+      coordonate: null,
+      timezone: null,
+    };
+
+    // MaxMind can't resolve loopback/private/unroutable IPs (e.g. localhost or
+    // "::ffff:127.0.0.1"), so skip the lookup for those rather than logging noise.
+    const lookupIp = normalizeIp(ip);
+    if (!isNonRoutableIp(lookupIp)) {
+      try {
+        const geoReader = await geoReaderPromise;
+        const geo = geoReader.city(lookupIp);
+        const lat = geo.location?.latitude;
+        const lng = geo.location?.longitude;
+        geoData = {
+          country: geo?.country?.names?.en || null,
+          region: geo?.subdivisions?.[0]?.names?.en || null,
+          city: geo?.city?.names?.en || null,
+          coordonate:
+            typeof lat === "number" && typeof lng === "number"
+              ? [lat, lng]
+              : null,
+          timezone: geo?.location?.timeZone || null,
+        };
+      } catch (error) {
+        // AddressNotFoundError simply means the IP isn't in the DB — expected
+        // for many addresses, so don't treat it as a warning-worthy failure.
+        if ((error as { name?: string })?.name !== "AddressNotFoundError") {
+          console.warn("Failed to lookup geo data for IP:", lookupIp, error);
+        }
+      }
     }
 
     let validatedGeoData;
@@ -432,6 +603,7 @@ export const createClickEvents = async ({
     const data = await prisma.clickEvent.create({
       data: {
         linkId,
+        profileId: link.profileId,
         userAgent,
         device: deviceInfo.device || "unknown",
         geo: validatedGeoData, // Don't stringify - Prisma handles Json type
@@ -441,6 +613,7 @@ export const createClickEvents = async ({
         utmCampaign,
         utmMedium,
         utmSource,
+        abVariant: abVariant || null,
       },
     });
 

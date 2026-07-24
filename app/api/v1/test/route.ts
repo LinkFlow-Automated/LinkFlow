@@ -4,6 +4,11 @@ import { RulesHelpers } from "@/lib/utils/rules-helper";
 import { LinkWithRules } from "@/types/smart-rules";
 
 export async function POST(request: NextRequest) {
+  // Debug/demo endpoint — never expose in production.
+  if (process.env.NODE_ENV === "production") {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   const testLink: LinkWithRules = {
     id: "test-1",
     title: "Test Link",

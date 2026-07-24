@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/a11y/useKeyWithClickEvents: <> */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -18,23 +17,23 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { updateUserProfile } from "@/lib/actions/user-actions";
 import { usePreviewStore } from "@/stores/preview-store";
 import { Link, Profile } from "@/lib/generated/prisma";
-// import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 const profileFormSchema = z.object({
-  username: z.string().min(1, { message: "Name is required" }),
-  bio: z.string().min(1, { message: "Bio is required" }),
-  //   image: z.string().min(1, { message: "Image is required" }),
+  displayName: z.string().min(1, { message: "Name is required" }).max(100),
+  bio: z.string().max(500, { message: "Bio is too long" }).optional(),
 });
 
 type ProfileForm = z.infer<typeof profileFormSchema>;
@@ -45,18 +44,14 @@ interface ProfileFormProps {
   className?: string;
 }
 
-export default function ProfileForm({
-  userData,
-  placeHolder,
-  className,
-}: ProfileFormProps) {
+export default function ProfileForm({ userData }: ProfileFormProps) {
+  const [open, setOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  console.log(userData)
 
   const form = useForm<ProfileForm>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      username: userData?.username || "",
+      displayName: userData?.displayName || "",
       bio: userData?.bio || "",
     },
   });
@@ -64,29 +59,36 @@ export default function ProfileForm({
   const handleSubmit = async (data: ProfileForm) => {
     setIsUpdating(true);
     try {
-      console.log("Form submitted:", data);
-      await updateUserProfile(userData.id, data);
+      await updateUserProfile(userData.id, {
+        displayName: data.displayName,
+        bio: data.bio ?? "",
+      });
       // Sync to preview store for live update
       usePreviewStore.getState().setProfile({
-        displayName: data.username,
-        bio: data.bio,
+        displayName: data.displayName,
+        bio: data.bio ?? "",
       });
+      toast.success("Profile updated");
+      setOpen(false);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile");
     } finally {
       setIsUpdating(false);
     }
   };
 
+  const triggerName = userData?.displayName || userData?.username;
+
   return (
-    <Dialog>
-      <DialogTrigger className="grid flex-1 text-left text-sm leading-tight">
-        <span className="truncate font-medium">{userData?.username}</span>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger className="grid flex-1 text-left text-sm leading-tight cursor-pointer">
+        <span className="truncate font-medium">{triggerName}</span>
         <span className="text-muted-foreground truncate text-md line-clamp-1">
           {userData?.bio}
         </span>
       </DialogTrigger>
-      <DialogContent className=" overflow-y-auto">
+      <DialogContent className="overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
           <DialogDescription>
@@ -96,20 +98,17 @@ export default function ProfileForm({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
             <div className="flex flex-row ">
-              <div className="grid gap-4">
+              <div className="grid gap-4 w-full">
                 <FormField
-                  name="username"
+                  name="displayName"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input
-                          // className="dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
-                          placeholder="Name"
-                          {...field}
-                        />
+                        <Input placeholder="Name" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -120,29 +119,25 @@ export default function ProfileForm({
                     <FormItem>
                       <FormLabel>Bio</FormLabel>
                       <FormControl>
-                        <Textarea
-                          // className="dark:bg-card focus-visible:border-0 focus-visible:none focus-visible:ring-[0] border-0 h-fit px-0 py-0 selection:bg-card"
-                          placeholder="Bio"
-                          {...field}
-                        />
+                        <Textarea placeholder="Bio" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
             </div>
             <DialogFooter className="flex justify-end gap-3 pt-4">
-              <DialogClose>
-                <Button
-                  // onClick={handleCancel}
-                  type="button"
-                  variant="outline"
-                  className="cursor-pointer"
-                >
+              <DialogClose asChild>
+                <Button type="button" variant="outline" className="cursor-pointer">
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit" className="cursor-pointer">
+              <Button
+                type="submit"
+                disabled={isUpdating}
+                className="cursor-pointer"
+              >
                 {isUpdating ? (
                   <Loader2 className="animate-spin size-4" />
                 ) : (

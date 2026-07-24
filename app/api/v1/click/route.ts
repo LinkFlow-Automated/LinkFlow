@@ -3,9 +3,20 @@ import { periodToDateRange } from "@/lib/utils";
 import { getLinkStatsURLQuerySchema } from "@/lib/validations/clickEvents";
 import { ZodError } from "zod";
 import { NextRequest, NextResponse } from "next/server";
+import { getPrincipal, unauthorized } from "@/lib/api/guard";
+import { enforceRateLimit } from "@/lib/api/rate-limit";
 
 export async function GET(req: NextRequest) {
   try {
+    const principal = await getPrincipal(req);
+    if (!principal) return unauthorized();
+
+    const limited = await enforceRateLimit(`v1:stats:${principal.userId}`, {
+      limit: 120,
+      windowSec: 60,
+    });
+    if (limited) return limited;
+
     const { searchParams } = new URL(req.url);
     const queryData = Object.fromEntries(searchParams.entries());
 
@@ -19,8 +30,10 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // getLinkStats scopes by link.profile.userId — always force it to the
+    // authenticated user so callers can never read another user's analytics.
     const stats = await getLinkStats(
-      validatedQuery.userId,
+      principal.userId,
       validatedQuery.linkId,
       dateRange as any
     );
